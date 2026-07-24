@@ -7,7 +7,7 @@ const ReturnRefundPolicy = () => {
     <main className="py-5" style={{ backgroundColor: "#f8f9fa" }}>
       <div className="container">
         <header className="text-center mb-5">
-          <h1 className="fw-bold display-5 mb-3" style={{ color: "#7d0ba7" }}>
+          <h1 className="fw-bold display-5 mb-3 theme-text-primary">
             <i className="bi bi-arrow-left-right me-3" />
             Refund &amp; Exchange Policy
           </h1>
@@ -18,21 +18,16 @@ const ReturnRefundPolicy = () => {
           <div className="col-lg-9">
             <section className="card border-0 shadow-sm mb-4">
               <div className="card-body p-4 p-md-5" lang="bn">
-                <h2 className="h3 fw-bold mb-4" style={{ color: "#7d0ba7" }}>
+                <h2 className="h3 fw-bold mb-4 theme-text-primary">
                   আমাদের রিটার্ন এবং এক্সচেঞ্জ পলিসি
                 </h2>
 
                 <div
-                  className="p-4 rounded-3 mb-4"
-                  style={{
-                    backgroundColor: "rgba(125, 11, 167, 0.07)",
-                    borderLeft: "4px solid #7d0ba7",
-                  }}
+                  className="p-4 rounded-3 mb-4 theme-bg-primary-soft theme-border-start-primary"
                 >
                   <div className="d-flex align-items-start">
                     <i
-                      className="bi bi-box-arrow-in-left fs-4 me-3"
-                      style={{ color: "#7d0ba7" }}
+                      className="bi bi-box-arrow-in-left fs-4 me-3 theme-text-primary"
                     />
                     <p className="fs-5 lh-lg mb-0">
                       প্রোডাক্টের সমস্যা যেমন: প্রোডাক্ট ভাঙ্গা, ছেঁড়া,
@@ -67,7 +62,7 @@ const ReturnRefundPolicy = () => {
 
             <section className="card border-0 shadow-sm">
               <div className="card-body p-4 p-md-5">
-                <h2 className="h3 fw-bold mb-4" style={{ color: "#7d0ba7" }}>
+                <h2 className="h3 fw-bold mb-4 theme-text-primary">
                   Contact Us
                 </h2>
                 <p className="text-muted mb-4">

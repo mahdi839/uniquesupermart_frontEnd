@@ -36,8 +36,7 @@ export default function CartButton() {
           <FaShoppingCart size={20} />
           {cartCount > 0 && (
             <span
-              className="position-absolute top-0 start-100 translate-middle badge rounded-pill"
-              style={{ background: "#7d0ba7" }}
+              className="position-absolute top-0 start-100 translate-middle badge rounded-pill theme-bg-primary"
             >
               {cartCount}
             </span>

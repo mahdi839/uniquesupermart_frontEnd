@@ -1,9 +1,4 @@
 /* ===== My Orders UI ===== */
-:root {
-    /* --primary-color: #DB3340; */
-    --primary-color: #7d0ba7;
-}
-
 .orders-page {
     min-height: 100vh;
     padding: 40px 0;
@@ -121,7 +116,7 @@
     padding: 10px 24px;
     border-radius: 10px;
     font-weight: 600;
-    color: #7d0ba7;
+    color: var(--primary-color);
 }
 
 /* ===== Order Status Pills ===== */

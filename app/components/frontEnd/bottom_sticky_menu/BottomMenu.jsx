@@ -134,8 +134,7 @@ export default function BottomMenu() {
                     <FaShoppingCart size={22} className="text-dark" />
                     {isClient && cartCount > 0 && (
                       <span 
-                        className="position-absolute top-0 start-100 translate-middle badge rounded-pill" 
-                        style={{ background: '#7d0ba7', fontSize: '9px' }}
+                        className="position-absolute top-0 start-100 translate-middle badge rounded-pill theme-cart-badge"
                       >
                         {cartCount}
                       </span>
@@ -215,11 +214,11 @@ export default function BottomMenu() {
                           content: '',
                           width: '50%',
                           height: '2px',
-                          background: '#7d0ba7',
                           bottom: 0,
                           left: 0,
                           transform: 'translateY(12px)'
                         }}
+                        className="theme-active-indicator"
                       />
                     )}
                   </span>
@@ -242,11 +241,11 @@ export default function BottomMenu() {
                           content: '',
                           width: '50%',
                           height: '2px',
-                          background: '#7d0ba7',
                           bottom: 0,
                           left: 0,
                           transform: 'translateY(12px)'
                         }}
+                        className="theme-active-indicator"
                       />
                     )}
                   </span>

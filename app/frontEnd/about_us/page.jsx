@@ -8,16 +8,14 @@ const AboutUs = () => {
   return (
     <main>
       <section
-        className="py-5"
-        style={{ backgroundColor: "rgba(125, 11, 167, 0.05)" }}
+        className="py-5 theme-bg-primary-soft"
       >
         <div className="container py-lg-4">
           <div className="row justify-content-center">
             <div className="col-lg-10">
               <div className="text-center mb-5">
                 <h1
-                  className="display-4 fw-bold mb-3"
-                  style={{ color: "#7d0ba7" }}
+                  className="display-4 fw-bold mb-3 theme-text-primary"
                 >
                   Welcome to {siteConfig.company_name}
                 </h1>
@@ -28,7 +26,7 @@ const AboutUs = () => {
 
               <div className="card border-0 shadow-sm">
                 <div className="card-body p-4 p-md-5">
-                  <h2 className="fw-bold mb-4" style={{ color: "#7d0ba7" }}>
+                  <h2 className="fw-bold mb-4 theme-text-primary">
                     About Us
                   </h2>
 
@@ -66,7 +64,7 @@ const AboutUs = () => {
           <div className="row justify-content-center">
             <div className="col-lg-8">
               <div className="text-center mb-4">
-                <h2 className="fw-bold" style={{ color: "#7d0ba7" }}>
+                <h2 className="fw-bold theme-text-primary">
                   Contact Us
                 </h2>
                 <p className="text-muted mb-0">
@@ -80,8 +78,7 @@ const AboutUs = () => {
                     <div className="col-md-6">
                       <div className="d-flex align-items-start">
                         <i
-                          className="bi bi-telephone-fill me-3 fs-4"
-                          style={{ color: "#7d0ba7" }}
+                          className="bi bi-telephone-fill me-3 fs-4 theme-text-primary"
                         />
                         <div>
                           <h3 className="h6 fw-bold mb-1">Phone</h3>
@@ -118,8 +115,7 @@ const AboutUs = () => {
                     <div className="col-md-6">
                       <div className="d-flex align-items-start">
                         <i
-                          className="bi bi-headset me-3 fs-4"
-                          style={{ color: "#7d0ba7" }}
+                          className="bi bi-headset me-3 fs-4 theme-text-primary"
                         />
                         <div>
                           <h3 className="h6 fw-bold mb-1">Customer Care</h3>
@@ -144,8 +140,7 @@ const AboutUs = () => {
                     <div className="col-md-6">
                       <div className="d-flex align-items-start">
                         <i
-                          className="bi bi-envelope-fill me-3 fs-4"
-                          style={{ color: "#7d0ba7" }}
+                          className="bi bi-envelope-fill me-3 fs-4 theme-text-primary"
                         />
                         <div>
                           <h3 className="h6 fw-bold mb-1">E-Mail</h3>

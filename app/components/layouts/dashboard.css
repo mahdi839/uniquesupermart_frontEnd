@@ -6,9 +6,8 @@
 }
 
 :root {
-    --primary-color: #7d0ba7;
-    --hover-color: #451b92;
-    --active-color: #3a1a75;
+    --hover-color: color-mix(in srgb, var(--primary-color) 85%, black);
+    --active-color: color-mix(in srgb, var(--primary-color) 72%, black);
     --sidebar-width: 15rem;
     --sidebar-closed-width: 4rem;
 }

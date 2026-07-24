@@ -5,6 +5,7 @@ import { FiCalendar, FiDownload, FiRefreshCw, FiSearch, FiShoppingBag, FiUsers }
 import { HiOutlineBanknotes } from "react-icons/hi2";
 import { PiPackage } from "react-icons/pi";
 import styles from "./salesReport.module.css";
+import { siteConfig } from "@/config/siteConfig";
 
 const money = (value) =>
   new Intl.NumberFormat("en-BD", { maximumFractionDigits: 2 }).format(Number(value || 0));
@@ -24,7 +25,7 @@ function downloadReportPdf(data) {
   for (let start = 0; start < Math.max(rows.length, 1); start += perPage) {
     const pageRows = rows.slice(start, start + perPage);
     pages.push([
-      "EYARA FASHION - SALES REPORT",
+      `${siteConfig.company_name.toUpperCase()} - SALES REPORT`,
       `Period: ${data.range.from} to ${data.range.to}`,
       `Sales: BDT ${money(data.summary.gross_sales)}   Orders: ${data.summary.orders}   Units: ${data.summary.units_sold}   Customers: ${data.summary.customers}`,
       "",

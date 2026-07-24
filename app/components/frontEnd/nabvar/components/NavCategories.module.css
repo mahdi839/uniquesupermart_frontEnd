@@ -38,8 +38,8 @@
 
 .categoryLink:hover,
 .categoryLink.active {
-  background: linear-gradient(to right, #7d0ba7 3px, #faf6fc 3px);
-  color: #7d0ba7;
+  background: linear-gradient(to right, var(--primary-color) 3px, #faf6fc 3px);
+  color: var(--primary-color);
 }
 
 .chevron {
@@ -101,7 +101,7 @@
 .megaMenuHeader h4 {
   font-size: 18px;
   font-weight: 700;
-  color: #7d0ba7;
+  color: var(--primary-color);
 }
 
 .megaMenuHeader p {
@@ -143,8 +143,8 @@
 }
 
 .subcategoryCard:hover {
-  background: linear-gradient(to right, #7d0ba7 3px, #faf6fc 3px);
-  color: #7d0ba7;
+  background: linear-gradient(to right, var(--primary-color) 3px, #faf6fc 3px);
+  color: var(--primary-color);
 }
 
 /* Remove the icon styling as it's not needed for consistent design */
@@ -169,7 +169,7 @@
 }
 
 .subcategoryCard:hover .subcategoryInfo h5 {
-  color: #7d0ba7;
+  color: var(--primary-color);
 }
 
 .subcategoryInfo span {
@@ -184,7 +184,7 @@
 }
 
 .subcategoryCard:hover .nestedChevron {
-  color: #7d0ba7;
+  color: var(--primary-color);
 }
 
 /* ===============================
@@ -249,7 +249,7 @@
 
 .mobileCategory a:hover {
   background: #faf6fc;
-  color: #7d0ba7;
+  color: var(--primary-color);
   padding-left: 24px;
 }
 

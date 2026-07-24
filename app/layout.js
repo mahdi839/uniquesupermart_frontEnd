@@ -23,17 +23,25 @@ const inter = Inter({
 });
 
 export const metadata = {
+  metadataBase: new URL(siteConfig.site_url),
   title: `${siteConfig.company_name} - Your Gateway to Global Footwear Elegance`,
   description: `${siteConfig.company_name} offers premium women's shoes, bags, and fashion accessories. Call: ${siteConfig.phone}`,
   keywords: `shoes online Bangladesh, women's shoes, bags, fashion accessories, ${siteConfig.company_name}`,
   authors: [{ name: siteConfig.company_name }],
   icons: {
-    icon: "/img/logo.png",
+    icon: [
+      {
+        url: "/img/logo.png",
+        type: "image/png",
+        sizes: "32x32",
+      },
+    ],
+    shortcut: "/img/logo.png",
   },
   openGraph: {
     title: `${siteConfig.company_name} - Your Gateway to Global Footwear Elegance`,
     description: `Shop premium women's shoes, bags, and fashion accessories at ${siteConfig.company_name}`,
-    url: "https://uniquesupermart.com",
+    url: siteConfig.site_url,
     siteName: siteConfig.company_name,
     images: [
       {

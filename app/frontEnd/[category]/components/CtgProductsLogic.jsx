@@ -187,7 +187,6 @@ export default function CtgProductsLogic({ products, category, pagination }) {
             disabled={loadingMore}
             style={{
               padding: "12px 48px",
-              border: "1.5px solid #7d0ba7",
               borderRadius: "3px",
               background: "transparent",
               fontSize: "11px",

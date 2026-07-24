@@ -6,6 +6,7 @@ import { FiArrowDownRight, FiArrowRight, FiArrowUpRight, FiRefreshCw, FiShopping
 import { HiOutlineBanknotes } from "react-icons/hi2";
 import { PiPackage } from "react-icons/pi";
 import styles from "./dashboard.module.css";
+import { siteConfig } from "@/config/siteConfig";
 
 const money = (value) =>
   new Intl.NumberFormat("en-BD", { maximumFractionDigits: 0 }).format(Number(value || 0));
@@ -99,7 +100,7 @@ export default function DashboardHome() {
 
   return <div className={styles.page}>
     <header className={styles.header}>
-      <div><span>Business overview</span><h1>Good to see you.</h1><p>Here is what is happening across Eyara Fashion.</p></div>
+      <div><span>Business overview</span><h1>Good to see you.</h1><p>Here is what is happening across {siteConfig.company_name}.</p></div>
       <div className={styles.headerActions}><Link href="/dashboard/sales-report">Open sales report <FiArrowRight /></Link><button onClick={load} aria-label="Refresh dashboard"><FiRefreshCw className={loading ? styles.spin : ""} /></button></div>
     </header>
     <section className={styles.filterBar}>

@@ -3,5 +3,5 @@
     background: transparent;
 }
 .order_print_btn_icon{
-    color: #7d0ba7;
+    color: var(--primary-color);
 }

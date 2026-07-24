@@ -27,7 +27,7 @@
 }
 
 .related-products-section [data-virtualized]::-webkit-scrollbar-thumb:hover {
-  background: #5a189a;
+  background: color-mix(in srgb, var(--primary-color) 75%, black);
 }
 
 /* Smooth scrolling behavior */
@@ -86,11 +86,11 @@
 }
 
 .menu-btn:hover {
-  color: #7d0ba7;
+  color: var(--primary-color);
 }
 
 .menu-btn.active {
-  color: #7d0ba7;
+  color: var(--primary-color);
   font-weight: 600;
 }
 
@@ -101,7 +101,7 @@
   left: 0;
   width: 100%;
   height: 2px;
-  background: #7d0ba7;
+  background: var(--primary-color);
   border-radius: 2px;
 }
 

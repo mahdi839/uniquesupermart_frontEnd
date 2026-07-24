@@ -9,7 +9,7 @@ const PrivacyPolicy = () => {
     <main className="py-5" style={{ backgroundColor: "#f8f9fa" }}>
       <div className="container">
         <header className="text-center mb-5">
-          <h1 className="fw-bold display-5 mb-3" style={{ color: "#7d0ba7" }}>
+          <h1 className="fw-bold display-5 mb-3 theme-text-primary">
             <i className="bi bi-shield-lock me-3" />
             Privacy Policy
           </h1>
@@ -23,7 +23,7 @@ const PrivacyPolicy = () => {
           <div className="col-lg-10">
             <section className="card border-0 shadow-sm mb-4">
               <div className="card-body p-4 p-md-5">
-                <h2 className="h3 fw-bold mb-3" style={{ color: "#7d0ba7" }}>
+                <h2 className="h3 fw-bold mb-3 theme-text-primary">
                   Introduction
                 </h2>
                 <p className="fs-5 lh-lg mb-0">
@@ -39,7 +39,7 @@ const PrivacyPolicy = () => {
 
             <section className="card border-0 shadow-sm mb-4">
               <div className="card-body p-4 p-md-5">
-                <h2 className="h3 fw-bold mb-4" style={{ color: "#7d0ba7" }}>
+                <h2 className="h3 fw-bold mb-4 theme-text-primary">
                   1. Information We May Collect
                 </h2>
                 <div className="row g-4">
@@ -88,7 +88,7 @@ const PrivacyPolicy = () => {
 
             <section className="card border-0 shadow-sm mb-4">
               <div className="card-body p-4 p-md-5">
-                <h2 className="h3 fw-bold mb-3" style={{ color: "#7d0ba7" }}>
+                <h2 className="h3 fw-bold mb-3 theme-text-primary">
                   2. How We Use Your Information
                 </h2>
                 <ul className="lh-lg mb-0">
@@ -115,7 +115,7 @@ const PrivacyPolicy = () => {
 
             <section className="card border-0 shadow-sm mb-4">
               <div className="card-body p-4 p-md-5">
-                <h2 className="h3 fw-bold mb-3" style={{ color: "#7d0ba7" }}>
+                <h2 className="h3 fw-bold mb-3 theme-text-primary">
                   3. Sharing Your Information
                 </h2>
                 <p>
@@ -134,7 +134,7 @@ const PrivacyPolicy = () => {
 
             <section className="card border-0 shadow-sm mb-4">
               <div className="card-body p-4 p-md-5">
-                <h2 className="h3 fw-bold mb-3" style={{ color: "#7d0ba7" }}>
+                <h2 className="h3 fw-bold mb-3 theme-text-primary">
                   4. Data Security and Retention
                 </h2>
                 <p className="mb-0">
@@ -150,7 +150,7 @@ const PrivacyPolicy = () => {
 
             <section className="card border-0 shadow-sm mb-4">
               <div className="card-body p-4 p-md-5">
-                <h2 className="h3 fw-bold mb-3" style={{ color: "#7d0ba7" }}>
+                <h2 className="h3 fw-bold mb-3 theme-text-primary">
                   5. Cookies
                 </h2>
                 <p className="mb-0">
@@ -164,7 +164,7 @@ const PrivacyPolicy = () => {
 
             <section className="card border-0 shadow-sm mb-4">
               <div className="card-body p-4 p-md-5">
-                <h2 className="h3 fw-bold mb-3" style={{ color: "#7d0ba7" }}>
+                <h2 className="h3 fw-bold mb-3 theme-text-primary">
                   6. Your Choices
                 </h2>
                 <p className="mb-0">
@@ -178,7 +178,7 @@ const PrivacyPolicy = () => {
 
             <section className="card border-0 shadow-sm mb-4">
               <div className="card-body p-4 p-md-5">
-                <h2 className="h3 fw-bold mb-3" style={{ color: "#7d0ba7" }}>
+                <h2 className="h3 fw-bold mb-3 theme-text-primary">
                   7. Refunds and Exchanges
                 </h2>
                 <p>
@@ -189,8 +189,7 @@ const PrivacyPolicy = () => {
                 </p>
                 <Link
                   href="/frontEnd/return_policy"
-                  className="fw-semibold text-decoration-none"
-                  style={{ color: "#7d0ba7" }}
+                  className="fw-semibold text-decoration-none theme-text-primary"
                 >
                   Read our Refund &amp; Exchange Policy
                   <i className="bi bi-arrow-right ms-2" />
@@ -200,7 +199,7 @@ const PrivacyPolicy = () => {
 
             <section className="card border-0 shadow-sm mb-4">
               <div className="card-body p-4 p-md-5">
-                <h2 className="h3 fw-bold mb-3" style={{ color: "#7d0ba7" }}>
+                <h2 className="h3 fw-bold mb-3 theme-text-primary">
                   8. Policy Updates
                 </h2>
                 <p className="mb-0">
@@ -213,7 +212,7 @@ const PrivacyPolicy = () => {
 
             <section className="card border-0 shadow-sm">
               <div className="card-body p-4 p-md-5">
-                <h2 className="h3 fw-bold mb-3" style={{ color: "#7d0ba7" }}>
+                <h2 className="h3 fw-bold mb-3 theme-text-primary">
                   9. Contact Us
                 </h2>
                 <p className="text-muted">

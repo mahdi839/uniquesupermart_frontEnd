@@ -14,7 +14,7 @@
 
 /* Slider Navigation Buttons */
 .slider-nav-btn {
-  background: #7d0ba7;
+  background: var(--primary-color);
   border: none;
   border-radius: 50%;
   width: 40px;
@@ -42,8 +42,8 @@
 }
 
 .related-product-card .product-div:hover {
-  border-color: #7d0ba7;
-  box-shadow: 0 4px 12px rgba(125, 11, 167, 0.1);
+  border-color: var(--primary-color);
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--primary-color) 10%, transparent);
 }
 
 /* Slick Slider Customizations */

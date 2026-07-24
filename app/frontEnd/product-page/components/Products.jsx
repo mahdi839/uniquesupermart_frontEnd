@@ -322,7 +322,7 @@ export default function Products({ product, socialLinksData, initialRelatedProdu
     setShowSizeGuide(true);
   }
 
-  const sizeGuideImage = "/img/size_guide/eyara_size_guid.jpeg";
+  const sizeGuideImage = "/img/size_guide/unique_super_mart_size_guide.jpeg";
 
   function NextArrow({ onClick }) {
     return (
@@ -801,7 +801,7 @@ export default function Products({ product, socialLinksData, initialRelatedProdu
     width: 34px;
     height: 34px;
     border: 4px solid #e8e8e8;
-    border-top: 4px solid #7d0ba7;
+    border-top: 4px solid var(--primary-color);
     border-radius: 50%;
     animation: spin 0.7s linear infinite;
   }
@@ -837,10 +837,10 @@ export default function Products({ product, socialLinksData, initialRelatedProdu
     transition: border-color 0.2s ease;
   }
   .mobile-thumb-btn.active {
-    border-color: #7d0ba7;
-    box-shadow: 0 0 0 2px rgba(125, 11, 167, 0.15);
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--primary-color) 15%, transparent);
   }
-  .mobile-thumb-btn:hover { border-color: #7d0ba7; }
+  .mobile-thumb-btn:hover { border-color: var(--primary-color); }
 
   @media (max-width: 768px) {
     .specifications-table td { padding: 10px 12px; font-size: 0.9rem; }

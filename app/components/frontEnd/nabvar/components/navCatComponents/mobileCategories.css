@@ -18,7 +18,7 @@
 }
 
 .mobile-categories-wrapper::-webkit-scrollbar-thumb {
-  background: #7d0ba7;
+  background: var(--primary-color);
   border-radius: 2px;
 }
 
@@ -62,7 +62,7 @@
 }
 
 .mobile-category-link:active {
-  color: #7d0ba7;
+  color: var(--primary-color);
 }
 
 /* Mobile Toggle Button */
@@ -81,7 +81,7 @@
 }
 
 .mobile-toggle-btn:active {
-  color: #7d0ba7;
+  color: var(--primary-color);
   background: #f5f5f5;
 }
 
@@ -91,7 +91,7 @@
   padding: 0;
   margin: 0;
   background: #fafafa;
-  border-left: 3px solid #7d0ba7;
+  border-left: 3px solid var(--primary-color);
 }
 
 /* Nested Level Styling */
