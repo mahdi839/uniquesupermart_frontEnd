@@ -1,16 +1,20 @@
 export const siteConfig = {
-  company_name: "Eyara Fashion",
+  company_name: "Unique Super Mart",
   company_description:
-    "Welcome to Eyarafashion.xyz “We Believe In Satisfaction” defines our commitment to excellence and unforgettable products.",
+    "A trusted online fashion store in Bangladesh, offering stylish women's shoes, bags, and fashion accessories sourced directly from China.",
 
-  phone: "01614477721",
-  email: "contact@eyarafashion.com",
-  address: "Mirpur Dhaka - 1216",
+  phone: "+8801841636178",
+  whatsapp: "+8801841636178",
+  customer_care: [
+    "+8801841636178",
+    "+8801841636179"
+  ],
+  email: "uniquesupermart86@gmail.com",
+  address: "Dhaka, Bangladesh",
 
   social: {
-    facebook: "https://www.facebook.com/eyarafashion.xyz",
-    instagram: "https://www.instagram.com/eyarafashionbd/",
-    youtube: "https://eyarafashion.xyz",
-    whatsApp: "1795802507"
+    facebook: "",
+    instagram: "",
+    youtube: ""
   }
 };

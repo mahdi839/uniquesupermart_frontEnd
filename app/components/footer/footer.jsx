@@ -98,9 +98,9 @@ export default function Footer() {
                   </a>
                 )}
 
-                {siteConfig.social.whatsApp && (
+                {siteConfig.whatsapp && (
                   <a
-                    href={`https://wa.me/880${siteConfig.social.whatsApp}`}
+                    href={`https://wa.me/${siteConfig.whatsapp.replace(/\D/g, "")}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="footer-social-btn btn-sm rounded-circle p-2"
