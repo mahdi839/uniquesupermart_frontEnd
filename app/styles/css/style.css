@@ -789,7 +789,7 @@ ol {
 .hero_slider_img {
   width: 100% !important;
   height: auto;
-  max-height: 400px;
+  max-height: 600px;
   display: block;
   margin-bottom: 2rem;
 }

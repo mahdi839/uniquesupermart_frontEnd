@@ -27,16 +27,16 @@ export const metadata = {
   keywords: "shoes online Bangladesh, women's shoes, men's shoes, bags, fashion accessories, Eyara Fashion",
   authors: [{ name: "Eyara Fashion" }],
   icons: {
-    icon: "/img/favicon.png",
+    icon: "/img/logo.png",
   },
   openGraph: {
     title: "Eyara Fashion - Your Gateway to Global Footwear Elegance",
     description: "Shop premium shoes and fashion accessories at Eyara Fashion",
-    url: "https://eyarafashion.xyz",
+    url: "https://uniquesupermart.com",
     siteName: "Eyara Fashion",
     images: [
       {
-        url: "/img/favicon.png",
+        url: "/img/logo.png",
 
       },
     ],
@@ -47,7 +47,7 @@ export const metadata = {
     card: "summary_large_image",
     title: "Eyara Fashion",
     description: "Your Gateway to Global Footwear Elegance",
-    images: ["/img/favicon.png"],
+    images: ["/img/logo.png"],
   },
   // verification: {
   //   google: "your-google-verification-code", // Add after Google Search Console setup
