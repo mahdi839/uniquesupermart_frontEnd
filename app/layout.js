@@ -13,6 +13,7 @@ import "slick-carousel/slick/slick-theme.css";
 import Script from "next/script";
 import { Inter } from "next/font/google";
 import PixelTracker from "./components/PixelTracker";
+import { siteConfig } from "@/config/siteConfig";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -22,18 +23,18 @@ const inter = Inter({
 });
 
 export const metadata = {
-  title: "Eyara Fashion - Your Gateway to Global Footwear Elegance",
-  description: "Eyara Fashion offers premium shoes, bags, and fashion accessories. Shop women's shoes, men's footwear, and stylish bags. Call: +8801614477721",
-  keywords: "shoes online Bangladesh, women's shoes, men's shoes, bags, fashion accessories, Eyara Fashion",
-  authors: [{ name: "Eyara Fashion" }],
+  title: `${siteConfig.company_name} - Your Gateway to Global Footwear Elegance`,
+  description: `${siteConfig.company_name} offers premium women's shoes, bags, and fashion accessories. Call: ${siteConfig.phone}`,
+  keywords: `shoes online Bangladesh, women's shoes, bags, fashion accessories, ${siteConfig.company_name}`,
+  authors: [{ name: siteConfig.company_name }],
   icons: {
     icon: "/img/logo.png",
   },
   openGraph: {
-    title: "Eyara Fashion - Your Gateway to Global Footwear Elegance",
-    description: "Shop premium shoes and fashion accessories at Eyara Fashion",
+    title: `${siteConfig.company_name} - Your Gateway to Global Footwear Elegance`,
+    description: `Shop premium women's shoes, bags, and fashion accessories at ${siteConfig.company_name}`,
     url: "https://uniquesupermart.com",
-    siteName: "Eyara Fashion",
+    siteName: siteConfig.company_name,
     images: [
       {
         url: "/img/logo.png",
@@ -45,7 +46,7 @@ export const metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Eyara Fashion",
+    title: siteConfig.company_name,
     description: "Your Gateway to Global Footwear Elegance",
     images: ["/img/logo.png"],
   },

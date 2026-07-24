@@ -1,1 +1,514 @@
-.page{min-height:100vh;background:#f7f5f8;padding:30px;color:#241d27}.header{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:24px}.header>div:first-child>span,.panelHead>div>span{color:#8c718f;text-transform:uppercase;letter-spacing:.14em;font-size:10px;font-weight:800}.header h1{font-size:32px;letter-spacing:-.035em;margin:5px 0 4px}.header p{color:#887d8b;margin:0}.headerActions{display:flex;gap:9px}.headerActions a,.headerActions button{height:42px;border-radius:11px;border:1px solid #dfd7e1;background:#fff;display:flex;align-items:center;justify-content:center;gap:8px;color:#5f1766;font-weight:700;text-decoration:none;padding:0 15px}.headerActions button{width:42px;padding:0;font-size:18px}.filterBar{background:#fff;border:1px solid #ebe5ed;border-radius:16px;padding:10px;display:flex;align-items:center;gap:12px;box-shadow:0 5px 22px rgba(56,33,63,.04);margin-bottom:17px}.rangeTabs{display:flex;gap:4px;flex:1}.rangeTabs button{border:0;background:transparent;color:#7c707f;border-radius:9px;padding:8px 13px;font-size:12px;font-weight:650}.rangeTabs .active{background:#611269;color:#fff}.filterBar select,.dates input{border:1px solid #e2dbe4;border-radius:9px;background:#fff;height:38px;padding:0 11px;color:#554a58;font-size:12px}.dates{display:flex;align-items:center;gap:7px;color:#9b919e}.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:14px}.card,.panel{background:#fff;border:1px solid #ebe5ed;border-radius:17px;box-shadow:0 5px 22px rgba(56,33,63,.04)}.card{padding:19px}.cardTop{display:flex;align-items:center;justify-content:space-between}.cardTop>span{font-size:12px;color:#7f7482;font-weight:650}.cardTop i{width:35px;height:35px;border-radius:10px;background:#f3e9f4;color:#741478;display:grid;place-items:center;font-size:18px;font-style:normal}.card>strong{font-size:28px;display:block;margin:7px 0 5px;letter-spacing:-.04em}.positive,.negative,.newActivity{font-size:11px;font-weight:700;display:flex;align-items:center;gap:3px}.positive{color:#23855a}.negative{color:#c14b5b}.newActivity{color:#8a748d}.positive small,.negative small{color:#9a909d;font-weight:500;margin-left:3px}.grid{display:grid;grid-template-columns:1.75fr 1fr;gap:14px}.panel{padding:21px}.salesPanel{min-height:350px}.panelHead{display:flex;align-items:flex-start;justify-content:space-between}.panelHead h2{font-size:18px;margin:4px 0 0}.panelHead>a{color:#711678;text-decoration:none;font-size:12px;font-weight:700;display:flex;gap:6px;align-items:center}.aov{text-align:right;color:#8a7e8d;font-size:11px}.aov strong{display:block;color:#302633;font-size:17px;margin-top:3px}.chartWrap{width:100%;margin-top:18px}.chartWrap svg{width:100%;height:250px;overflow:visible}.emptyChart{height:250px;display:grid;place-items:center;color:#968b98}.donutLayout{display:flex;align-items:center;gap:25px;margin-top:30px}.donut{width:135px;height:135px;border-radius:50%;display:grid;place-items:center;flex:0 0 auto}.donut>div{width:83px;height:83px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;flex-direction:column}.donut strong{font-size:23px}.donut span{font-size:10px;color:#938897}.legend{flex:1}.legend>div{display:flex;align-items:center;gap:8px;margin:9px 0;font-size:11px}.legend i{width:7px;height:7px;border-radius:50%}.legend span{flex:1;color:#6d626f}.productsPanel{padding-bottom:9px}.productList{margin-top:12px}.productList>div{display:flex;align-items:center;gap:13px;padding:11px 2px;border-top:1px solid #f0ebf1}.rank{font-size:10px;color:#a193a4;font-weight:800}.productList p{flex:1;margin:0}.productList p strong,.productList p small{display:block}.productList p strong{font-size:13px}.productList p small{font-size:10px;color:#998e9b;margin-top:2px}.productList b{font-size:13px}.snapshot>div:not(.panelHead){display:flex;justify-content:space-between;padding:15px 0;border-bottom:1px solid #f0ebf1;font-size:12px;color:#796e7c}.snapshot>div strong{color:#2d252f;font-size:14px}.snapshot>a{display:flex;align-items:center;justify-content:center;gap:7px;text-decoration:none;background:#67136f;color:#fff;border-radius:10px;padding:11px;margin-top:17px;font-size:12px;font-weight:700}.empty{color:#948998;padding:30px 0}.error{background:#fff0f1;color:#ae3343;padding:12px 15px;border-radius:11px;margin-bottom:14px}.loading{opacity:.42;pointer-events:none}.spin{animation:spin .8s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}@media(max-width:1100px){.cards{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:1fr}.filterBar{flex-wrap:wrap}.rangeTabs{flex-basis:100%;overflow:auto}}@media(max-width:700px){.page{padding:17px}.header{align-items:flex-start;flex-direction:column;gap:17px}.header h1{font-size:28px}.headerActions{width:100%}.headerActions a{flex:1}.cards{grid-template-columns:1fr 1fr}.card{padding:15px}.card>strong{font-size:23px}.positive small,.negative small{display:none}.rangeTabs button{white-space:nowrap}.dates{width:100%}.dates input{min-width:0;flex:1}.filterBar select{width:100%}.donutLayout{flex-direction:column;align-items:flex-start}.donut{align-self:center}.legend{width:100%}}@media(max-width:430px){.cards{grid-template-columns:1fr}}
+.page {
+    min-height: 100vh;
+    background: #f7f5f8;
+    padding: 30px;
+    color: #241d27
+}
+
+.header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 24px
+}
+
+.header>div:first-child>span,
+.panelHead>div>span {
+    color: #8c718f;
+    text-transform: uppercase;
+    letter-spacing: .14em;
+    font-size: 10px;
+    font-weight: 800
+}
+
+.header h1 {
+    font-size: 32px;
+    letter-spacing: -.035em;
+    margin: 5px 0 4px
+}
+
+.header p {
+    color: #887d8b;
+    margin: 0
+}
+
+.headerActions {
+    display: flex;
+    gap: 9px
+}
+
+.headerActions a,
+.headerActions button {
+    height: 42px;
+    border-radius: 11px;
+    border: 1px solid #dfd7e1;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    color: #5f1766;
+    font-weight: 700;
+    text-decoration: none;
+    padding: 0 15px
+}
+
+.headerActions button {
+    width: 42px;
+    padding: 0;
+    font-size: 18px
+}
+
+.filterBar {
+    background: #fff;
+    border: 1px solid #ebe5ed;
+    border-radius: 16px;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 5px 22px rgba(56, 33, 63, .04);
+    margin-bottom: 17px
+}
+
+.rangeTabs {
+    display: flex;
+    gap: 4px;
+    flex: 1
+}
+
+.rangeTabs button {
+    border: 0;
+    background: transparent;
+    color: #7c707f;
+    border-radius: 9px;
+    padding: 8px 13px;
+    font-size: 12px;
+    font-weight: 650
+}
+
+.rangeTabs .active {
+    background: #611269;
+    color: #fff
+}
+
+.filterBar select,
+.dates input {
+    border: 1px solid #e2dbe4;
+    border-radius: 9px;
+    background: #fff;
+    height: 38px;
+    padding: 0 11px;
+    color: #554a58;
+    font-size: 12px
+}
+
+.dates {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    color: #9b919e
+}
+
+.cards {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    margin-bottom: 14px
+}
+
+.card,
+.panel {
+    background: #fff;
+    border: 1px solid #ebe5ed;
+    border-radius: 17px;
+    box-shadow: 0 5px 22px rgba(56, 33, 63, .04)
+}
+
+.card {
+    padding: 19px
+}
+
+.cardTop {
+    display: flex;
+    align-items: center;
+    justify-content: space-between
+}
+
+.cardTop>span {
+    font-size: 12px;
+    color: #7f7482;
+    font-weight: 650
+}
+
+.cardTop i {
+    width: 35px;
+    height: 35px;
+    border-radius: 10px;
+    background: #f3e9f4;
+    color: #741478;
+    display: grid;
+    place-items: center;
+    font-size: 18px;
+    font-style: normal
+}
+
+.card>strong {
+    font-size: 28px;
+    display: block;
+    margin: 7px 0 5px;
+    letter-spacing: -.04em
+}
+
+.positive,
+.negative,
+.newActivity {
+    font-size: 11px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 3px
+}
+
+.positive {
+    color: #23855a
+}
+
+.negative {
+    color: #c14b5b
+}
+
+.newActivity {
+    color: #8a748d
+}
+
+.positive small,
+.negative small {
+    color: #9a909d;
+    font-weight: 500;
+    margin-left: 3px
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: 1.75fr 1fr;
+    gap: 14px
+}
+
+.panel {
+    padding: 21px
+}
+
+.salesPanel {
+    min-height: 350px
+}
+
+.panelHead {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between
+}
+
+.panelHead h2 {
+    font-size: 18px;
+    margin: 4px 0 0
+}
+
+.panelHead>a {
+    color: #711678;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 700;
+    display: flex;
+    gap: 6px;
+    align-items: center
+}
+
+.aov {
+    text-align: right;
+    color: #8a7e8d;
+    font-size: 11px
+}
+
+.aov strong {
+    display: block;
+    color: #302633;
+    font-size: 17px;
+    margin-top: 3px
+}
+
+.chartWrap {
+    width: 100%;
+    margin-top: 18px
+}
+
+.chartWrap svg {
+    width: 100%;
+    height: 250px;
+    overflow: visible
+}
+
+.emptyChart {
+    height: 250px;
+    display: grid;
+    place-items: center;
+    color: #968b98
+}
+
+.donutLayout {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+    margin-top: 30px
+}
+
+.donut {
+    width: 135px;
+    height: 135px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    flex: 0 0 auto
+}
+
+.donut>div {
+    width: 83px;
+    height: 83px;
+    border-radius: 50%;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column
+}
+
+.donut strong {
+    font-size: 23px
+}
+
+.donut span {
+    font-size: 10px;
+    color: #938897
+}
+
+.legend {
+    flex: 1
+}
+
+.legend>div {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 9px 0;
+    font-size: 11px
+}
+
+.legend i {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%
+}
+
+.legend span {
+    flex: 1;
+    color: #6d626f
+}
+
+.productsPanel {
+    padding-bottom: 9px
+}
+
+.productList {
+    margin-top: 12px
+}
+
+.productList>div {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    padding: 11px 2px;
+    border-top: 1px solid #f0ebf1
+}
+
+.rank {
+    font-size: 10px;
+    color: #a193a4;
+    font-weight: 800
+}
+
+.productList p {
+    flex: 1;
+    margin: 0
+}
+
+.productList p strong,
+.productList p small {
+    display: block
+}
+
+.productList p strong {
+    font-size: 13px
+}
+
+.productList p small {
+    font-size: 10px;
+    color: #998e9b;
+    margin-top: 2px
+}
+
+.productList b {
+    font-size: 13px
+}
+
+.snapshot>div:not(.panelHead) {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px 0;
+    border-bottom: 1px solid #f0ebf1;
+    font-size: 12px;
+    color: #796e7c
+}
+
+.snapshot>div strong {
+    color: #2d252f;
+    font-size: 14px
+}
+
+.snapshot>a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    text-decoration: none;
+    background: #67136f;
+    color: #fff;
+    border-radius: 10px;
+    padding: 11px;
+    margin-top: 17px;
+    font-size: 12px;
+    font-weight: 700
+}
+
+.empty {
+    color: #948998;
+    padding: 30px 0
+}
+
+.error {
+    background: #fff0f1;
+    color: #ae3343;
+    padding: 12px 15px;
+    border-radius: 11px;
+    margin-bottom: 14px
+}
+
+.loading {
+    opacity: .42;
+    pointer-events: none
+}
+
+.spin {
+    animation: spin .8s linear infinite
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg)
+    }
+}
+
+@media(max-width:1100px) {
+    .cards {
+        grid-template-columns: repeat(2, 1fr)
+    }
+
+    .grid {
+        grid-template-columns: 1fr
+    }
+
+    .filterBar {
+        flex-wrap: wrap
+    }
+
+    .rangeTabs {
+        flex-basis: 100%;
+        overflow: auto
+    }
+}
+
+@media(max-width:700px) {
+    .page {
+        padding: 17px
+    }
+
+    .header {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 17px
+    }
+
+    .header h1 {
+        font-size: 28px
+    }
+
+    .headerActions {
+        width: 100%
+    }
+
+    .headerActions a {
+        flex: 1
+    }
+
+    .cards {
+        grid-template-columns: 1fr 1fr
+    }
+
+    .card {
+        padding: 15px
+    }
+
+    .card>strong {
+        font-size: 23px
+    }
+
+    .positive small,
+    .negative small {
+        display: none
+    }
+
+    .rangeTabs button {
+        white-space: nowrap
+    }
+
+    .dates {
+        width: 100%
+    }
+
+    .dates input {
+        min-width: 0;
+        flex: 1
+    }
+
+    .filterBar select {
+        width: 100%
+    }
+
+    .donutLayout {
+        flex-direction: column;
+        align-items: flex-start
+    }
+
+    .donut {
+        align-self: center
+    }
+
+    .legend {
+        width: 100%
+    }
+}
+
+@media(max-width:430px) {
+    .cards {
+        grid-template-columns: 1fr
+    }
+}
