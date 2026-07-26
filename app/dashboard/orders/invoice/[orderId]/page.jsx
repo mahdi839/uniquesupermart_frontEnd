@@ -7,6 +7,7 @@ import useFormatDate from "@/app/hooks/useFormatDate";
 import { FaPrint, FaArrowLeft } from "react-icons/fa";
 import Zoom from "react-medium-image-zoom";
 import "react-medium-image-zoom/dist/styles.css";
+import { siteConfig } from "@/config/siteConfig";
 export default function InvoicePage() {
     const params = useParams();
     const orderId = params.orderId;
@@ -267,7 +268,7 @@ export default function InvoicePage() {
                     <div className="row mt-5 pt-3 border-top">
                         <div className="col-12 text-center">
                             <p className="text-muted mb-2 small">
-                                Thank you for your business! For any questions, please contact us at {companyInfo?.phone ?? "0 1614 477 721"}
+                                Thank you for your business! For any questions, please contact us at {siteConfig.phone}
                             </p>
                         </div>
                     </div>

@@ -9,6 +9,7 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { fetchCategories } from "@/redux/slices/categorySlice";
 import DesktopCategories from "../components/navCatComponents/DesktopCategories";
+import { siteConfig } from "@/config/siteConfig";
 
 const MIN_QUERY_LEN = 3;
 
@@ -135,7 +136,7 @@ export default function DesktopSearchBar({ footerData }) {
               <FaPhone />
             </div>
             <div className="hero__search__phone__text">
-              <h5>{footerData?.company_phone ?? "+880 1614 477 721"}</h5>
+              <h5>{siteConfig.phone??""}</h5>
               <span>support 24/7 time</span>
             </div>
           </div>

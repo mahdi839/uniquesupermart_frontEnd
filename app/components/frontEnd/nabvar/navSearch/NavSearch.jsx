@@ -5,6 +5,7 @@ import style from "../hero.module.css"
 import NavCategories from '../components/NavCategories';
 import Link from 'next/link';
 import './nav_search.css'
+import { siteConfig } from '@/config/siteConfig';
 export default function NavSearch({ footerData }) {
   const [isClient, setIsClient] = useState(false)
   const [query, setQuery] = useState("");
@@ -69,7 +70,7 @@ export default function NavSearch({ footerData }) {
               <FaPhone className="fa fa-phone" />
             </div>
             <div className="hero__search__phone__text">
-              <h5>{footerData?.company_phone ?? "+880 1614 477 721"}</h5>
+              <h5>{siteConfig?.phone??""}</h5>
               <span>support 24/7 time</span>
             </div>
           </div>

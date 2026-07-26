@@ -322,7 +322,7 @@ export default function Products({ product, socialLinksData, initialRelatedProdu
     setShowSizeGuide(true);
   }
 
-  const sizeGuideImage = "/img/size_guide/unique_super_mart_size_guide.jpeg";
+  const sizeGuideImage = "/img/size_guide/size_guide.png";
 
   function NextArrow({ onClick }) {
     return (
