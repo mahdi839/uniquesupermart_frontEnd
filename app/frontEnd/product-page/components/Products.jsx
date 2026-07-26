@@ -712,7 +712,14 @@ export default function Products({ product, socialLinksData, initialRelatedProdu
             <button className="size-guide-close" onClick={() => setShowSizeGuide(false)}>
               ✕
             </button>
-            <Image src={sizeGuideImage} alt="Size Guide" width={600} height={800} className="img-fluid" />
+            <Image
+              src={sizeGuideImage}
+              alt="Size Guide"
+              width={1597}
+              height={985}
+              sizes="(max-width: 1664px) 96vw, 1597px"
+              className="size-guide-image"
+            />
           </div>
         </div>
       )}

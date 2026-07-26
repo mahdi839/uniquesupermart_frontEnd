@@ -541,15 +541,24 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 2vh 2vw;
 }
 .size-guide-content {
   position: relative;
   background: #fff;
   padding: 10px;
   border-radius: 8px;
-  max-width: 90%;
-  max-height: 90%;
-  overflow: auto;
+  width: min(96vw, 1597px);
+  max-height: 96vh;
+  overflow: hidden;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.3);
+}
+.size-guide-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: calc(96vh - 20px);
+  object-fit: contain;
 }
 .size-guide-close {
   position: absolute;
@@ -564,6 +573,7 @@
   cursor: pointer;
   font-size: 18px;
   line-height: 1;
+  z-index: 1;
 }
 
 /* Desktop Thumbnail Slider */
