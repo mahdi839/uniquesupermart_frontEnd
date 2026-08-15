@@ -10,8 +10,13 @@ import { siteConfig } from "@/config/siteConfig";
 
 const money = (value) =>
   new Intl.NumberFormat("en-BD", { maximumFractionDigits: 0 }).format(Number(value || 0));
+const STATUS_LABELS = {
+  completed: "Delivery Completed",
+  shipped_to_you: "Shipped to Courier",
+  paid_returned: "Paid Returned",
+};
 const statusLabel = (value) =>
-  String(value || "").replaceAll("_", " ").replace(/\b\w/g, (letter) => letter.toUpperCase());
+  STATUS_LABELS[value] || String(value || "").replaceAll("_", " ").replace(/\b\w/g, (letter) => letter.toUpperCase());
 
 function Change({ value }) {
   if (value === null || value === undefined) return <span className={styles.newActivity}>New activity</span>;
@@ -106,7 +111,7 @@ export default function DashboardHome() {
     <section className={styles.filterBar}>
       <div className={styles.rangeTabs}>{["today", "week", "month", "year", "custom"].map((item) => <button className={range === item ? styles.active : ""} key={item} onClick={() => setRange(item)}>{item === "week" ? "This week" : item === "month" ? "This month" : item === "year" ? "This year" : statusLabel(item)}</button>)}</div>
       {range === "custom" && <div className={styles.dates}><input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} /><span>to</span><input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} /></div>}
-      <select value={status} onChange={(e) => setStatus(e.target.value)}><option value="">All order statuses</option>{["pending", "placed", "processing", "completed", "cancelled", "returned", "order_confirmed"].map((item) => <option value={item} key={item}>{statusLabel(item)}</option>)}</select>
+      <select value={status} onChange={(e) => setStatus(e.target.value)}><option value="">All order statuses</option>{["pending", "placed", "processing", "completed", "cancelled", "returned", "paid_returned", "order_confirmed"].map((item) => <option value={item} key={item}>{statusLabel(item)}</option>)}</select>
     </section>
     {error && <div className={styles.error}>{error}</div>}
     <main className={loading ? styles.loading : ""}>

@@ -10,8 +10,13 @@ import { siteConfig } from "@/config/siteConfig";
 const money = (value) =>
   new Intl.NumberFormat("en-BD", { maximumFractionDigits: 2 }).format(Number(value || 0));
 
+const STATUS_LABELS = {
+  completed: "Delivery Completed",
+  shipped_to_you: "Shipped to Courier",
+  paid_returned: "Paid Returned",
+};
 const readableStatus = (value) =>
-  String(value || "unknown").replaceAll("_", " ").replace(/\b\w/g, (letter) => letter.toUpperCase());
+  STATUS_LABELS[value] || String(value || "unknown").replaceAll("_", " ").replace(/\b\w/g, (letter) => letter.toUpperCase());
 
 function pdfSafe(value) {
   return String(value ?? "").normalize("NFKD").replace(/[^\x20-\x7E]/g, "")
@@ -119,7 +124,7 @@ export default function SalesReportPage() {
       <label><span>To</span><div><FiCalendar /><input type="date" value={filters.end_date} onChange={(e) => setFilter("end_date", e.target.value)} /></div></label>
       <label><span>Order status</span><select value={filters.status} onChange={(e) => setFilter("status", e.target.value)}>
         <option value="">All statuses</option>
-        {["pending", "placed", "processing", "completed", "cancelled", "returned", "order_confirmed"].map((status) => <option key={status} value={status}>{readableStatus(status)}</option>)}
+        {["pending", "placed", "processing", "completed", "cancelled", "returned", "paid_returned", "order_confirmed"].map((status) => <option key={status} value={status}>{readableStatus(status)}</option>)}
       </select></label>
       <label className={styles.search}><span>Find product</span><div><FiSearch /><input value={filters.search} placeholder="Name or SKU" onChange={(e) => setFilter("search", e.target.value)} /></div></label>
       <button className={styles.apply} type="submit">Apply report</button>

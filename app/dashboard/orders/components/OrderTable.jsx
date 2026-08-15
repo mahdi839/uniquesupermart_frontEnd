@@ -23,6 +23,7 @@ const STATUS_COLORS = {
   cancelled: { bg: '#f8d7da', color: '#842029', border: '#dc3545' },
   processing: { bg: '#e2d9f3', color: '#432874', border: '#6f42c1' },
   returned: { bg: '#fde8d8', color: '#7d3c0f', border: '#fd7e14' },
+  paid_returned: { bg: '#fde8d8', color: '#7d3c0f', border: '#fd7e14' },
   first_call: { bg: '#d0f4f7', color: '#0c6571', border: '#0dcaf0' },
   second_call: { bg: '#d0f4f7', color: '#0c6571', border: '#0dcaf0' },
   third_call: { bg: '#d0f4f7', color: '#0c6571', border: '#0dcaf0' },
@@ -34,9 +35,14 @@ const STATUS_COLORS = {
   order_confirmed: { bg: '#d1e7dd', color: '#0a3622', border: '#198754' },
 };
 
+const STATUS_LABELS = {
+  completed: 'Delivery Completed',
+  shipped_to_you: 'Shipped to Courier',
+};
+
 function StatusBadge({ status }) {
   const style = STATUS_COLORS[status] || { bg: '#e2e3e5', color: '#41464b', border: '#adb5bd' };
-  const label = status?.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase()) || 'N/A';
+  const label = STATUS_LABELS[status] || status?.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase()) || 'N/A';
   return (
     <span style={{
       display: 'inline-block',
@@ -215,16 +221,17 @@ export default function OrderTable({
           <select className="form-select" name="status" value={draftFilters.status} onChange={handleFilterChange}>
             <option value="">All Statuses</option>
             <option value="pending">Pending</option>
-            <option value="completed">Completed</option>
+            <option value="completed">Delivery Completed</option>
             <option value="placed">Placed</option>
             <option value="cancelled">Cancelled</option>
             <option value="processing">Processing</option>
             <option value="returned">Returned</option>
+            <option value="paid_returned">Paid Returned</option>
             <option value="first_call">1st Call Done</option>
             <option value="second_call">2nd Call Done</option>
             <option value="third_call">3rd Call Done</option>
             <option value="stock_sold">Stock Sold</option>
-            <option value="shipped_to_you">Shipped To You</option>
+            <option value="shipped_to_you">Shipped to Courier</option>
             <option value="received_in_bd">Received In BD</option>
             <option value="order_sent_to_china">Order Sent To China</option>
             <option value="file_completed">File Completed</option>
@@ -336,16 +343,17 @@ export default function OrderTable({
               <label style={{ fontSize: '12px', fontWeight: 600, color: '#495057', marginBottom: '4px', display: 'block' }}>Status</label>
               <select className="form-select form-select-sm" value={order.status} onChange={(e) => handleStatus(e, order.id, order.phone)}>
                 <option value="pending">Pending</option>
-                <option value="completed">Completed</option>
+                <option value="completed">Delivery Completed</option>
                 <option value="placed">Placed</option>
                 <option value="cancelled">Cancelled</option>
                 <option value="processing">Processing</option>
                 <option value="returned">Returned</option>
+                <option value="paid_returned">Paid Returned</option>
                 <option value="first_call">1st Call Done</option>
                 <option value="second_call">2nd Call Done</option>
                 <option value="third_call">3rd Call Done</option>
                 <option value="stock_sold">Stock Sold</option>
-                <option value="shipped_to_you">Shipped To You</option>
+                <option value="shipped_to_you">Shipped to Courier</option>
                 <option value="received_in_bd">Received In BD</option>
                 <option value="order_sent_to_china">Order Sent To China</option>
                 <option value="file_completed">File Completed</option>
