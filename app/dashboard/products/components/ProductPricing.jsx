@@ -1,7 +1,9 @@
 import { FaArrowRight } from "react-icons/fa";
+import { asProductArray } from "./productData";
 
 export default function ProductPricing({ product, onShowVariants, variant = "desktop" }) {
-  const hasSizes = product.sizes && product.sizes.length > 0;
+  const sizes = asProductArray(product?.sizes);
+  const hasSizes = sizes.length > 0;
   const basePrice = product.price;
 
   if (variant === "mobile") {
@@ -10,7 +12,7 @@ export default function ProductPricing({ product, onShowVariants, variant = "des
         <strong className="d-block mb-1 small">Pricing:</strong>
         {hasSizes ? (
           <div className="d-flex flex-column gap-1">
-            {product.sizes.slice(0, 2).map((size) => (
+            {sizes.slice(0, 2).map((size) => (
               <div key={size.id} className="d-flex align-items-center gap-1 small">
                 <span className="badge bg-secondary">
                   {size.size?.size || `Size ${size.size_id}`}
@@ -19,12 +21,12 @@ export default function ProductPricing({ product, onShowVariants, variant = "des
                 <span className="badge bg-success">৳{size.pivot?.price || size.price}</span>
               </div>
             ))}
-            {product.sizes.length > 2 && (
+            {sizes.length > 2 && (
               <button 
                 className="btn btn-sm btn-outline-primary mt-1"
                 onClick={onShowVariants}
               >
-                +{product.sizes.length - 2} more variants
+                +{sizes.length - 2} more variants
               </button>
             )}
           </div>
@@ -42,7 +44,7 @@ export default function ProductPricing({ product, onShowVariants, variant = "des
     <div className="d-flex flex-column gap-1">
       {hasSizes && (
         <>
-          {product.sizes.slice(0, 3).map((size) => (
+          {sizes.slice(0, 3).map((size) => (
             <div key={size.id} className="d-flex align-items-center gap-1 small">
               <span className="badge bg-light text-dark border">
                 {size?.size || `Size ${size.size_id}`}
@@ -54,7 +56,7 @@ export default function ProductPricing({ product, onShowVariants, variant = "des
               <span className="text-muted">({size.pivot?.stock || 0} stock)</span>
             </div>
           ))}
-          {product.sizes.length > 3 && (
+          {sizes.length > 3 && (
             <button 
               className="mt-1 view_all"
               onClick={onShowVariants}

@@ -1,8 +1,10 @@
 "use client";
 import { FaTimes } from "react-icons/fa";
+import { asProductArray } from "./productData";
 
 export default function SpecificationsModal({ product, onClose }) {
   if (!product) return null;
+  const specifications = asProductArray(product.specifications);
 
   return (
     <div 
@@ -29,7 +31,7 @@ export default function SpecificationsModal({ product, onClose }) {
           </div>
           
           <div className="modal-body">
-            {product.specifications && product.specifications.length > 0 ? (
+            {specifications.length > 0 ? (
               <div className="table-responsive">
                 <table className="table table-bordered table-hover mb-0">
                   <thead className="table-light">
@@ -39,7 +41,7 @@ export default function SpecificationsModal({ product, onClose }) {
                     </tr>
                   </thead>
                   <tbody>
-                    {product.specifications.map((spec, index) => (
+                    {specifications.map((spec, index) => (
                       <tr key={spec.id || index}>
                         <td className="fw-semibold bg-light">{spec.key}</td>
                         <td>{spec.value}</td>

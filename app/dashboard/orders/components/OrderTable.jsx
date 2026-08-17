@@ -14,6 +14,8 @@ import { FiChevronDown, FiChevronUp } from "react-icons/fi";
 import './orderTable.css'
 import Link from "next/link";
 import Image from "next/image";
+import CustomerBadgeChip from "../../customers/components/CustomerBadgeChip";
+import AssignBadgeModal from "./AssignBadgeModal";
 
 // Status badge color mapping
 const STATUS_COLORS = {
@@ -54,7 +56,10 @@ function StatusBadge({ status }) {
       background: style.bg,
       color: style.color,
       border: `1px solid ${style.border}`,
-      whiteSpace: 'nowrap',
+      whiteSpace: 'normal',
+      maxWidth: '100%',
+      overflowWrap: 'anywhere',
+      textAlign: 'center',
     }}>
       {label}
     </span>
@@ -69,10 +74,12 @@ export default function OrderTable({
   onResetFilters,
   selectedOrderIds = [],
   onSelectionChange,
+  onBadgeUpdated,
 }) {
   const [draftFilters, setDraftFilters] = useState(filters);
   const [loadingStates, setLoadingStates] = useState({});
   const [expandedRows, setExpandedRows] = useState({});
+  const [badgeOrder, setBadgeOrder] = useState(null);
   const { formatDate } = useFormatDate();
 
   React.useEffect(() => {
@@ -277,8 +284,8 @@ export default function OrderTable({
             Ordered Products
           </p>
           {order.order_items?.map((item, itemIndex) => (
-            <div key={item.id} style={{ background: '#fff', border: '1px solid #e9ecef', borderRadius: '8px', padding: '10px 12px', marginBottom: '8px' }}>
-              <div style={{ fontWeight: 600, fontSize: '13px', marginBottom: '4px' }}>
+            <div key={item.id} className="order-wrap" style={{ background: '#fff', border: '1px solid #e9ecef', borderRadius: '8px', padding: '10px 12px', marginBottom: '8px' }}>
+              <div className="order-wrap" style={{ fontWeight: 600, fontSize: '13px', marginBottom: '4px' }}>
                 {itemIndex + 1}. {item.title}
               </div>
               <div style={{ fontSize: '12px', color: '#495057' }}>
@@ -324,7 +331,7 @@ export default function OrderTable({
               ['Total', `৳${order.total}`],
               ['Total Due', `৳${(order?.total - order?.advance_payment) ?? 0}`],
             ].map(([label, val]) => (
-              <div key={label} style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px', marginBottom: '6px', paddingBottom: '6px', borderBottom: '1px solid #f0f0f0' }}>
+              <div key={label} className="order-summary-value" style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px', marginBottom: '6px', paddingBottom: '6px', borderBottom: '1px solid #f0f0f0' }}>
                 <span style={{ color: '#6c757d' }}>{label}</span>
                 <span style={{ fontWeight: 600 }}>{val}</span>
               </div>
@@ -461,7 +468,7 @@ export default function OrderTable({
         }
       `}</style>
 
-      <div className="card">
+      <div className="card order-table-card">
         {FilterSection}
 
         {/* Selection info bar */}
@@ -505,12 +512,9 @@ export default function OrderTable({
           ) : (
             <div>
               {/* ── Column header row ── */}
-              <div style={{
-                display: 'grid',
-                gridTemplateColumns: '32px auto auto auto auto auto auto',
+              <div className="order-grid order-grid-header" style={{
                 gap: '0 12px',
                 padding: '12px 16px',
-                alignItems: 'center',
                 background: '#f8f9fa',
                 borderBottom: '2px solid #e9ecef',
                 fontSize: '11px',
@@ -534,9 +538,9 @@ export default function OrderTable({
                 </span>
                 <span>#</span>
                 <span>Customer</span>
-                <span className="text-center d-none d-lg-block">Status</span>
-                <span className="d-none d-md-block text-center">Date</span>
-                <span className="text-right">Expand</span>
+                <span className="order-status-column text-center">Status</span>
+                <span className="order-date-column text-center">Date</span>
+                <span className="text-center">Expand</span>
               </div>
 
               {/* ── Order rows ── */}
@@ -547,14 +551,11 @@ export default function OrderTable({
                   <div key={order.id} style={{ borderBottom: '1px solid #e9ecef' }}>
                     {/* Summary row */}
                     <div
-                      className={`order-row-summary${isExpanded ? ' expanded' : ''}${isSelected ? ' selected' : ''}`}
+                      className={`order-grid order-grid-summary order-row-summary${isExpanded ? ' expanded' : ''}${isSelected ? ' selected' : ''}`}
                       onClick={() => toggleRow(order.id)}
                       style={{
-                        display: 'grid',
-                        gridTemplateColumns: '32px auto auto auto auto auto',
                         gap: '0 12px',
                         padding: '12px 16px',
-                        alignItems: 'center',
                       }}
                     >
                       {/* Checkbox — stopPropagation so it doesn't expand the row */}
@@ -576,8 +577,8 @@ export default function OrderTable({
                       </span>
 
                       {/* Customer info */}
-                      <div style={{ minWidth: 0 }}>
-                        <div style={{ fontWeight: 600, fontSize: '14px', color: '#212529', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                      <div className="order-customer-cell order-wrap">
+                        <div className="order-customer-name order-wrap" style={{ fontWeight: 600, fontSize: '14px', color: '#212529' }}>
                           {order.name || 'N/A'}
                           {order.customer_type === 'Repeat Customer' && (
                             <span style={{
@@ -594,12 +595,28 @@ export default function OrderTable({
                               Repeat
                             </span>
                           )}
+                          {order.assigned_badge && (
+                            <span style={{ marginLeft: '6px', display: 'inline-block' }}>
+                              <CustomerBadgeChip badge={order.assigned_badge} />
+                            </span>
+                          )}
                         </div>
-                        <div style={{ fontSize: '12px', color: '#6c757d', marginTop: '2px' }}>
-                          {order.phone || 'N/A'}
-                          <span className="d-none d-md-inline" style={{ marginLeft: '8px', color: '#adb5bd' }}>
+                        <div className="order-wrap" style={{ fontSize: '12px', color: '#6c757d', marginTop: '2px' }}>
+                          <span className="order-wrap">{order.phone || 'N/A'}</span>
+                          <span className="d-none d-md-inline order-wrap" style={{ marginLeft: '8px', color: '#adb5bd' }}>
                             {order.district || ''}
                           </span>
+                          <button
+                            type="button"
+                            className="btn btn-sm btn-outline-primary ms-2"
+                            style={{ fontSize: '10px', padding: '1px 8px' }}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setBadgeOrder(order);
+                            }}
+                          >
+                            Badge
+                          </button>
                           {/* Date - hidden on mobile */}
                           <div className="d-block d-md-none mt-2" style={{ fontSize: '10px', color: '#6c757d', whiteSpace: 'nowrap' }}>
                             {formatDate(order.created_at || '')}
@@ -612,18 +629,18 @@ export default function OrderTable({
                       </div>
 
                       {/* Status badge — desktop */}
-                      <div className="d-none d-md-block ml-lg-5">
+                      <div className="order-status-column text-center">
                         <StatusBadge status={order.status} />
                       </div>
 
                       {/* Date — desktop */}
-                      <div className="d-none d-md-block text-left" style={{ fontSize: '12px', color: '#6c757d', whiteSpace: 'nowrap' }}>
+                      <div className="order-date-column text-center order-wrap" style={{ fontSize: '12px', color: '#6c757d' }}>
                         {formatDate(order.created_at || '')}
                       </div>
 
                       {/* Expand toggle */}
                       <div
-                        className="text-left"
+                        className="d-flex justify-content-center"
                         onClick={(e) => { e.stopPropagation(); toggleRow(order.id); }}
                       >
                         <span className={`expand-btn${isExpanded ? ' active' : ''}`}>
@@ -644,6 +661,14 @@ export default function OrderTable({
           )}
         </div>
       </div>
+
+      {badgeOrder && (
+        <AssignBadgeModal
+          order={badgeOrder}
+          onClose={() => setBadgeOrder(null)}
+          onSaved={(assignedBadge) => onBadgeUpdated?.(badgeOrder.phone, assignedBadge)}
+        />
+      )}
     </>
   );
 }

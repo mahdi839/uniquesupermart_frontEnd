@@ -8,6 +8,7 @@ import ProductSpecifications from "./ProductSpecifications";
 import './productIndex.css'
 import Zoom from "react-medium-image-zoom";
 import "react-medium-image-zoom/dist/styles.css";
+import { asProductArray } from "./productData";
 
 export default function DesktopTableView({ products, onShowVariants, onDelete, onShowSpecifications }) {
     const formatCreatedAt = (dateString) => {
@@ -23,7 +24,9 @@ export default function DesktopTableView({ products, onShowVariants, onDelete, o
         return text.length > maxLength ? text.substring(0, maxLength) + '...' : text;
     };
 
-    if (products.length === 0) {
+    const productList = asProductArray(products);
+
+    if (productList.length === 0) {
         return (
             <div className="card border-0 shadow-sm">
                 <div className="card-body text-center py-5">
@@ -60,7 +63,7 @@ export default function DesktopTableView({ products, onShowVariants, onDelete, o
                             </tr>
                         </thead>
                         <tbody>
-                            {products.map((product, index) => (
+                            {productList.map((product, index) => (
                                 <tr key={product.id} className="product-row">
                                     <td>
                                         {index + 1}
@@ -98,9 +101,9 @@ export default function DesktopTableView({ products, onShowVariants, onDelete, o
                                     </td>
                                     
                                     <td>
-                                        {product?.colors && product.colors.length > 0 ? (
+                                        {asProductArray(product?.colors).length > 0 ? (
                                             <div className="d-flex flex-wrap gap-2 mt-2">
-                                                {product.colors.slice(0, 3).map((color, index) => (
+                                                {asProductArray(product.colors).slice(0, 3).map((color, index) => (
                                                     <div
                                                         key={index}
                                                         className="d-flex flex-column align-items-center p-1 border rounded"
@@ -135,9 +138,9 @@ export default function DesktopTableView({ products, onShowVariants, onDelete, o
                                                         </span>
                                                     </div>
                                                 ))}
-                                                {product.colors.length > 3 && (
+                                                {asProductArray(product.colors).length > 3 && (
                                                     <div className="d-flex align-items-center">
-                                                        <small className="text-muted">+{product.colors.length - 3} more</small>
+                                                        <small className="text-muted">+{asProductArray(product.colors).length - 3} more</small>
                                                     </div>
                                                 )}
                                             </div>
@@ -175,10 +178,10 @@ export default function DesktopTableView({ products, onShowVariants, onDelete, o
                                     </td>
 
                                     <td className="text-center">
-                                        {product.faqs && product.faqs.length > 0 ? (
+                                        {asProductArray(product.faqs).length > 0 ? (
                                             <span className="text-primary">
                                                 <FaQuestionCircle className="me-1" />
-                                                {product.faqs.length}
+                                                {asProductArray(product.faqs).length}
                                             </span>
                                         ) : (
                                             <span className="text-muted">-</span>

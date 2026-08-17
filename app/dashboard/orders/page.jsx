@@ -296,6 +296,13 @@ export default function Page() {
         onResetFilters={handleResetFilters}
         selectedOrderIds={selectedOrderIds}
         onSelectionChange={setSelectedOrderIds}
+        onBadgeUpdated={(phone, assignedBadge) => {
+          setOrders((prev) =>
+            prev.map((order) =>
+              order.phone === phone ? { ...order, assigned_badge: assignedBadge } : order
+            )
+          );
+        }}
       />
 
       {pagination.last_page > 1 && (

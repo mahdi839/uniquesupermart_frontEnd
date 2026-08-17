@@ -10,6 +10,7 @@ import {
   FaPhone, FaEnvelope, FaMapMarkerAlt, FaShoppingBag, 
   FaMoneyBillWave, FaCalendar, FaStar, FaTrophy, FaArrowLeft 
 } from "react-icons/fa"
+import CustomerBadgeChip from "../../customers/components/CustomerBadgeChip"
 
 export default function CustomerDetailsPage() {
   const params = useParams();
@@ -101,6 +102,11 @@ export default function CustomerDetailsPage() {
                         </>
                       )}
                     </span>
+                    {customer.assigned_badge && (
+                      <span className="ms-2">
+                        <CustomerBadgeChip badge={customer.assigned_badge} />
+                      </span>
+                    )}
                   </div>
                 </div>
                 <div className="text-end">

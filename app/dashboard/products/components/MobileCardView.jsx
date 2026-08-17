@@ -6,6 +6,7 @@ import ProductPricing from "./ProductPricing";
 import ProductActions from "./ProductActions";
 import Zoom from "react-medium-image-zoom";
 import "react-medium-image-zoom/dist/styles.css";
+import { asProductArray } from "./productData";
 
 export default function MobileCardView({ products, onShowVariants, onDelete, onShowSpecifications }) {
   const formatCreatedAt = (dateString) => {
@@ -21,7 +22,9 @@ export default function MobileCardView({ products, onShowVariants, onDelete, onS
     return text.length > maxLength ? text.substring(0, maxLength) + '...' : text;
   };
 
-  if (products.length === 0) {
+  const productList = asProductArray(products);
+
+  if (productList.length === 0) {
     return (
       <div className="card border-0 shadow-sm">
         <div className="card-body text-center py-5">
@@ -39,7 +42,7 @@ export default function MobileCardView({ products, onShowVariants, onDelete, onS
 
   return (
     <div className="row g-3">
-      {products.map((product, index) => (
+      {productList.map((product, index) => (
         <div key={product.id} className="col-12">
           <div className="card border-0 shadow-sm h-100">
             <div className="card-body">
@@ -77,11 +80,11 @@ export default function MobileCardView({ products, onShowVariants, onDelete, onS
               <hr className="my-2" />
 
               {/* Colors */}
-              {product.colors && product.colors.length > 0 && (
+              {asProductArray(product.colors).length > 0 && (
                 <div className="mb-3">
                   <strong className="d-block mb-2 small">Colors:</strong>
                   <div className="d-flex flex-wrap gap-2">
-                    {product.colors.map((color, idx) => (
+                    {asProductArray(product.colors).map((color, idx) => (
                       <div
                         key={idx}
                         className="d-flex flex-column align-items-center p-2 border rounded"
@@ -134,21 +137,21 @@ export default function MobileCardView({ products, onShowVariants, onDelete, onS
               {/* Additional Info Row */}
               <div className="d-flex flex-wrap gap-2 mb-3">
                 {/* Specifications */}
-                {product.specifications && product.specifications.length > 0 && (
+                {asProductArray(product.specifications).length > 0 && (
                   <button
                     className="btn btn-sm btn-outline-info"
                     onClick={() => onShowSpecifications(product)}
                   >
                     <FaListUl className="me-1" />
-                    {product.specifications.length} Specs
+                    {asProductArray(product.specifications).length} Specs
                   </button>
                 )}
 
                 {/* FAQs */}
-                {product.faqs && product.faqs.length > 0 && (
+                {asProductArray(product.faqs).length > 0 && (
                   <span className="btn btn-sm btn-outline-primary disabled">
                     <FaQuestionCircle className="me-1" />
-                    {product.faqs.length} FAQs
+                    {asProductArray(product.faqs).length} FAQs
                   </span>
                 )}
 

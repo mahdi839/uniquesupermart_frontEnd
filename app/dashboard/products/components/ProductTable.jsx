@@ -4,16 +4,17 @@ import DesktopTableView from "./DesktopTableView";
 import MobileCardView from "./MobileCardView";
 import VariantsModal from "./VariantsModal";
 import SpecificationsModal from "./SpecificationsModal";
+import { asProductArray } from "./productData";
 
 export default function ProductTable({ productData }) {
-  const [products, setProducts] = useState(productData);
+  const [products, setProducts] = useState(() => asProductArray(productData));
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [showVariantsModal, setShowVariantsModal] = useState(false);
   const [showSpecificationsModal, setShowSpecificationsModal] = useState(false);
 
   // ✅ FIX — Update table whenever parent sends new data
   useEffect(() => {
-    setProducts(productData);
+    setProducts(asProductArray(productData));
   }, [productData]);
 
   const handleShowVariants = (product) => {

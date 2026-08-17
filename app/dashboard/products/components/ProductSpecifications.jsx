@@ -1,7 +1,10 @@
 import { FaListUl } from "react-icons/fa";
+import { asProductArray } from "./productData";
 
 export default function ProductSpecifications({ specifications, onShowSpecifications }) {
-  if (!specifications || specifications.length === 0) {
+  const specificationList = asProductArray(specifications);
+
+  if (specificationList.length === 0) {
     return <span className="text-muted">-</span>;
   }
 
@@ -12,7 +15,7 @@ export default function ProductSpecifications({ specifications, onShowSpecificat
       title="View specifications"
     >
       <FaListUl />
-      <span>{specifications.length}</span>
+      <span>{specificationList.length}</span>
     </button>
   );
 }

@@ -1,8 +1,11 @@
 "use client";
 import { FaTimes, FaRuler, FaMoneyBillWave, FaBox, FaTag } from "react-icons/fa";
+import { asProductArray } from "./productData";
 
 export default function VariantsModal({ product, onClose }) {
-  const hasSizes = product.sizes && product.sizes.length > 0;
+  const sizes = asProductArray(product?.sizes);
+  const colors = asProductArray(product?.colors);
+  const hasSizes = sizes.length > 0;
   const basePrice = product.price;
 
   return (
@@ -49,7 +52,7 @@ export default function VariantsModal({ product, onClose }) {
               <div className="card-header bg-transparent border-0 pb-0">
                 <h6 className="fw-semibold text-dark mb-3">
                   <FaRuler className="me-2" />
-                  Size Variants ({hasSizes ? product.sizes.length : 0})
+                  Size Variants ({sizes.length})
                 </h6>
               </div>
               <div className="card-body p-0">
@@ -65,7 +68,7 @@ export default function VariantsModal({ product, onClose }) {
                         </tr>
                       </thead>
                       <tbody>
-                        {product.sizes.map((size) => {
+                        {sizes.map((size) => {
                           const price = size.pivot?.price || size.price;
                           const stock = size.pivot?.stock || size.stock || 0;
                           const totalValue = price * stock;
@@ -92,7 +95,7 @@ export default function VariantsModal({ product, onClose }) {
                         <tr>
                           <td colSpan="3" className="fw-bold text-end">Total Inventory Value:</td>
                           <td className="fw-bold text-primary">
-                            ৳{product.sizes.reduce((total, size) => {
+                            ৳{sizes.reduce((total, size) => {
                               const price = size.pivot?.price || size.price;
                               const stock = size.pivot?.stock || size.stock || 0;
                               return total + (price * stock);
@@ -112,15 +115,15 @@ export default function VariantsModal({ product, onClose }) {
             </div>
 
             {/* Colors Section */}
-            {product.colors && product.colors.length > 0 && (
+            {colors.length > 0 && (
               <div className="card border-0 bg-light mt-4">
                 <div className="card-body">
                   <h6 className="fw-semibold text-primary mb-3">
                     <FaTag className="me-2" />
-                    Color Variants ({product.colors.length})
+                    Color Variants ({colors.length})
                   </h6>
                   <div className="d-flex flex-wrap gap-3">
-                    {product.colors.map((color, index) => (
+                    {colors.map((color, index) => (
                       <div key={index} className="d-flex align-items-center gap-2">
                         <div 
                           className="color-swatch rounded border"

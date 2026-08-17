@@ -14,6 +14,7 @@ import SubmitButtonDiv from "./updateFormComponents/SubmitButtonDiv";
 import Colors from "./updateFormComponents/Colors";
 import BasicInfo from "./updateFormComponents/BasicInfo";
 import { useRouter } from "next/navigation";
+import { asProductArray } from "../../../components/productData";
 
 export default function ProductUpdateForm({
   isEditMode = false,
@@ -80,31 +81,17 @@ export default function ProductUpdateForm({
   // ✅ FIX: Normalize categoryData on arrival — handles both raw array
   // and { data: [...] } shaped responses from getData()
   useEffect(() => {
-    const normalized = Array.isArray(categoryData)
-      ? categoryData
-      : Array.isArray(categoryData?.data)
-      ? categoryData.data
-      : [];
+    const normalized = asProductArray(categoryData);
     setCategories(normalized);
   }, [categoryData]);
 
   useEffect(() => {
     if (isEditMode && initialData) {
-      let parsedColors = [];
-      if (initialData.colors) {
-        if (typeof initialData.colors === 'string') {
-          try {
-            parsedColors = JSON.parse(initialData.colors);
-          } catch (e) {
-            console.error('Error parsing colors:', e);
-            parsedColors = [];
-          }
-        } else if (Array.isArray(initialData.colors)) {
-          parsedColors = initialData.colors;
-        }
-      }
+      const parsedColors = asProductArray(initialData.colors);
 
-      const transformedColors = parsedColors.map(color => ({
+      const transformedColors = parsedColors
+        .filter((color) => color && typeof color === "object")
+        .map(color => ({
         id: color.id,
         code: color.code || "#000000",
         name: color.name || "",
@@ -123,31 +110,31 @@ export default function ProductUpdateForm({
         sku: initialData.sku || "",
         images: [],
         colors: transformedColors,
-        sizes: initialData.sizes?.map(size => ({
+        sizes: asProductArray(initialData.sizes).filter(Boolean).map(size => ({
           id: size.pivot?.id,
           size_id: size.id,
           price: size.pivot?.price || "",
           stock: size.pivot?.stock || 0
-        })) || [],
-        faqs: initialData.faqs?.map(faq => ({
+        })),
+        faqs: asProductArray(initialData.faqs).filter(Boolean).map(faq => ({
           id: faq.id,
           question: faq.question || "",
           answer: faq.answer || ""
-        })) || [],
+        })),
         // ✅ FIX: Normalize category_id to String so react-select matching
         // never fails due to number vs string type mismatch
-        categories: initialData.category?.map(cat => ({
+        categories: asProductArray(initialData.category).filter((cat) => cat?.id != null).map(cat => ({
           category_id: String(cat.id)
-        })) || [],
-        specifications: initialData.specifications?.map(spec => ({
+        })),
+        specifications: asProductArray(initialData.specifications).filter(Boolean).map(spec => ({
           id: spec.id,
           key: spec.key || "",
           value: spec.value || ""
-        })) || [],
+        })),
       };
 
       setFormData(transformedData);
-      setExistingImages(initialData.images || []);
+      setExistingImages(asProductArray(initialData.images));
     }
   }, [isEditMode, initialData]);
 
@@ -155,7 +142,7 @@ export default function ProductUpdateForm({
   const fetchSizes = async () => {
     try {
       const sizeRes = await axios.get(`${baseUrl}api/sizes`);
-      setSizes(sizeRes.data);
+      setSizes(asProductArray(sizeRes.data));
     } catch (e) {
       toast.error(e.message);
     }
@@ -304,7 +291,9 @@ export default function ProductUpdateForm({
     formData.colors.forEach((color, i) => {
       data.append(`colors[${i}][code]`, color.code || "#000000");
       if (color.name) data.append(`colors[${i}][name]`, color.name);
-      if (color.id) data.append(`colors[${i}][id]`, color.id);
+      if (color.id && Number.isInteger(Number(color.id))) {
+        data.append(`colors[${i}][id]`, color.id);
+      }
       if (color.image) data.append(`colors[${i}][image]`, color.image);
       else if (color.existing_image) data.append(`colors[${i}][existing_image]`, color.existing_image);
     });
@@ -320,7 +309,7 @@ export default function ProductUpdateForm({
     formData.images.forEach((image) => data.append("image[]", image));
 
     if (isEditMode) {
-      const initialImageIds = initialData?.images?.map(img => img.id) || [];
+      const initialImageIds = asProductArray(initialData?.images).map(img => img.id);
       const currentImageIds = existingImages.map(img => img.id);
       const deletedImages = initialImageIds.filter(id => !currentImageIds.includes(id));
       deletedImages.forEach(imgId => data.append("deleted_images[]", imgId));

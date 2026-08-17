@@ -46,7 +46,7 @@ export default function ProductIndexPage() {
       });
 
       // ✅ Paginated data from Laravel
-      setProductData(response.data.data.data || []);
+      setProductData(Array.isArray(response.data?.data?.data) ? response.data.data.data : []);
       setPagination({
         current_page: response.data.data.current_page,
         last_page: response.data.data.last_page,

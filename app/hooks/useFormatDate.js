@@ -6,6 +6,7 @@ export default function useFormatDate() {
 
     const date = new Date(dateString);
     return date.toLocaleString("en-US", {
+      timeZone: "Asia/Dhaka",
       year: "numeric",
       month: "long",
       day: "numeric",

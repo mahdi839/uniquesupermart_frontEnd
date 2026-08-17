@@ -12,6 +12,7 @@ import {
 import { BiSortAlt2 } from "react-icons/bi";
 import { HiUserGroup } from "react-icons/hi";
 import Link from "next/link";
+import CustomerBadgeChip from "../../customers/components/CustomerBadgeChip";
 
 export default function CustomerLeaderboardTable({
   loading,
@@ -273,6 +274,11 @@ export default function CustomerLeaderboardTable({
                         <td className="px-4">
                           <div>
                             <h6 className="mb-1 fw-semibold">{customer.name || "N/A"}</h6>
+                            {customer.assigned_badge && (
+                              <div className="mb-1">
+                                <CustomerBadgeChip badge={customer.assigned_badge} />
+                              </div>
+                            )}
                             <small className="text-muted d-flex align-items-center gap-1">
                               📅 {formatDate(customer.last_order_date || "")}
                             </small>
@@ -422,6 +428,11 @@ export default function CustomerLeaderboardTable({
                           <div>
                             <h6 className="mb-0 fw-bold">{customer.name}</h6>
                             <small className="text-muted">{customer.phone}</small>
+                            {customer.assigned_badge && (
+                              <div className="mt-1">
+                                <CustomerBadgeChip badge={customer.assigned_badge} />
+                              </div>
+                            )}
                           </div>
                         </div>
                         <span

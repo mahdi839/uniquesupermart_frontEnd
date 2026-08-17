@@ -1,4 +1,5 @@
 import { FaImage } from "react-icons/fa";
+import { asProductArray } from "./productData";
 
 export default function ProductImage({ images, title, size = "sm" }) {
   const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
@@ -14,10 +15,12 @@ export default function ProductImage({ images, title, size = "sm" }) {
     height: sizeClasses[size]
   };
 
-  if (images?.length > 0) {
+  const imageList = asProductArray(images);
+
+  if (imageList.length > 0 && imageList[0]?.image) {
     return (
       <img
-        src={`${baseUrl}${images[0].image}`}
+        src={`${baseUrl}${imageList[0].image}`}
         alt={title}
         className="img-thumbnail rounded"
         style={{ 
