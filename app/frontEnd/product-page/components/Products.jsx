@@ -14,7 +14,6 @@ import "./productPage.css";
 import "./specification.css";
 import useProductLogics from "@/app/hooks/useProductLogics";
 import { useDispatch, useSelector } from "react-redux";
-import SignProdSkeleton from "./SignProdSkeleton";
 import VirtualizedRelatedProducts from "./VirtualizedRelatedProducts";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
@@ -35,7 +34,6 @@ const CartDrawer = dynamic(
 export default function Products({ product, socialLinksData, initialRelatedProducts, productId }) {
   const [activeTab, setActiveTab] = useState("specs");
   const [openFaqId, setOpenFaqId] = useState(0);
-  const [isLoading, setIsLoading] = useState(true);
   const [modalSelectedSize, setModalSelectedSize] = useState(null);
   const [modalSelectedColor, setModalSelectedColor] = useState(null);
   const [showSizeGuide, setShowSizeGuide] = useState(false);
@@ -89,7 +87,6 @@ export default function Products({ product, socialLinksData, initialRelatedProdu
   };
 
   useEffect(() => {
-    if (product) setIsLoading(false);
     if (product?.error) toast.error(product.error);
   }, [product]);
 
@@ -315,8 +312,6 @@ export default function Products({ product, socialLinksData, initialRelatedProdu
       setIsDirectBuy(true);
     }
   }
-
-  if (isLoading) return <SignProdSkeleton />;
 
   function fetchSizeGuideData() {
     setShowSizeGuide(true);
