@@ -32,7 +32,7 @@ export function middleware(req) {
   // ✅ STEP 3: Check if user is authenticated
   if (!token) {
     console.log("❌ No token found, redirecting to login");
-    const loginUrl = new URL("/admin/login", req.url);
+    const loginUrl = new URL("/admin/login_unique_super_mart", req.url);
     loginUrl.searchParams.set("redirect", pathname);
     return NextResponse.redirect(loginUrl);
   }
@@ -51,7 +51,7 @@ export function middleware(req) {
   } catch (e) {
     console.error("❌ Failed to parse cookies:", e);
     // If parsing fails, redirect to login (cookies might be corrupted)
-    const loginUrl = new URL("/admin/login", req.url);
+    const loginUrl = new URL("/admin/login_unique_super_mart", req.url);
     return NextResponse.redirect(loginUrl);
   }
 

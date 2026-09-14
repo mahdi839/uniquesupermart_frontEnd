@@ -15,6 +15,8 @@ export default function robots() {
           "/frontEnd/register",
           "/frontEnd/my-orders",
           "/frontEnd/admin",
+          "/admin",
+          "/admin/",
         ],
       },
     ],

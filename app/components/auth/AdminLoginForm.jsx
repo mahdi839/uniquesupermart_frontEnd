@@ -1,18 +1,16 @@
 "use client";
 
 import axios from "axios";
-import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { toast } from "react-toastify";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import SiteLogo from "@/app/components/frontEnd/SiteLogo";
 
-export default function AdminLogin() {
+export default function AdminLoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const router = useRouter();
 
   const API_BASE = process.env.NEXT_PUBLIC_BACKEND_URL || "";
   const LOGIN_ENDPOINT = "api/admin/logIn";
@@ -76,7 +74,10 @@ export default function AdminLogin() {
   };
 
   return (
-    <div className="container  py-5 d-flex align-items-center justify-content-center">
+    <div
+      className="container py-5 d-flex align-items-center justify-content-center"
+      style={{ minHeight: "100vh" }}
+    >
       <div className="col-12 col-md-6 col-lg-5">
         <div className="card shadow-lg border-0 rounded-4">
           <div className="card-body p-4">
@@ -104,6 +105,7 @@ export default function AdminLogin() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
+                  autoComplete="username"
                 />
               </div>
 
@@ -117,6 +119,7 @@ export default function AdminLogin() {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
+                    autoComplete="current-password"
                   />
                   <span
                     className="input-group-text bg-transparent border-start-0"

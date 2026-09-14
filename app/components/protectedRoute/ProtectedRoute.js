@@ -16,7 +16,7 @@ export default function ProtectedRoute({
   useEffect(() => {
     // Check authentication
     if (!isAuthenticated()) {
-      router.push("/admin/login");
+      router.push("/admin/login_unique_super_mart");
       return;
     }
 
