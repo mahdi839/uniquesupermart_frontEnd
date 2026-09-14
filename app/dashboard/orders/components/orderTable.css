@@ -3,7 +3,7 @@
     background: transparent;
 }
 .order_print_btn_icon{
-    color: #7d0ba7;
+    color: var(--primary-color);
 }
 
 .order-table-card,
@@ -18,7 +18,7 @@
 
 .order-grid {
     display: grid;
-    grid-template-columns: 32px 42px minmax(0, 1.6fr) minmax(0, 1fr) minmax(0, 1.15fr) 64px;
+    grid-template-columns: 32px 42px minmax(180px, 1.55fr) minmax(90px, .8fr) minmax(105px, .9fr) minmax(142px, 1fr) 64px;
     align-items: center;
     width: 100%;
     max-width: 100%;
@@ -41,6 +41,52 @@
     line-height: 1.35;
 }
 
+.order-actions-cell {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
+.order-action-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    min-height: 30px;
+    padding: 5px 8px;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    background: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    line-height: 1;
+    white-space: nowrap;
+    transition: transform .18s ease, box-shadow .18s ease, background-color .18s ease;
+}
+
+.order-action-btn:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 5px 12px rgba(15, 23, 42, .12);
+}
+
+.order-action-btn:disabled {
+    cursor: not-allowed;
+    opacity: .45;
+}
+
+.order-action-badge {
+    color: #3158a6;
+    border-color: #cbd8f5;
+    background: #f5f8ff;
+}
+
+.order-action-check {
+    color: #14795f;
+    border-color: #bfe7d8;
+    background: #f1fbf7;
+}
+
 .order-summary-value {
     gap: 12px;
 }
@@ -57,6 +103,7 @@
 
 @media (min-width: 768px) and (max-width: 1100px) {
     .order-grid {
+        grid-template-columns: 28px 34px minmax(145px, 1.4fr) minmax(82px, .8fr) minmax(95px, .9fr) 116px 46px;
         gap: 0 8px !important;
         padding-left: 12px !important;
         padding-right: 12px !important;
@@ -65,7 +112,7 @@
 
 @media (max-width: 767.98px) {
     .order-grid {
-        grid-template-columns: 32px 32px minmax(0, 1fr) 40px;
+        grid-template-columns: 28px 28px minmax(0, 1fr) 72px 38px;
         gap: 0 8px !important;
         padding-left: 10px !important;
         padding-right: 10px !important;
@@ -74,5 +121,19 @@
     .order-status-column,
     .order-date-column {
         display: none;
+    }
+
+    .order-actions-cell {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 4px;
+    }
+
+    .order-action-btn {
+        min-height: 25px;
+        padding: 3px 4px;
+        gap: 3px;
+        border-radius: 6px;
+        font-size: 9px;
     }
 }

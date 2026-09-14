@@ -1,7 +1,8 @@
 /* Skeleton base */
 .skeleton-banner {
   width: 100%;
-  height: 400px;
+  aspect-ratio: 32 / 13;
+  height: auto;
   border-radius: 8px;
 
   background: linear-gradient(
@@ -22,11 +23,5 @@
   }
   100% {
     background-position: 0 0;
-  }
-}
-
-@media (max-width: 768px) {
-  .skeleton-banner {
-    height: 200px;
   }
 }

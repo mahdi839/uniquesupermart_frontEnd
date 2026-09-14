@@ -13,7 +13,7 @@ export default function InvoicePage() {
     const orderId = params.orderId;
     const [order, setOrder] = useState(null);
     const [loading, setLoading] = useState(true);
-    const [companyLogo, setCompanyLogo] = useState("");
+    const [companyLogo, setCompanyLogo] = useState("/img/eyara-fashion-logo.png");
     const [companyInfo, setCompanyInfo] = useState({});
     const { formatDate } = useFormatDate();
 
@@ -59,15 +59,10 @@ export default function InvoicePage() {
                 email: data.company_email,
                 phone: data.company_phone,
             });
-
-            if (data.logo_path) {
-                const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL.endsWith("/")
-                    ? process.env.NEXT_PUBLIC_BACKEND_URL.slice(0, -1)
-                    : process.env.NEXT_PUBLIC_BACKEND_URL;
-                setCompanyLogo(backendUrl + data.logo_path);
-            }
+            setCompanyLogo("/img/eyara-fashion-logo.png");
         } catch (error) {
             console.error("Error fetching company info:", error);
+            setCompanyLogo("/img/eyara-fashion-logo.png");
         }
     };
 
@@ -111,9 +106,19 @@ export default function InvoicePage() {
                     {/* Header Section */}
                     <div className="row mb-4 border-bottom pb-4">
                         <div className="col-6">
-                            {companyLogo && (
+                            {companyLogo ? (
                                 <img
                                     src={companyLogo}
+                                    alt="Company Logo"
+                                    className="mb-3 company-logo"
+                                    style={{ maxHeight: "70px" }}
+                                    onError={(e) => {
+                                        e.currentTarget.src = "/img/eyara-fashion-logo.png";
+                                    }}
+                                />
+                            ) : (
+                                <img
+                                    src="/img/eyara-fashion-logo.png"
                                     alt="Company Logo"
                                     className="mb-3 company-logo"
                                     style={{ maxHeight: "70px" }}

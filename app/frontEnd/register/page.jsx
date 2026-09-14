@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { toast } from "react-toastify";
+import SiteLogo from "@/app/components/frontEnd/SiteLogo";
 
 export default function RegisterFormBootstrap({ onSuccessRedirect = "/" }) {
   const [form, setForm] = useState({
@@ -129,8 +130,14 @@ export default function RegisterFormBootstrap({ onSuccessRedirect = "/" }) {
         <div className="col-12 col-md-8 col-lg-10">
           <div className="card shadow-sm">
             <div className="card-body">
-              <h1 className="h4 mb-1 text-center">Create your account</h1>
-              <p className="text-muted mb-4 text-center">Fill in your details to get started.</p>
+            <div className="text-center mb-4">
+              <SiteLogo
+                sizes="180px"
+                className="auth-brand-logo mx-auto mb-3"
+              />
+              <h1 className="h4 mb-1">Create your account</h1>
+              <p className="text-muted mb-0">Fill in your details to get started.</p>
+            </div>
 
               {errors.length > 0 && (
                 <div className="alert alert-danger">

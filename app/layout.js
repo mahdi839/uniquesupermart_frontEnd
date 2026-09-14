@@ -14,6 +14,7 @@ import Script from "next/script";
 import { Inter } from "next/font/google";
 import PixelTracker from "./components/PixelTracker";
 import { siteConfig } from "@/config/siteConfig";
+import "./components/theme/theme-overrides.css";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -58,16 +59,30 @@ export const metadata = {
     description: "Your Gateway to Global Footwear Elegance",
     images: ["/img/logo.png"],
   },
-  // verification: {
-  //   google: "your-google-verification-code", // Add after Google Search Console setup
-  // },
 };
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      {/* ✅ Meta Pixel Script */}
-      <Script id="facebook-pixel" strategy="afterInteractive">
-        {`
+    <html lang="en" suppressHydrationWarning>
+      <body className={inter.variable}>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var raw=localStorage.getItem('site-theme-vars');if(!raw)return;var vars=JSON.parse(raw);var root=document.documentElement;for(var key in vars){root.style.setProperty(key,vars[key]);}}catch(e){}})();`,
+          }}
+        />
+        {/*
+          DOM guard: browser extensions (translators like TransOver / Google
+          Translate, Grammarly, etc.) rewrite text nodes React owns. When React
+          later calls removeChild / insertBefore on a node that was moved, the
+          browser throws NotFoundError and Next.js shows a blank
+          "Application error" page. Skip those operations instead of crashing.
+        */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){if(typeof Node!=='function'||!Node.prototype)return;var rc=Node.prototype.removeChild;Node.prototype.removeChild=function(child){if(child&&child.parentNode!==this){if(typeof console!=='undefined'&&console.warn)console.warn('Skipped removeChild: node was moved by a browser extension');return child;}return rc.apply(this,arguments);};var ib=Node.prototype.insertBefore;Node.prototype.insertBefore=function(newNode,ref){if(ref&&ref.parentNode!==this){if(typeof console!=='undefined'&&console.warn)console.warn('Skipped insertBefore: reference node was moved by a browser extension');return newNode;}return ib.apply(this,arguments);};})();`,
+          }}
+        />
+        <Script id="facebook-pixel" strategy="afterInteractive">
+          {`
           !function(f,b,e,v,n,t,s)
           {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
           n.callMethod.apply(n,arguments):n.queue.push(arguments)};
@@ -82,10 +97,7 @@ export default function RootLayout({ children }) {
           fbq('init', '981684203986467');
           fbq('track', 'PageView');
         `}
-      </Script>
-
-      <body className={inter.variable}>
-        {/* ✅ Noscript fallback */}
+        </Script>
         <noscript>
           <img
             height="1"

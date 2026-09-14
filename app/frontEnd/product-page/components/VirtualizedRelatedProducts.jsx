@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { useVirtualizer } from '@tanstack/react-virtual';
+import { FaArrowDown } from 'react-icons/fa';
 import ProductCard from "@/app/components/frontEnd/home/slots/components/ProductCard";
 
 export default function VirtualizedRelatedProducts({
@@ -205,7 +206,8 @@ export default function VirtualizedRelatedProducts({
                 <div
                   role="progressbar"
                   style={{
-                    width: `${scrollProgress}%`
+                    width: `${scrollProgress}%`,
+                    backgroundColor: 'var(--primary-color)'
                   }}
                   className="progress-bar theme-bg-primary"
                   aria-valuenow={scrollProgress}
@@ -284,7 +286,7 @@ export default function VirtualizedRelatedProducts({
                       }}
                     >
                       <div className="d-flex align-items-center gap-3 px-4 py-3 bg-white rounded-pill shadow-sm border">
-                        <div className="spinner-border spinner-border-sm theme-text-primary" role="status">
+                        <div className="spinner-border spinner-border-sm" style={{ color: 'var(--primary-color)' }} role="status">
                           <span className="visually-hidden">Loading...</span>
                         </div>
                         <span className="text-muted">Loading more products...</span>
@@ -296,12 +298,18 @@ export default function VirtualizedRelatedProducts({
 
               {/* Scroll Hint */}
               {rowCount > 3 && (
-                <div className="text-center mt-3">
-                  <small className="text-muted">
-                    <i className="bi bi-arrow-down me-1"></i>
-                    Scroll to see more products
+                <div className="related-products-scroll-hint" role="status">
+                  <FaArrowDown aria-hidden="true" />
+                  <span>Scroll to see more products</span>
+                  {/*
                     {hasMore && windowWidth > 576 && ' • More products will load automatically'}
-                  </small>
+                  */}
+                  {hasMore && windowWidth > 576 && (
+                    <>
+                      <span className="related-products-scroll-hint-separator" aria-hidden="true">|</span>
+                      <span>More products will load automatically</span>
+                    </>
+                  )}
                 </div>
               )}
             </div>
@@ -449,6 +457,30 @@ export default function VirtualizedRelatedProducts({
 
         .virtualized-grid-container {
           background-color: transparent;
+        }
+
+        .related-products-scroll-hint {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-wrap: wrap;
+          gap: 0.45rem;
+          margin-top: 1rem;
+          color: var(--primary-color);
+          font-size: 0.9rem;
+          font-weight: 600;
+          line-height: 1.5;
+          text-align: center;
+        }
+
+        .related-products-scroll-hint svg {
+          flex: 0 0 auto;
+          font-size: 0.85rem;
+        }
+
+        .related-products-scroll-hint-separator {
+          opacity: 0.65;
+          margin: 0 0.1rem;
         }
       `}</style>
     </div>

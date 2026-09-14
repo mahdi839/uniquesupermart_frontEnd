@@ -55,7 +55,7 @@
 .sub-img:hover { border-color: var(--primary-color); }
 .sub-img.active {
   border-color: var(--primary-color);
-  box-shadow: 0 0 0 2px color-mix(in srgb, var(--primary-color) 10%, transparent);
+  box-shadow: 0 0 0 2px rgba(var(--primary-rgb), 0.1);
 }
 
 .thumbnail-btn img { width: 100%; height: 100%; object-fit: cover; border-radius: 5px; }
@@ -130,7 +130,7 @@
   margin-top: 2px;
 }
 .size-guide-btn svg { font-size: 15px; }
-.size-guide-btn:hover { border-color: var(--primary-color); color: var(--primary-color); background: #faf5ff; }
+.size-guide-btn:hover { border-color: var(--primary-color); color: var(--primary-color); background: var(--primary-light); }
 .size-guide-btn:active { transform: scale(.97); }
 
 /* Variant Sections */
@@ -177,7 +177,7 @@
   overflow: hidden;
 }
 .color-option-card:hover { border-color: var(--primary-color); transform: translateY(-2px); }
-.color-option-card.selected { border-color: var(--primary-color); box-shadow: 0 0 0 2px color-mix(in srgb, var(--primary-color) 15%, transparent); }
+.color-option-card.selected { border-color: var(--primary-color); box-shadow: 0 0 0 2px rgba(var(--primary-rgb), 0.15); }
 .color-option-card.selected::after {
   content: "✓";
   position: absolute;
@@ -218,12 +218,12 @@
   align-items: center;
   gap: 2px;
 }
-.size-option-btn:hover { border-color: var(--primary-color); background: #faf5ff; }
+.size-option-btn:hover { border-color: var(--primary-color); background: var(--primary-light); }
 .size-option-btn.selected {
   border-color: var(--primary-color);
-  background: linear-gradient(135deg, #faf5ff, #f3e8ff);
+  background: var(--primary-light);
   color: var(--primary-color);
-  box-shadow: 0 0 0 2px color-mix(in srgb, var(--primary-color) 10%, transparent);
+  box-shadow: 0 0 0 2px rgba(var(--primary-rgb), 0.1);
 }
 .size-option-btn.selected::after {
   content: "✓";
@@ -311,19 +311,14 @@
 }
 
 .btn-grad {
-  background: linear-gradient(
-    135deg,
-    color-mix(in srgb, var(--primary-color) 75%, white) 0%,
-    var(--primary-color) 51%,
-    color-mix(in srgb, var(--primary-color) 75%, black) 100%
-  );
+  background: linear-gradient(135deg, var(--primary-gradient-start) 0%, var(--primary-color) 51%, var(--primary-gradient-end) 100%);
   color: white;
   background-size: 200% auto;
 }
-.btn-grad:hover { background-position: right center; transform: translateY(-1px); box-shadow: 0 4px 12px color-mix(in srgb, var(--primary-color) 30%, transparent); }
+.btn-grad:hover { background-position: right center; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(var(--primary-rgb), 0.3); }
 
 .btn-outline { background: white; border: 2px solid var(--primary-color); color: var(--primary-color); }
-.btn-outline:hover { background: #faf5ff; transform: translateY(-1px); }
+.btn-outline:hover { background: var(--primary-light); transform: translateY(-1px); }
 
 /* Social Buttons */
 .social-buttons-container { display: flex; gap: 10px; margin-top: 1rem; }
@@ -482,11 +477,7 @@
 .related-products-section { position: relative; padding-bottom: 2rem; }
 .related-products-section .bg-white { position: relative; z-index: 2; }
 .related-products-section .stats-badge {
-  background: linear-gradient(
-    135deg,
-    color-mix(in srgb, var(--primary-color) 75%, white) 0%,
-    var(--primary-color) 100%
-  );
+  background: linear-gradient(135deg, var(--primary-gradient-start) 0%, var(--primary-color) 100%);
   color: white;
   padding: 4px 12px;
   border-radius: 20px;
@@ -514,7 +505,7 @@
   color: #666;
   text-align: center;
 }
-.virtualized-empty-state svg { font-size: 3rem; color: color-mix(in srgb, var(--primary-color) 75%, white); margin-bottom: 1rem; opacity: 0.6; }
+.virtualized-empty-state svg { font-size: 3rem; color: var(--primary-gradient-start); margin-bottom: 1rem; opacity: 0.6; }
 .related-product-card img { will-change: transform; backface-visibility: hidden; -webkit-backface-visibility: hidden; }
 
 @media print {
@@ -603,7 +594,7 @@
   display: block;
 }
 .thumbnails-container .thumbnail-btn:hover { border-color: #999; transform: scale(1.05); }
-.thumbnails-container .thumbnail-btn.active { border-color: #DB3340; box-shadow: 0 0 0 1px #DB3340; }
+.thumbnails-container .thumbnail-btn.active { border-color: var(--primary-color); box-shadow: 0 0 0 1px var(--primary-color); }
 .thumbnails-container .thumbnail-btn img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
 .thumbnails-container .slick-prev,

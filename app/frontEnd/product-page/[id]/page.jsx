@@ -1,71 +1,122 @@
-import Products from '../components/Products';
+import { notFound } from "next/navigation";
+import Products from "../components/Products";
+import {
+  absoluteUrl,
+  productImageUrl,
+  SITE_NAME,
+  stripHtml,
+  truncate,
+} from "@/lib/seo";
+
+async function getProduct(id) {
+  try {
+    const backend = process.env.NEXT_PUBLIC_BACKEND_URL;
+    const res = await fetch(`${backend}api/products/${id}`, {
+      next: { tags: ["products"], revalidate: 3600 },
+    });
+
+    if (!res.ok) return null;
+
+    const json = await res.json();
+    return json?.data ?? null;
+  } catch {
+    return null;
+  }
+}
+
+export async function generateMetadata({ params }) {
+  const product = await getProduct(params.id);
+
+  if (!product) {
+    notFound();
+  }
+
+  const description = truncate(
+    product.short_description || stripHtml(product.description) || product.title,
+    160
+  );
+  const canonical = absoluteUrl(`/frontEnd/product-page/${params.id}`);
+  const image = productImageUrl(product.images?.[0]?.image);
+
+  return {
+    title: product.title,
+    description,
+    alternates: { canonical },
+    openGraph: {
+      title: product.title,
+      description,
+      url: canonical,
+      siteName: SITE_NAME,
+      type: "website",
+      images: [{ url: image, alt: product.title }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: product.title,
+      description,
+      images: [image],
+    },
+  };
+}
 
 export default async function Page({ params }) {
   const { id } = params;
-
   const backend = process.env.NEXT_PUBLIC_BACKEND_URL;
 
-  const [productRes, socialRes, relatedRes] = await Promise.allSettled([
-    fetch(`${backend}api/products/${id}`, {
-      next: { tags: ['products'] },
-    }),
+  const product = await getProduct(id);
+  if (!product) notFound();
 
+  const [socialRes, relatedRes] = await Promise.allSettled([
     fetch(`${backend}api/social-links-first`, {
-      next: { tags: ['social-links'] },
+      next: { tags: ["social-links"] },
     }),
-
     fetch(`${backend}api/category_products/${id}?page=1`, {
-      next: { tags: ['category-products'] },
+      next: { tags: ["category-products"] },
     }),
   ]);
 
-  let product = {};
   let socialLinksData = {};
   let relatedProductsData = {};
 
-  // Handle product response
-  if (productRes.status === 'fulfilled') {
-    const res = productRes.value;
-    if (res.ok) {
-      product = await res.json();
-    } else {
-      product = { error: 'Failed to fetch product data' };
-    }
-  } else {
-    product = { error: productRes.reason?.message };
+  if (socialRes.status === "fulfilled" && socialRes.value.ok) {
+    socialLinksData = await socialRes.value.json();
   }
 
-  // Handle social links response
-  if (socialRes.status === 'fulfilled') {
-    const res = socialRes.value;
-    if (res.ok) {
-      socialLinksData = await res.json();
-    } else {
-      socialLinksData = { error: 'Failed to fetch social links' };
-    }
+  if (relatedRes.status === "fulfilled" && relatedRes.value.ok) {
+    relatedProductsData = await relatedRes.value.json();
   } else {
-    socialLinksData = { error: socialRes.reason?.message };
+    relatedProductsData = { data: [], pagination: {} };
   }
 
-  // Handle related products response
-  if (relatedRes.status === 'fulfilled') {
-    const res = relatedRes.value;
-    if (res.ok) {
-      relatedProductsData = await res.json();
-    } else {
-      relatedProductsData = { error: 'Failed to fetch related products', data: [], pagination: {} };
-    }
-  } else {
-    relatedProductsData = { error: relatedRes.reason?.message, data: [], pagination: {} };
-  }
+  const description = truncate(
+    product.short_description || stripHtml(product.description) || product.title,
+    160
+  );
+  const image = productImageUrl(product.images?.[0]?.image);
+  const productJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: product.title,
+    description,
+    sku: product.sku || undefined,
+    image,
+    url: absoluteUrl(`/frontEnd/product-page/${id}`),
+    brand: { "@type": "Brand", name: SITE_NAME },
+  };
 
   return (
-    <Products
-      product={product?.data}
-      socialLinksData={socialLinksData}
-      initialRelatedProducts={relatedProductsData?.data || []}
-      relatedPagination={relatedProductsData?.pagination || {}}
-      productId={id}
-    />
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd) }}
+      />
+      <Products
+        product={product}
+        socialLinksData={socialLinksData}
+        initialRelatedProducts={relatedProductsData?.data || []}
+        relatedPagination={relatedProductsData?.pagination || {}}
+        productId={id}
+      />
+    </>
   );
 }

@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import Image from "next/image";
+import SiteLogo from "@/app/components/frontEnd/SiteLogo";
 import {
   FaFacebook,
   FaInstagram,
@@ -46,17 +46,14 @@ export default function Footer() {
           <div className="col-lg-4 col-md-6">
             <div className="footer-box rounded-4 p-4 h-100">
 
-              <Link href="/" className="d-block mb-3">
-                <Image
-                  src="/img/logo.png"
-                  alt={siteConfig.company_name}
-                  width={180}
-                  height={50}
-                  style={{ objectFit: "contain" }}
+              <div className="mb-3">
+                <SiteLogo
+                  variant="light"
+                  sizes="180px"
                   priority
-                  className="img-fluid"
+                  className="footer-brand-logo"
                 />
-              </Link>
+              </div>
 
               <p className="text-white mb-4 small">
                 {siteConfig.company_description}

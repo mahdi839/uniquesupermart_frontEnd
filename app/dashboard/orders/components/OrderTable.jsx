@@ -9,13 +9,14 @@ import { toast } from "react-toastify";
 import useFormatDate from "@/app/hooks/useFormatDate";
 import Zoom from "react-medium-image-zoom";
 import "react-medium-image-zoom/dist/styles.css";
-import { FaPrint } from "react-icons/fa";
+import { FaPrint, FaShieldAlt, FaTag } from "react-icons/fa";
 import { FiChevronDown, FiChevronUp } from "react-icons/fi";
 import './orderTable.css'
 import Link from "next/link";
 import Image from "next/image";
 import CustomerBadgeChip from "../../customers/components/CustomerBadgeChip";
 import AssignBadgeModal from "./AssignBadgeModal";
+import FraudCheckModal from "./FraudCheckModal";
 
 // Status badge color mapping
 const STATUS_COLORS = {
@@ -80,6 +81,7 @@ export default function OrderTable({
   const [loadingStates, setLoadingStates] = useState({});
   const [expandedRows, setExpandedRows] = useState({});
   const [badgeOrder, setBadgeOrder] = useState(null);
+  const [fraudOrder, setFraudOrder] = useState(null);
   const { formatDate } = useFormatDate();
 
   React.useEffect(() => {
@@ -540,6 +542,7 @@ export default function OrderTable({
                 <span>Customer</span>
                 <span className="order-status-column text-center">Status</span>
                 <span className="order-date-column text-center">Date</span>
+                <span className="order-actions-column text-center">Actions</span>
                 <span className="text-center">Expand</span>
               </div>
 
@@ -606,17 +609,6 @@ export default function OrderTable({
                           <span className="d-none d-md-inline order-wrap" style={{ marginLeft: '8px', color: '#adb5bd' }}>
                             {order.district || ''}
                           </span>
-                          <button
-                            type="button"
-                            className="btn btn-sm btn-outline-primary ms-2"
-                            style={{ fontSize: '10px', padding: '1px 8px' }}
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setBadgeOrder(order);
-                            }}
-                          >
-                            Badge
-                          </button>
                           {/* Date - hidden on mobile */}
                           <div className="d-block d-md-none mt-2" style={{ fontSize: '10px', color: '#6c757d', whiteSpace: 'nowrap' }}>
                             {formatDate(order.created_at || '')}
@@ -636,6 +628,32 @@ export default function OrderTable({
                       {/* Date — desktop */}
                       <div className="order-date-column text-center order-wrap" style={{ fontSize: '12px', color: '#6c757d' }}>
                         {formatDate(order.created_at || '')}
+                      </div>
+
+                      {/* Badge and courier history actions */}
+                      <div
+                        className="order-actions-column order-actions-cell"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <button
+                          type="button"
+                          className="order-action-btn order-action-badge"
+                          onClick={() => setBadgeOrder(order)}
+                          title="Assign customer badge"
+                        >
+                          <FaTag aria-hidden="true" />
+                          <span>Badge</span>
+                        </button>
+                        <button
+                          type="button"
+                          className="order-action-btn order-action-check"
+                          disabled={!order.phone}
+                          title={order.phone ? 'Check courier delivery history' : 'No phone number available'}
+                          onClick={() => setFraudOrder(order)}
+                        >
+                          <FaShieldAlt aria-hidden="true" />
+                          <span>Courier</span>
+                        </button>
                       </div>
 
                       {/* Expand toggle */}
@@ -667,6 +685,12 @@ export default function OrderTable({
           order={badgeOrder}
           onClose={() => setBadgeOrder(null)}
           onSaved={(assignedBadge) => onBadgeUpdated?.(badgeOrder.phone, assignedBadge)}
+        />
+      )}
+      {fraudOrder && (
+        <FraudCheckModal
+          order={fraudOrder}
+          onClose={() => setFraudOrder(null)}
         />
       )}
     </>

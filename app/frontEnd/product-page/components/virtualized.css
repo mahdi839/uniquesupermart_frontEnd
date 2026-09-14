@@ -27,7 +27,7 @@
 }
 
 .related-products-section [data-virtualized]::-webkit-scrollbar-thumb:hover {
-  background: color-mix(in srgb, var(--primary-color) 75%, black);
+  background: var(--primary-dark);
 }
 
 /* Smooth scrolling behavior */

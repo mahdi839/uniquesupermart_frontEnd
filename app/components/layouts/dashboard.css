@@ -6,8 +6,6 @@
 }
 
 :root {
-    --hover-color: color-mix(in srgb, var(--primary-color) 85%, black);
-    --active-color: color-mix(in srgb, var(--primary-color) 72%, black);
     --sidebar-width: 15rem;
     --sidebar-closed-width: 4rem;
 }
@@ -29,15 +27,15 @@
 .sideBarDiv {
     background: var(--primary-color);
     min-height: 100vh;
-    height: auto;
+    height: 100vh;
+    max-height: 100vh;
     padding: 1rem;
     transition: all 0.3s ease;
     position: fixed;
     left: 0;
     top: 0;
     z-index: 1000;
-    overflow-x: hidden;
-    overflow-y: auto;
+    overflow: hidden;
 }
 
 .sidebar-open {
@@ -70,6 +68,13 @@
 
 .sidebar-toggle-btn:hover {
     background: rgba(255, 255, 255, 0.1);
+}
+
+.sidebar-brand-logo {
+    display: block;
+    width: 138px;
+    height: auto;
+    object-fit: contain;
 }
 
 /* Sidebar Items */
@@ -247,6 +252,30 @@
 
 .sideBar_list {
     margin-top: 1rem;
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding-right: 0.25rem;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.5) transparent;
+}
+
+.sideBar_list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.sideBar_list::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.sideBar_list::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 999px;
+}
+
+.sideBar_list::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.75);
 }
 
 .sideBar_list span {

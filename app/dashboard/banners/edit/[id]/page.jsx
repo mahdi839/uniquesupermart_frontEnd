@@ -123,7 +123,7 @@ export default function page() {
       >
         <div
           className="card-header  text-white py-3 rounded-top-3"
-          style={{ background: "#7d59bf" }}
+          style={{ background: "var(--primary-color)" }}
         >
           <h5 className="mb-0 text-center">Add Banner Images</h5>
         </div>

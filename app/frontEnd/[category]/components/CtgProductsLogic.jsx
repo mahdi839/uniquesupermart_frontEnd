@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "@/redux/slices/CartSlice";
 import Swal from "sweetalert2";
+import { getPrimaryColor } from "@/lib/theme";
 import DynamicLoader from "@/app/components/loader/dynamicLoader";
 import ProductCard from "@/app/components/frontEnd/home/slots/components/ProductCard";
 import CartDrawer from "@/app/components/frontEnd/components/CartDrawer";
@@ -64,7 +65,7 @@ export default function CtgProductsLogic({ products, category, pagination }) {
           text: "This product is already in your cart",
           icon: "info",
           confirmButtonText: "Ok",
-          confirmButtonColor: "#DB3340",
+          confirmButtonColor: getPrimaryColor(),
         });
         return;
       }
@@ -74,7 +75,7 @@ export default function CtgProductsLogic({ products, category, pagination }) {
           title: "Please Select A Size",
           icon: "warning",
           confirmButtonText: "Ok",
-          confirmButtonColor: "#DB3340",
+          confirmButtonColor: getPrimaryColor(),
         });
         return;
       }
@@ -187,6 +188,7 @@ export default function CtgProductsLogic({ products, category, pagination }) {
             disabled={loadingMore}
             style={{
               padding: "12px 48px",
+              border: "1.5px solid var(--primary-color)",
               borderRadius: "3px",
               background: "transparent",
               fontSize: "11px",

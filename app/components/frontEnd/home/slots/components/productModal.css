@@ -380,7 +380,7 @@
  }
 
  .action-cart-btn:hover {
-     box-shadow: 0 4px 12px rgba(219, 51, 64, 0.3);
+     box-shadow: 0 4px 12px rgba(var(--primary-rgb), 0.3);
  }
 
  .btn-secondary {

@@ -110,7 +110,7 @@ export default function AboutUsForm() {
   return (
     <div className="d-flex align-items-center justify-content-center min-vh-100 bg-light p-3">
       <div className="card shadow-lg rounded-3 border-0 w-100" style={{ maxWidth: "700px" }}>
-        <div className="card-header text-white py-3 rounded-top-3" style={{ background: "#7d59bf" }}>
+        <div className="card-header text-white py-3 rounded-top-3" style={{ background: "var(--primary-color)" }}>
           <h5 className="mb-0 text-center">About Us</h5>
         </div>
 

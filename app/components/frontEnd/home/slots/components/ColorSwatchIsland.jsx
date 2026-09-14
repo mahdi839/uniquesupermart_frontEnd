@@ -14,6 +14,7 @@ export default function ColorSwatchIsland({
   const [selected, setSelected] = useState({ url: null, index: null });
 
   const displaySrc = selected.url ? `${baseUrl}${selected.url}` : firstImage;
+  const swatches = Array.isArray(colors) ? colors : [];
 
   function handleClick(index, colorImage) {
     setSelected((prev) =>
@@ -29,25 +30,29 @@ export default function ColorSwatchIsland({
         style={{ textDecoration: "none", order: 0 }}
       >
         <div className="position-relative overflow-hidden product-image-container">
-          <Image
-            width={500}
-            height={400}
-            src={displaySrc}
-            className="product-image p-0 p-md-3"
-            alt={productTitle || "Product"}
-            priority={false}
-          />
+          {displaySrc ? (
+            <Image
+              width={500}
+              height={400}
+              src={displaySrc}
+              className="product-image p-0 p-md-3"
+              alt={productTitle || "Product"}
+              priority={false}
+            />
+          ) : (
+            <div className="product-image p-0 p-md-3 bg-light" />
+          )}
         </div>
       </Link>
 
       {/* order:3 — swatch row, visually AFTER the price block (order:2) */}
-      {colors.length > 0 && (
+      {swatches.length > 0 && (
         <div
           className="d-flex align-items-center gap-2 px-2 px-md-3 mt-1 mt-lg-2 pb-2"
           style={{ order: 3 }}
         >
           <div className="product-color-wrapper d-flex gap-2">
-            {colors.slice(0, 3).map((color, index) => (
+            {swatches.slice(0, 3).map((color, index) => (
               <div
                 key={index}
                 className={
@@ -68,8 +73,8 @@ export default function ColorSwatchIsland({
             ))}
           </div>
 
-          {colors.length > 3 && (
-            <small className="text-muted">+{colors.length - 3}</small>
+          {swatches.length > 3 && (
+            <small className="text-muted">+{swatches.length - 3}</small>
           )}
         </div>
       )}

@@ -397,3 +397,10 @@
     transform: none;
   }
 }
+
+.footer-brand-logo {
+  display: block;
+  width: 180px;
+  height: auto;
+  object-fit: contain;
+}

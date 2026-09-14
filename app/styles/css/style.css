@@ -517,6 +517,26 @@ ol {
 	display: inline-block;
 }
 
+.site-logo {
+	display: block;
+	height: auto;
+	object-fit: contain;
+}
+
+.site-logo--desktop {
+	width: 200px;
+}
+
+.site-logo--mobile {
+	width: 150px;
+}
+
+.auth-brand-logo {
+	width: 180px;
+	height: auto;
+	object-fit: contain;
+}
+
 .header__menu {
 	padding: 24px 0;
 }
@@ -563,7 +583,7 @@ ol {
 }
 
 .header__menu ul li .header__menu__dropdown li:hover>a {
-	color: #DB3340;
+	color: var(--primary-color);
 }
 
 .header__menu ul li .header__menu__dropdown li a {

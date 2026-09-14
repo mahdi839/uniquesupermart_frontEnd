@@ -46,9 +46,18 @@ export default function BulkInvoicePrint({ orders, companyInfo, companyLogo }) {
         marginBottom: "6px",
       }}>
         <div>
-          {companyLogo && (
+          {companyLogo ? (
             <img
               src={companyLogo}
+              alt="Logo"
+              style={{ maxHeight: "40px", display: "block", marginBottom: "3px" }}
+              onError={(e) => {
+                e.currentTarget.src = "/img/eyara-fashion-logo.png";
+              }}
+            />
+          ) : (
+            <img
+              src="/img/eyara-fashion-logo.png"
               alt="Logo"
               style={{ maxHeight: "40px", display: "block", marginBottom: "3px" }}
             />

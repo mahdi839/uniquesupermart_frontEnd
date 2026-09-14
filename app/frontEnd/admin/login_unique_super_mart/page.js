@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { toast } from "react-toastify";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import SiteLogo from "@/app/components/frontEnd/SiteLogo";
 
 export default function AdminLogin() {
   const [email, setEmail] = useState("");
@@ -80,6 +81,10 @@ export default function AdminLogin() {
         <div className="card shadow-lg border-0 rounded-4">
           <div className="card-body p-4">
             <div className="text-center mb-4">
+              <SiteLogo
+                sizes="180px"
+                className="auth-brand-logo mx-auto mb-3"
+              />
               <h1 className="h4 mb-1 text-center position-relative d-inline-block">
                 Admin Login
                 <span

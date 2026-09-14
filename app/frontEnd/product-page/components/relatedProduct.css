@@ -43,7 +43,7 @@
 
 .related-product-card .product-div:hover {
   border-color: var(--primary-color);
-  box-shadow: 0 4px 12px color-mix(in srgb, var(--primary-color) 10%, transparent);
+  box-shadow: 0 4px 12px rgba(var(--primary-rgb), 0.1);
 }
 
 /* Slick Slider Customizations */

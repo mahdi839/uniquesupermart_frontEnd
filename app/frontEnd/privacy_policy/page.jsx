@@ -9,8 +9,8 @@ const PrivacyPolicy = () => {
     <main className="py-5" style={{ backgroundColor: "#f8f9fa" }}>
       <div className="container">
         <header className="text-center mb-5">
-          <h1 className="fw-bold display-5 mb-3 theme-text-primary">
-            <i className="bi bi-shield-lock me-3" />
+          <h1 className="fw-bold display-5 mb-3" style={{ color: 'var(--primary-color)' }}>
+            <i className="bi bi-shield-lock me-3"></i>
             Privacy Policy
           </h1>
           <p className="lead text-muted">

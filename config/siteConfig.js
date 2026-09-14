@@ -1,5 +1,10 @@
 export const siteConfig = {
   company_name: "Unique Super Mart",
+  logo: {
+    dark: "/img/logo.png",
+    light: "/img/logo.png",
+    icon: "/img/favicon.png",
+  },
   company_description:
     "A trusted online fashion store in Bangladesh, offering stylish women's shoes, bags, and fashion accessories sourced directly from China.",
   site_url: "https://uniquesupermart.com",

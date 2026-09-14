@@ -18,7 +18,7 @@ export default function Page() {
   const [isPrinting, setIsPrinting] = useState(false);
   const [shouldPrint, setShouldPrint] = useState(false); // ← triggers print after render
   const [companyInfo, setCompanyInfo] = useState({});
-  const [companyLogo, setCompanyLogo] = useState('');
+  const [companyLogo, setCompanyLogo] = useState("/img/eyara-fashion-logo.png");
   const [pagination, setPagination] = useState({
     current_page: 1,
     last_page: 1
@@ -58,14 +58,10 @@ export default function Page() {
           email: data.company_email,
           phone: data.company_phone,
         });
-        if (data.logo_path) {
-          const base = process.env.NEXT_PUBLIC_BACKEND_URL.endsWith('/')
-            ? process.env.NEXT_PUBLIC_BACKEND_URL.slice(0, -1)
-            : process.env.NEXT_PUBLIC_BACKEND_URL;
-          setCompanyLogo(base + data.logo_path);
-        }
+        setCompanyLogo("/img/eyara-fashion-logo.png");
       } catch (e) {
         console.error('Failed to fetch company info:', e);
+        setCompanyLogo("/img/eyara-fashion-logo.png");
       }
     };
     fetchCompanyInfo();

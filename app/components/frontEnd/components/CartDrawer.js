@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { increament, decreament, removeCart, clearCart } from "@/redux/slices/CartSlice";
 import axios from "axios";
 import Swal from "sweetalert2";
+import { getPrimaryColor } from "@/lib/theme";
 import './style.css';
 import { toast } from "react-toastify";
 import CartDrawerHeader from "./CartDrawerHeader";
@@ -202,7 +203,7 @@ export default function CartDrawer({ isOpen, onClose, isDirectBuy }) {
         icon: "warning",
         title: "Cart is empty",
         text: "Please add items to your cart before checkout",
-        confirmButtonColor: "#DB3340",
+        confirmButtonColor: getPrimaryColor(),
       });
       return;
     }
@@ -264,7 +265,7 @@ export default function CartDrawer({ isOpen, onClose, isDirectBuy }) {
         icon: "error",
         title: "Your cart is empty",
         text: "Please add items to your cart before checking out.",
-        confirmButtonColor: "#DB3340",
+        confirmButtonColor: getPrimaryColor(),
       });
       return;
     }

@@ -1,13 +1,13 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { FaCartPlus, FaChevronLeft, FaChevronRight, FaFacebookMessenger, FaWhatsapp } from "react-icons/fa";
+import { FaCartPlus, FaChevronLeft, FaChevronRight, FaFacebookMessenger, FaRuler, FaWhatsapp } from "react-icons/fa";
 import { IoIosArrowUp, IoIosArrowDown } from "react-icons/io";
-import { SiFoursquarecityguide } from "react-icons/si";
 import { toast } from "react-toastify";
 import Zoom from "react-medium-image-zoom";
 import { addToCart } from "@/redux/slices/CartSlice";
 import Swal from "sweetalert2";
+import { getPrimaryColor } from "@/lib/theme";
 import { useRouter } from "next/navigation";
 import "react-medium-image-zoom/dist/styles.css";
 import "./productPage.css";
@@ -189,7 +189,7 @@ export default function Products({ product, socialLinksData, initialRelatedProdu
         text: "This product is already in your cart",
         icon: "info",
         confirmButtonText: "Ok",
-        confirmButtonColor: "#DB3340",
+        confirmButtonColor: getPrimaryColor(),
       });
       return;
     }
@@ -199,7 +199,7 @@ export default function Products({ product, socialLinksData, initialRelatedProdu
         title: `Please Select A Size`,
         icon: "warning",
         confirmButtonText: "Ok",
-        confirmButtonColor: "#DB3340",
+        confirmButtonColor: getPrimaryColor(),
       });
       return;
     }
@@ -209,7 +209,7 @@ export default function Products({ product, socialLinksData, initialRelatedProdu
         title: `Please Select A Color`,
         icon: "warning",
         confirmButtonText: "Ok",
-        confirmButtonColor: "#DB3340",
+        confirmButtonColor: getPrimaryColor(),
       });
       return;
     }
@@ -276,18 +276,18 @@ export default function Products({ product, socialLinksData, initialRelatedProdu
         text: "This product is already in your cart",
         icon: "info",
         confirmButtonText: "Ok",
-        confirmButtonColor: "#DB3340",
+        confirmButtonColor: getPrimaryColor(),
       });
       return;
     }
 
     if (product?.sizes?.length > 1 && !modalSelectedSize) {
-      Swal.fire({ title: "Please select a size", icon: "warning", confirmButtonColor: "#DB3340" });
+      Swal.fire({ title: "Please select a size", icon: "warning", confirmButtonColor: getPrimaryColor() });
       return;
     }
 
     if (product?.colors?.length > 1 && !modalSelectedColor) {
-      Swal.fire({ title: "Please select a color", icon: "warning", confirmButtonColor: "#DB3340" });
+      Swal.fire({ title: "Please select a color", icon: "warning", confirmButtonColor: getPrimaryColor() });
       return;
     }
 
@@ -569,7 +569,7 @@ export default function Products({ product, socialLinksData, initialRelatedProdu
 
             <div className="size-qty-row my-2 my-lg-3 d-lg-flex gap-lg-3">
               <button className="size-guide-btn" onClick={fetchSizeGuideData}>
-                <SiFoursquarecityguide />
+                <FaRuler />
                 Size Guide
               </button>
               <div className="quantity-controls">
@@ -845,7 +845,7 @@ export default function Products({ product, socialLinksData, initialRelatedProdu
   }
   .mobile-thumb-btn.active {
     border-color: var(--primary-color);
-    box-shadow: 0 0 0 2px color-mix(in srgb, var(--primary-color) 15%, transparent);
+    box-shadow: 0 0 0 2px rgba(var(--primary-rgb), 0.15);
   }
   .mobile-thumb-btn:hover { border-color: var(--primary-color); }
 
