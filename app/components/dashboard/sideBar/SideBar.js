@@ -21,7 +21,11 @@ import SiteLogo from "@/app/components/frontEnd/SiteLogo";
 export default function SideBar({ isSidebarOpen, toggleSidebar, isMobile }) {
   const [openMenu, setOpenMenu] = useState(null);
   const pathname = usePathname();
-  const { hasPermission, hasRole, hasAnyPermission } = useAuth();
+  const { hasPermission, hasRole, hasAnyPermission, refreshUserData, userPermissions } = useAuth();
+
+  useEffect(() => {
+    refreshUserData({ silent: true });
+  }, []);
 
   // ✅ Menu structure with permissions
   const allMenuItems = [
@@ -37,7 +41,7 @@ export default function SideBar({ isSidebarOpen, toggleSidebar, isMobile }) {
       label: 'Products Management',
       Icon: FaProductHunt,
       // ✅ Show menu if user has ANY of these permissions
-      requireAny: ['view categories', 'view products'],
+      requireAny: ['view categories', 'view products', 'manage inventory'],
       submenus: [
         {
           href: "/dashboard/category",
@@ -269,7 +273,7 @@ export default function SideBar({ isSidebarOpen, toggleSidebar, isMobile }) {
         }
       }
     }
-  }, [pathname]);
+  }, [pathname, userPermissions]);
 
 
   const toggleMenu = (menuLabel) => {

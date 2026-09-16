@@ -42,7 +42,7 @@ export const useAuth = () => {
   };
 
   // ✅ Refresh user data from API
-  const refreshUserData = async () => {
+  const refreshUserData = async ({ silent = false } = {}) => {
     try {
       const token = localStorage.getItem("token");
       if (!token) return false;
@@ -70,13 +70,13 @@ export const useAuth = () => {
         setUserPermissions(user.permissions);
         setUserRoles(user.roles);
 
-        toast.success("Permissions refreshed");
+        if (!silent) toast.success("Permissions refreshed");
         return true;
       }
       return false;
     } catch (err) {
       console.error("Failed to refresh user data:", err);
-      toast.error("Failed to refresh permissions");
+      if (!silent) toast.error("Failed to refresh permissions");
       return false;
     }
   };
@@ -153,6 +153,7 @@ export const useAuth = () => {
   const hasPermission = (permissionName) => {
     if (typeof window === "undefined") return false;
     try {
+      if (hasRole("super-admin")) return true;
       const permissions = JSON.parse(localStorage.getItem("permissions") || "[]");
       return permissions.includes(permissionName);
     } catch {
@@ -165,6 +166,7 @@ export const useAuth = () => {
     if (typeof window === "undefined") return false;
     if (!Array.isArray(permissionNames)) return false;
     try {
+      if (hasRole("super-admin")) return true;
       const permissions = JSON.parse(localStorage.getItem("permissions") || "[]");
       return permissionNames.some(perm => permissions.includes(perm));
     } catch {
@@ -177,6 +179,7 @@ export const useAuth = () => {
     if (typeof window === "undefined") return false;
     if (!Array.isArray(permissionNames)) return false;
     try {
+      if (hasRole("super-admin")) return true;
       const permissions = JSON.parse(localStorage.getItem("permissions") || "[]");
       return permissionNames.every(perm => permissions.includes(perm));
     } catch {

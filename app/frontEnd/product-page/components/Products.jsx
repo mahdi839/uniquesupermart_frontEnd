@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
 import { FaCartPlus, FaChevronLeft, FaChevronRight, FaFacebookMessenger, FaRuler, FaWhatsapp } from "react-icons/fa";
 import { IoIosArrowUp, IoIosArrowDown } from "react-icons/io";
@@ -83,13 +83,28 @@ export default function Products({ product: initialProduct, socialLinksData, ini
 
   const stock = useProductInventory(product);
 
+  const availableColors = useMemo(() => {
+    const colors = product?.colors ?? [];
+    if (!stock.tracks) return colors;
+    return colors.filter((color) => stock.colorAvailability(color.id).sellable);
+  }, [product?.colors, stock]);
+
   // A product with only one colour or only one size is effectively pre-selected,
   // so availability can be shown before the customer touches anything.
   const effectiveColorId =
     selectedColorId ??
-    (product?.colors?.length === 1 ? product.colors[0].id : null);
+    (availableColors.length === 1 ? availableColors[0].id : null);
+
+  const availableSizes = useMemo(() => {
+    const sizes = product?.sizes ?? [];
+    if (!stock.tracks) return sizes;
+    return sizes.filter((size) =>
+      stock.sizeAvailability(size.id, effectiveColorId).sellable
+    );
+  }, [product?.sizes, stock, effectiveColorId]);
+
   const effectiveSizeId =
-    selectedSize ?? (product?.sizes?.length === 1 ? product.sizes[0].id : null);
+    selectedSize ?? (availableSizes.length === 1 ? availableSizes[0].id : null);
 
   const selection = stock.selection(effectiveColorId, effectiveSizeId);
 
@@ -101,8 +116,8 @@ export default function Products({ product: initialProduct, socialLinksData, ini
       ? `Pre Order, Delivery Time ${stock.preorderEtaDays} Days`
       : "Pre Order, Delivery Time 20 to 25 Days");
 
-  const needsColor = (product?.colors?.length ?? 0) > 1 && !selectedColor;
-  const needsSize = (product?.sizes?.length ?? 0) > 1 && !selectedSize;
+  const needsColor = availableColors.length > 1 && !selectedColor;
+  const needsSize = availableSizes.length > 1 && !selectedSize;
   const selectionComplete = !needsColor && !needsSize;
   const showInStockBadge =
     stock.tracks &&
@@ -150,6 +165,25 @@ export default function Products({ product: initialProduct, socialLinksData, ini
     if (product) setIsLoading(false);
     if (product?.error) toast.error(product.error);
   }, [product]);
+
+  useEffect(() => {
+    if (!stock.tracks) return;
+
+    if (
+      selectedColorId != null &&
+      !availableColors.some((color) => String(color.id) === String(selectedColorId))
+    ) {
+      setSelectedColorId(null);
+      setSelectedColorName(null);
+    }
+
+    if (
+      selectedSize != null &&
+      !availableSizes.some((size) => String(size.id) === String(selectedSize))
+    ) {
+      handleSelectedSize(null);
+    }
+  }, [stock.tracks, selectedColorId, selectedSize, availableColors, availableSizes]);
 
   useEffect(() => {
     return () => {
@@ -215,6 +249,14 @@ export default function Products({ product: initialProduct, socialLinksData, ini
     });
     setSelectedColorName(colorName)
     setSelectedColorId(colorId ?? null)
+
+    if (
+      selectedSize != null &&
+      stock.tracks &&
+      !stock.sizeAvailability(selectedSize, colorId).sellable
+    ) {
+      handleSelectedSize(null);
+    }
   }
 
   async function handleThumbClickLocal(imgId) {
@@ -290,7 +332,10 @@ export default function Products({ product: initialProduct, socialLinksData, ini
       return;
     }
 
-    const selectedVariant = product.sizes.find((s) => s.id == selectedSize) || product.sizes[0];
+    const selectedVariant =
+      availableSizes.find((s) => s.id == selectedSize) ||
+      availableSizes[0] ||
+      product.sizes?.[0];
     const imageUrl = product.images?.[0]?.image ? baseUrl + product.images[0].image : "";
     const requestedQty = preQty ?? 1;
     const cappedQty =
@@ -631,31 +676,26 @@ export default function Products({ product: initialProduct, socialLinksData, ini
               )}
             </div>
 
-            {product.colors?.length > 0 && (
+            {availableColors.length > 0 && (
               <div className="variant-section">
                 <div className="color-section-title">
                   <span className="required-asterisk">*</span>
                   Colors:
                 </div>
                 <div className="color-selector-grid">
-                  {product?.colors?.map((color) => {
+                  {availableColors.map((color) => {
                     const colorStock = stock.colorAvailability(color.id);
-                    const soldOut = stock.tracks && !colorStock.sellable;
 
                     return (
                       <div
                         key={color.id}
-                        className={`color-option-card ${selectedColor === color.image ? "selected" : ""} ${soldOut ? "sold-out" : ""}`}
+                        className={`color-option-card ${selectedColor === color.image ? "selected" : ""}`}
                         onClick={() =>
-                          soldOut
-                            ? null
-                            : handleColorClick(color?.image, color?.name, color?.id)
+                          handleColorClick(color?.image, color?.name, color?.id)
                         }
                         data-tooltip-id="color-tooltip"
                         data-tooltip-content={
-                          soldOut
-                            ? `${color.name ?? "Colour"} — sold out`
-                            : stock.tracks
+                          stock.tracks
                             ? `${color.name ?? "Colour"} — ${colorStock.available} available`
                             : color.name
                         }
@@ -671,7 +711,6 @@ export default function Products({ product: initialProduct, socialLinksData, ini
                           height={50}
                           style={{ objectFit: "cover" }}
                         />
-                        {soldOut && <span className="variant-strike" />}
                       </div>
                     );
                   })}
@@ -681,36 +720,32 @@ export default function Products({ product: initialProduct, socialLinksData, ini
 
             <Tooltip id="color-tooltip" place="top" className="custom-color-tooltip" />
 
-            {product.sizes?.length > 0 && (
+            {availableSizes.length > 0 && (
               <div className="variant-section">
                 <div className="variant-section-title">
                   <span className="required-asterisk">*</span>
                   Sizes:
                 </div>
                 <div className="size-selector-grid">
-                  {product?.sizes?.map((size) => {
+                  {availableSizes.map((size) => {
                     const sizePrice = size?.pivot?.price;
                     const isSelected = selectedSize == size.id;
                     const sizeStock = stock.sizeAvailability(size.id, effectiveColorId);
-                    const soldOut = stock.tracks && !sizeStock.sellable;
 
                     return (
                       <button
                         key={size?.id}
-                        className={`size-option-btn ${isSelected ? "selected" : ""} ${soldOut ? "sold-out" : ""}`}
-                        onClick={() => (soldOut ? null : handleSelectedSize(size.id))}
-                        disabled={soldOut}
+                        className={`size-option-btn ${isSelected ? "selected" : ""}`}
+                        onClick={() => handleSelectedSize(size.id)}
                         title={
-                          soldOut
-                            ? "Sold out"
-                            : stock.tracks
+                          stock.tracks
                             ? `${sizeStock.available} available`
                             : undefined
                         }
                       >
                         {size?.size}
                         {sizePrice && <span className="size-price">৳{sizePrice}</span>}
-                        {stock.tracks && !soldOut && (
+                        {stock.tracks && (
                           <span className="size-stock">{sizeStock.available} available</span>
                         )}
                       </button>
