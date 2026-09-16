@@ -23,7 +23,7 @@ const inter = Inter({
 });
 
 export const metadata = {
-  metadataBase: new URL("https://eyarafashion.xyz"),
+  metadataBase: new URL("https://eyarafashion.com"),
   title: {
     default: "Eyara Fashion - Your Gateway to Global Footwear Elegance",
     template: "%s | Eyara Fashion",
@@ -37,10 +37,10 @@ export const metadata = {
   openGraph: {
     title: "Eyara Fashion - Your Gateway to Global Footwear Elegance",
     description: "Shop premium shoes and fashion accessories at Eyara Fashion",
-    siteName: "Eyarafashion.xyz",
+    siteName: "Eyarafashion.com",
     images: [
       {
-        url: "https://eyarafashion.xyz/img/logo.png",
+        url: "https://eyarafashion.com/img/logo.png",
         width: 512,
         height: 512,
         alt: "Eyara Fashion",
@@ -53,7 +53,7 @@ export const metadata = {
     card: "summary_large_image",
     title: "Eyara Fashion",
     description: "Your Gateway to Global Footwear Elegance",
-    images: ["https://eyarafashion.xyz/img/logo.png"],
+    images: ["https://eyarafashion.com/img/logo.png"],
   },
 };
 export default function RootLayout({ children }) {

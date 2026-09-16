@@ -19,7 +19,7 @@ const ReturnRefundPolicy = () => {
                         <div className="d-flex align-items-center">
                             <i className="bi bi-info-circle-fill me-3" style={{ fontSize: '1.5rem', color: 'var(--primary-color)' }}></i>
                             <span>
-                                At eyarafashion.xyz, we operate on a pre-order system and source products directly from international suppliers.
+                                At eyarafashion.com, we operate on a pre-order system and source products directly from international suppliers.
                                 Please read our policy carefully before placing an order.
                             </span>
                         </div>
@@ -82,13 +82,13 @@ const ReturnRefundPolicy = () => {
                         <div className="card shadow-sm border-0 mb-4">
                             <div className="card-body">
                                 <p className="card-text">
-                                    At eyarafashion.xyz, we value our customers and strive to provide a smooth and hassle-free shopping experience.
+                                    At eyarafashion.com, we value our customers and strive to provide a smooth and hassle-free shopping experience.
                                     However, since we operate on a pre-order system and source products directly from international suppliers,
                                     we have a strict No Return & No Refund Policy under normal circumstances.
                                 </p>
                                 <div className="d-flex align-items-center mt-3 p-3 rounded" style={{ backgroundColor: '#f8f9fa' }}>
                                     <i className="bi bi-exclamation-triangle-fill me-3" style={{ fontSize: '1.5rem', color: 'var(--primary-color)' }}></i>
-                                    <span className="fw-semibold">By placing an order with eyarafashion.xyz, you agree to the policies outlined on this page.</span>
+                                    <span className="fw-semibold">By placing an order with eyarafashion.com, you agree to the policies outlined on this page.</span>
                                 </div>
                             </div>
                         </div>

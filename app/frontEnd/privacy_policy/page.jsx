@@ -20,7 +20,7 @@ const PrivacyPolicy = () => {
             <div className="d-flex align-items-center">
               <i className="bi bi-info-circle-fill me-3" style={{ fontSize: '1.5rem', color: 'var(--primary-color)' }}></i>
               <span>
-                At eyarafashion.xyz, we value your privacy and are committed to protecting your personal information.
+                At eyarafashion.com, we value your privacy and are committed to protecting your personal information.
               </span>
             </div>
           </div>
@@ -102,12 +102,12 @@ const PrivacyPolicy = () => {
               <div className="card shadow-sm border-0">
                 <div className="card-body">
                   <p className="card-text">
-                    At eyarafashion.xyz, we value your privacy and are committed to protecting your personal information. 
+                    At eyarafashion.com, we value your privacy and are committed to protecting your personal information. 
                     This Privacy Policy outlines how we collect, use, and safeguard your data when you visit our website or make a purchase.
                   </p>
                   <div className="d-flex align-items-center mt-4 p-3 rounded" style={{ backgroundColor: '#f8f9fa' }}>
                     <i className="bi bi-check-circle-fill me-3" style={{ fontSize: '1.5rem', color: 'var(--primary-color)' }}></i>
-                    <span className="fw-semibold">By using eyarafashion.xyz, you agree to the terms outlined in this Privacy Policy.</span>
+                    <span className="fw-semibold">By using eyarafashion.com, you agree to the terms outlined in this Privacy Policy.</span>
                   </div>
                 </div>
               </div>
@@ -125,7 +125,7 @@ const PrivacyPolicy = () => {
               <div className="card shadow-sm border-0">
                 <div className="card-body">
                   <p className="card-text">
-                    When you visit or shop on eyarafashion.xyz, we may collect the following information:
+                    When you visit or shop on eyarafashion.com, we may collect the following information:
                   </p>
                   
                   <div className="row mt-4">
@@ -419,7 +419,7 @@ const PrivacyPolicy = () => {
                         <h5 className="fw-bold d-flex align-items-center" style={{ color: 'var(--primary-color)' }}>
                           <i className="bi bi-person-circle me-2"></i>Account Updates
                         </h5>
-                        <p>You can update your account details through your eyarafashion.xyz profile.</p>
+                        <p>You can update your account details through your eyarafashion.com profile.</p>
                         <div className="alert alert-info mb-0">
                           <i className="bi bi-info-circle me-2"></i>
                           <small>Keep your information up-to-date for better service and communication.</small>
@@ -500,9 +500,9 @@ const PrivacyPolicy = () => {
                   </div>
                   
                   <div className="mt-5">
-                    <h5 className="fw-bold mb-4" style={{ color: 'var(--primary-color)' }}>Thank you for trusting eyarafashion.xyz! <span className="heart">💖</span></h5>
+                    <h5 className="fw-bold mb-4" style={{ color: 'var(--primary-color)' }}>Thank you for trusting eyarafashion.com! <span className="heart">💖</span></h5>
                     <p className="text-muted">
-                      By using eyarafashion.xyz, you agree to the terms outlined in this Privacy Policy.
+                      By using eyarafashion.com, you agree to the terms outlined in this Privacy Policy.
                     </p>
                   </div>
                 </div>

@@ -138,7 +138,7 @@ const AboutUs = () => {
           <div className="row align-items-center">
             <div className="col-lg-6 mb-4 mb-lg-0">
               <h1 className="display-4 fw-bold mb-4" style={{ color: 'var(--primary-color)' }}>
-                Welcome to <span style={{ color: 'var(--primary-color)' }}>eyarafashion.xyz</span>
+                Welcome to <span style={{ color: 'var(--primary-color)' }}>eyarafashion.com</span>
               </h1>
               <p className="lead mb-4">
                 Your Ultimate Fashion Destination! We bring you a world of possibilities with millions of 
@@ -215,7 +215,7 @@ const AboutUs = () => {
                     Direct from Global Markets
                   </h3>
                   <p className="mb-4">
-                    At eyarafashion.xyz, we ensure you get access to high-quality fashion products directly 
+                    At eyarafashion.com, we ensure you get access to high-quality fashion products directly 
                     from international brands and merchants. We bridge the gap between global fashion trends 
                     and local accessibility.
                   </p>
@@ -301,7 +301,7 @@ const AboutUs = () => {
           <div className="row justify-content-center mb-5">
             <div className="col-lg-8 text-center">
               <h2 className="fw-bold mb-3" style={{ color: 'var(--primary-color)' }}>
-                <i className="bi bi-check-circle me-2"></i>Why Shop with eyarafashion.xyz?
+                <i className="bi bi-check-circle me-2"></i>Why Shop with eyarafashion.com?
               </h2>
               <p className="lead text-muted">
                 Experience the future of fashion shopping with these exclusive benefits
@@ -493,7 +493,7 @@ const AboutUs = () => {
               </h2>
               <p className="lead text-white mb-5">
                 Join thousands of happy shoppers and experience the future of fashion shopping 
-                with eyarafashion.xyz!
+                with eyarafashion.com!
               </p>
               
               <div className="row justify-content-center mb-5">
@@ -510,7 +510,7 @@ const AboutUs = () => {
                       
                       <div className="d-flex flex-wrap justify-content-center gap-3">
                         <a 
-                          href="https://www.facebook.com/eyarafashion.xyz" 
+                          href="https://www.facebook.com/eyarafashion.com" 
                           className="btn btn-lg px-4" 
                           style={{ backgroundColor: 'var(--primary-color)', color: 'white' }}
                         >
