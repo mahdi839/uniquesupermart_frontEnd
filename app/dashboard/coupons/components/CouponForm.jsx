@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Select from "react-select";
 import { toast } from "react-toastify";
+import "../coupons.css";
 
 const emptyForm = {
   code: "",
@@ -171,100 +172,109 @@ export default function CouponForm({ mode = "create", couponId }) {
   }
 
   return (
-    <div className="card shadow mb-4">
+    <div className="card coupon-panel mb-4">
       <div className="card-header py-3">
-        <h6 className="m-0 fw-bold text-primary">
-          {mode === "edit" ? "Edit Coupon" : "Coupon Information"}
+        <h6 className="m-0 fw-bold">
+          {mode === "edit" ? "Edit Coupon" : "New Coupon"}
         </h6>
       </div>
       <div className="card-body">
         <form onSubmit={handleSubmit}>
-          <div className="row mb-3">
-            <div className="col-md-6">
-              <label className="form-label fw-bold">
-                Coupon Code <span className="text-danger">*</span>
-              </label>
-              <input
-                type="text"
-                className={`form-control ${errors.code ? "is-invalid" : ""}`}
-                value={form.code}
-                onChange={(e) => handleChange("code", e.target.value.toUpperCase())}
-                placeholder="SAVE80"
-                required
-              />
-              {errors.code && <div className="invalid-feedback">{errors.code[0]}</div>}
+          <div className="coupon-form-section">
+            <h6>
+              <span className="bg-dark text-white">1</span>
+              Identity
+            </h6>
+            <div className="row mb-3">
+              <div className="col-md-6">
+                <label className="form-label fw-bold">
+                  Coupon Code <span className="text-danger">*</span>
+                </label>
+                <input
+                  type="text"
+                  className={`form-control ${errors.code ? "is-invalid" : ""}`}
+                  value={form.code}
+                  onChange={(e) => handleChange("code", e.target.value.toUpperCase())}
+                  placeholder="SAVE80"
+                  required
+                />
+                {errors.code && <div className="invalid-feedback">{errors.code[0]}</div>}
+              </div>
+              <div className="col-md-6">
+                <label className="form-label fw-bold">
+                  Name <span className="text-danger">*</span>
+                </label>
+                <input
+                  type="text"
+                  className={`form-control ${errors.name ? "is-invalid" : ""}`}
+                  value={form.name}
+                  onChange={(e) => handleChange("name", e.target.value)}
+                  placeholder="Eid ৳100 off"
+                  required
+                />
+                {errors.name && <div className="invalid-feedback">{errors.name[0]}</div>}
+              </div>
             </div>
-            <div className="col-md-6">
-              <label className="form-label fw-bold">
-                Name <span className="text-danger">*</span>
-              </label>
-              <input
-                type="text"
-                className={`form-control ${errors.name ? "is-invalid" : ""}`}
-                value={form.name}
-                onChange={(e) => handleChange("name", e.target.value)}
-                placeholder="Eid ৳100 off"
-                required
-              />
-              {errors.name && <div className="invalid-feedback">{errors.name[0]}</div>}
-            </div>
-          </div>
-
-          <div className="mb-3">
-            <label className="form-label fw-bold">Description</label>
-            <textarea
-              className="form-control"
-              rows="2"
-              value={form.description}
-              onChange={(e) => handleChange("description", e.target.value)}
-            />
-          </div>
-
-          <div className="row mb-3">
-            <div className="col-md-4">
-              <label className="form-label fw-bold">Discount Type</label>
-              <select
-                className="form-select"
-                value={form.discount_type}
-                onChange={(e) => handleChange("discount_type", e.target.value)}
-              >
-                <option value="fixed">Fixed amount (৳)</option>
-                <option value="percent">Percentage (%)</option>
-              </select>
-            </div>
-            <div className="col-md-4">
-              <label className="form-label fw-bold">
-                Discount Value <span className="text-danger">*</span>
-              </label>
-              <input
-                type="number"
-                min="0.01"
-                step="0.01"
-                className={`form-control ${errors.discount_value ? "is-invalid" : ""}`}
-                value={form.discount_value}
-                onChange={(e) => handleChange("discount_value", e.target.value)}
-                required
-              />
-              {errors.discount_value && (
-                <div className="invalid-feedback">{errors.discount_value[0]}</div>
-              )}
-            </div>
-            <div className="col-md-4">
-              <label className="form-label fw-bold">Max Discount (percent only)</label>
-              <input
-                type="number"
-                min="0"
+            <div className="mb-3">
+              <label className="form-label fw-bold">Description</label>
+              <textarea
                 className="form-control"
-                value={form.max_discount}
-                onChange={(e) => handleChange("max_discount", e.target.value)}
-                disabled={form.discount_type !== "percent"}
-                placeholder="e.g. 300"
+                rows="2"
+                value={form.description}
+                onChange={(e) => handleChange("description", e.target.value)}
+                placeholder="Shown internally to help your team remember this campaign"
               />
             </div>
           </div>
 
-          <div className="row mb-3">
-            <div className="col-md-4">
+          <div className="coupon-form-section">
+            <h6>
+              <span className="bg-success text-white">2</span>
+              Discount
+            </h6>
+            <div className="row mb-3">
+              <div className="col-md-4">
+                <label className="form-label fw-bold">Discount Type</label>
+                <select
+                  className="form-select"
+                  value={form.discount_type}
+                  onChange={(e) => handleChange("discount_type", e.target.value)}
+                >
+                  <option value="fixed">Fixed amount (৳)</option>
+                  <option value="percent">Percentage (%)</option>
+                </select>
+              </div>
+              <div className="col-md-4">
+                <label className="form-label fw-bold">
+                  Discount Value <span className="text-danger">*</span>
+                </label>
+                <input
+                  type="number"
+                  min="0.01"
+                  step="0.01"
+                  className={`form-control ${errors.discount_value ? "is-invalid" : ""}`}
+                  value={form.discount_value}
+                  onChange={(e) => handleChange("discount_value", e.target.value)}
+                  required
+                />
+                {errors.discount_value && (
+                  <div className="invalid-feedback">{errors.discount_value[0]}</div>
+                )}
+              </div>
+              <div className="col-md-4">
+                <label className="form-label fw-bold">Max Discount (percent only)</label>
+                <input
+                  type="number"
+                  min="0"
+                  className="form-control"
+                  value={form.max_discount}
+                  onChange={(e) => handleChange("max_discount", e.target.value)}
+                  disabled={form.discount_type !== "percent"}
+                  placeholder="e.g. 300"
+                />
+              </div>
+            </div>
+            <div className="mb-3">
               <label className="form-label fw-bold">Minimum Order Amount</label>
               <input
                 type="number"
@@ -275,118 +285,132 @@ export default function CouponForm({ mode = "create", couponId }) {
                 placeholder="Optional"
               />
             </div>
-            <div className="col-md-4">
-              <label className="form-label fw-bold">Starts At</label>
-              <input
-                type="datetime-local"
-                className="form-control"
-                value={form.starts_at}
-                onChange={(e) => handleChange("starts_at", e.target.value)}
-              />
+          </div>
+
+          <div className="coupon-form-section">
+            <h6>
+              <span className="bg-warning text-dark">3</span>
+              Schedule & Limits
+            </h6>
+            <div className="row mb-3">
+              <div className="col-md-6">
+                <label className="form-label fw-bold">Starts At</label>
+                <input
+                  type="datetime-local"
+                  className="form-control"
+                  value={form.starts_at}
+                  onChange={(e) => handleChange("starts_at", e.target.value)}
+                />
+              </div>
+              <div className="col-md-6">
+                <label className="form-label fw-bold">Expires At</label>
+                <input
+                  type="datetime-local"
+                  className={`form-control ${errors.expires_at ? "is-invalid" : ""}`}
+                  value={form.expires_at}
+                  onChange={(e) => handleChange("expires_at", e.target.value)}
+                />
+                {errors.expires_at && (
+                  <div className="invalid-feedback">{errors.expires_at[0]}</div>
+                )}
+              </div>
             </div>
-            <div className="col-md-4">
-              <label className="form-label fw-bold">Expires At</label>
-              <input
-                type="datetime-local"
-                className={`form-control ${errors.expires_at ? "is-invalid" : ""}`}
-                value={form.expires_at}
-                onChange={(e) => handleChange("expires_at", e.target.value)}
-              />
-              {errors.expires_at && (
-                <div className="invalid-feedback">{errors.expires_at[0]}</div>
+            <div className="row mb-3">
+              <div className="col-md-4">
+                <label className="form-label fw-bold">Global Usage Limit</label>
+                <input
+                  type="number"
+                  min="1"
+                  className="form-control"
+                  value={form.usage_limit}
+                  onChange={(e) => handleChange("usage_limit", e.target.value)}
+                  placeholder="e.g. 80, blank = unlimited"
+                />
+              </div>
+              <div className="col-md-4">
+                <label className="form-label fw-bold">Per Customer (phone) Limit</label>
+                <input
+                  type="number"
+                  min="1"
+                  className="form-control"
+                  value={form.per_phone_limit}
+                  onChange={(e) => handleChange("per_phone_limit", e.target.value)}
+                  placeholder="e.g. 1, blank = unlimited"
+                />
+              </div>
+              <div className="col-md-4 d-flex align-items-end">
+                <div className="form-check form-switch mb-3">
+                  <input
+                    className="form-check-input"
+                    type="checkbox"
+                    id="couponActive"
+                    checked={form.is_active}
+                    onChange={(e) => handleChange("is_active", e.target.checked)}
+                  />
+                  <label className="form-check-label fw-bold" htmlFor="couponActive">
+                    Active
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="coupon-form-section">
+            <h6>
+              <span className="bg-info text-dark">4</span>
+              Product Scope
+            </h6>
+            <div className="mb-3">
+              <label className="form-label fw-bold">Applies To</label>
+              <div className="d-flex gap-4 mb-3">
+                <div className="form-check">
+                  <input
+                    className="form-check-input"
+                    type="radio"
+                    name="applies_to"
+                    id="appliesAll"
+                    checked={form.applies_to === "all"}
+                    onChange={() => handleChange("applies_to", "all")}
+                  />
+                  <label className="form-check-label" htmlFor="appliesAll">
+                    All products
+                  </label>
+                </div>
+                <div className="form-check">
+                  <input
+                    className="form-check-input"
+                    type="radio"
+                    name="applies_to"
+                    id="appliesProducts"
+                    checked={form.applies_to === "products"}
+                    onChange={() => handleChange("applies_to", "products")}
+                  />
+                  <label className="form-check-label" htmlFor="appliesProducts">
+                    Specific products
+                  </label>
+                </div>
+              </div>
+              {form.applies_to === "products" && (
+                <>
+                  <Select
+                    isMulti
+                    options={productOptions}
+                    value={selectedProducts}
+                    onChange={(options) =>
+                      handleChange(
+                        "product_ids",
+                        (options || []).map((option) => option.value)
+                      )
+                    }
+                    placeholder="Select products..."
+                    classNamePrefix="react-select"
+                  />
+                  {errors.product_ids && (
+                    <div className="text-danger small mt-1">{errors.product_ids[0]}</div>
+                  )}
+                </>
               )}
             </div>
-          </div>
-
-          <div className="row mb-3">
-            <div className="col-md-4">
-              <label className="form-label fw-bold">Global Usage Limit</label>
-              <input
-                type="number"
-                min="1"
-                className="form-control"
-                value={form.usage_limit}
-                onChange={(e) => handleChange("usage_limit", e.target.value)}
-                placeholder="e.g. 80, blank = unlimited"
-              />
-            </div>
-            <div className="col-md-4">
-              <label className="form-label fw-bold">Per Customer (phone) Limit</label>
-              <input
-                type="number"
-                min="1"
-                className="form-control"
-                value={form.per_phone_limit}
-                onChange={(e) => handleChange("per_phone_limit", e.target.value)}
-                placeholder="e.g. 1, blank = unlimited"
-              />
-            </div>
-            <div className="col-md-4 d-flex align-items-end">
-              <div className="form-check form-switch mb-2">
-                <input
-                  className="form-check-input"
-                  type="checkbox"
-                  id="couponActive"
-                  checked={form.is_active}
-                  onChange={(e) => handleChange("is_active", e.target.checked)}
-                />
-                <label className="form-check-label fw-bold" htmlFor="couponActive">
-                  Active
-                </label>
-              </div>
-            </div>
-          </div>
-
-          <div className="mb-3">
-            <label className="form-label fw-bold">Applies To</label>
-            <div className="d-flex gap-4 mb-3">
-              <div className="form-check">
-                <input
-                  className="form-check-input"
-                  type="radio"
-                  name="applies_to"
-                  id="appliesAll"
-                  checked={form.applies_to === "all"}
-                  onChange={() => handleChange("applies_to", "all")}
-                />
-                <label className="form-check-label" htmlFor="appliesAll">
-                  All products
-                </label>
-              </div>
-              <div className="form-check">
-                <input
-                  className="form-check-input"
-                  type="radio"
-                  name="applies_to"
-                  id="appliesProducts"
-                  checked={form.applies_to === "products"}
-                  onChange={() => handleChange("applies_to", "products")}
-                />
-                <label className="form-check-label" htmlFor="appliesProducts">
-                  Specific products
-                </label>
-              </div>
-            </div>
-            {form.applies_to === "products" && (
-              <>
-                <Select
-                  isMulti
-                  options={productOptions}
-                  value={selectedProducts}
-                  onChange={(options) =>
-                    handleChange(
-                      "product_ids",
-                      (options || []).map((option) => option.value)
-                    )
-                  }
-                  placeholder="Select products..."
-                  classNamePrefix="react-select"
-                />
-                {errors.product_ids && (
-                  <div className="text-danger small mt-1">{errors.product_ids[0]}</div>
-                )}
-              </>
-            )}
           </div>
 
           <div className="d-flex justify-content-between border-top pt-4">

@@ -1,12 +1,16 @@
 .btn-primary {
   --bs-btn-bg: var(--primary-color);
   --bs-btn-border-color: var(--primary-color);
+  --bs-btn-color: var(--primary-contrast, #fff);
   --bs-btn-hover-bg: var(--primary-hover);
   --bs-btn-hover-border-color: var(--primary-hover);
+  --bs-btn-hover-color: var(--primary-contrast, #fff);
   --bs-btn-active-bg: var(--primary-dark);
   --bs-btn-active-border-color: var(--primary-dark);
+  --bs-btn-active-color: var(--primary-contrast, #fff);
   background-color: var(--primary-color) !important;
   border-color: var(--primary-color) !important;
+  color: var(--primary-contrast, #fff) !important;
 }
 
 .btn-primary:hover,
@@ -14,11 +18,12 @@
 .btn-primary:active {
   background-color: var(--primary-hover) !important;
   border-color: var(--primary-hover) !important;
+  color: var(--primary-contrast, #fff) !important;
 }
 
 .btn-outline-primary {
-  color: var(--primary-color) !important;
-  border-color: var(--primary-color) !important;
+  color: var(--primary-on-light, var(--primary-color)) !important;
+  border-color: var(--primary-on-light, var(--primary-color)) !important;
 }
 
 .btn-outline-primary:hover,
@@ -26,7 +31,7 @@
 .btn-outline-primary:active {
   background-color: var(--primary-color) !important;
   border-color: var(--primary-color) !important;
-  color: #fff !important;
+  color: var(--primary-contrast, #fff) !important;
 }
 
 .text-primary {
@@ -48,9 +53,21 @@
     var(--primary-gradient-mid) 51%,
     var(--primary-gradient-end) 100%
   ) !important;
+  color: var(--primary-contrast, #fff) !important;
+}
+
+.btn-grad:hover,
+.btn-grad:focus,
+.btn-grad:active {
+  color: var(--primary-contrast, #fff) !important;
 }
 
 .load-more-btn:hover:not(:disabled) {
   background-color: var(--primary-color) !important;
-  color: #fff !important;
+  color: var(--primary-contrast, #fff) !important;
+}
+
+.btn-primary svg,
+.btn-outline-primary svg {
+  color: inherit !important;
 }

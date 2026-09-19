@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import "../../layouts/dashboard.css";
 import { BsLayoutTextSidebar, BsChevronDown, BsChevronRight } from "react-icons/bs";
-import { FaChartBar, FaInfoCircle, FaProductHunt, FaShippingFast, FaShoppingBag, FaUsers, FaShieldAlt, FaAddressBook, FaCreditCard, FaPalette, FaTicketAlt } from "react-icons/fa";
+import { FaChartBar, FaInfoCircle, FaProductHunt, FaShippingFast, FaShoppingBag, FaUsers, FaShieldAlt, FaAddressBook, FaCreditCard, FaPalette, FaTicketAlt, FaClipboardList } from "react-icons/fa";
 import { RiKanbanView2 } from "react-icons/ri";
 import { IoIosSettings } from "react-icons/io";
 import { MdInventory } from "react-icons/md";
@@ -114,11 +114,24 @@ export default function SideBar({ isSidebarOpen, toggleSidebar, isMobile }) {
       permission: 'view settings' // ✅ Required permission
     },
     {
-      type: 'single',
-      href: "/dashboard/coupons",
+      type: 'menu',
+      label: 'Coupon Management',
       Icon: FaTicketAlt,
-      label: 'Coupons',
-      permission: 'view coupons'
+      requireAny: ['view coupons'],
+      submenus: [
+        {
+          href: "/dashboard/coupons",
+          label: 'Coupons',
+          Icon: FaTicketAlt,
+          permission: 'view coupons'
+        },
+        {
+          href: "/dashboard/coupon-logs",
+          label: 'Coupon Logs',
+          Icon: FaClipboardList,
+          permission: 'view coupons'
+        },
+      ]
     },
     {
       type: 'single',

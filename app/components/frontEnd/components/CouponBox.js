@@ -151,7 +151,7 @@ export default function CouponBox({
           />
           <button
             type="button"
-            className="btn btn-outline-primary"
+            className="btn btn-primary"
             onClick={handleApply}
             disabled={!phone || loading}
           >

@@ -14,10 +14,21 @@ function formatLimit(used, limit) {
 
 function formatValue(coupon) {
   if (coupon.discount_type === "percent") {
-    const cap = coupon.max_discount ? ` (max ৳${coupon.max_discount})` : "";
+    const cap = coupon.max_discount ? ` · max ৳${coupon.max_discount}` : "";
     return `${coupon.discount_value}% off${cap}`;
   }
   return `৳${coupon.discount_value} off`;
+}
+
+function formatDate(value) {
+  if (!value) return "—";
+  return new Date(value).toLocaleString(undefined, {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
 }
 
 export default function CouponTable({ coupons, onDeleted }) {
@@ -49,57 +60,68 @@ export default function CouponTable({ coupons, onDeleted }) {
 
   return (
     <div className="table-responsive">
-      <table className="table table-bordered table-hover align-middle">
+      <table className="table table-hover align-middle coupon-table mb-0">
         <thead>
           <tr>
             <th>#</th>
-            <th>Code</th>
-            <th>Name</th>
+            <th>Code / Name</th>
             <th>Discount</th>
-            <th>Scope</th>
+            <th>Start / Expires</th>
+            <th>Scope / Status</th>
             <th>Usage</th>
-            <th>Per phone</th>
-            <th>Expires</th>
-            <th>Status</th>
             <th>Actions</th>
           </tr>
         </thead>
         <tbody>
           {coupons.length === 0 && (
             <tr>
-              <td colSpan="10" className="text-center text-danger">
-                No Coupons Found
+              <td colSpan="7" className="text-center text-muted py-4">
+                No coupons found
               </td>
             </tr>
           )}
           {coupons.map((coupon, index) => (
             <tr key={coupon.id}>
-              <td>{index + 1}</td>
-              <td>
+              <td className="text-muted">{index + 1}</td>
+              <td className="coupon-code-name">
                 <code>{coupon.code}</code>
+                <div className="fw-semibold mt-1">{coupon.name}</div>
               </td>
-              <td>{coupon.name}</td>
-              <td>{formatValue(coupon)}</td>
               <td>
-                {coupon.applies_to === "products" ? (
-                  <span className="badge bg-info text-dark">
-                    {(coupon.products || []).map((p) => p.title).join(", ") || "Products"}
+                <span className="fw-semibold">{formatValue(coupon)}</span>
+                {coupon.min_subtotal ? (
+                  <div className="small text-muted">Min ৳{coupon.min_subtotal}</div>
+                ) : null}
+              </td>
+              <td className="coupon-date-line">
+                <div>
+                  <strong>Start</strong> {formatDate(coupon.starts_at)}
+                </div>
+                <div>
+                  <strong>End</strong> {coupon.expires_at ? formatDate(coupon.expires_at) : "No expiry"}
+                </div>
+              </td>
+              <td>
+                <div className="coupon-scope-status">
+                  {coupon.applies_to === "products" ? (
+                    <span className="badge bg-info text-dark">
+                      {(coupon.products || []).map((p) => p.title).join(", ") || "Selected products"}
+                    </span>
+                  ) : (
+                    <span className="badge bg-secondary">All products</span>
+                  )}
+                  <span className={`badge ${coupon.is_active ? "bg-success" : "bg-danger"}`}>
+                    {coupon.is_active ? "Active" : "Inactive"}
                   </span>
-                ) : (
-                  <span className="badge bg-secondary">All products</span>
-                )}
-              </td>
-              <td>{formatLimit(coupon.applied_usages_count || 0, coupon.usage_limit)}</td>
-              <td>{coupon.per_phone_limit ?? "Unlimited"}</td>
-              <td>
-                {coupon.expires_at
-                  ? new Date(coupon.expires_at).toLocaleString()
-                  : "No expiry"}
+                </div>
               </td>
               <td>
-                <span className={`badge ${coupon.is_active ? "bg-success" : "bg-danger"}`}>
-                  {coupon.is_active ? "Active" : "Inactive"}
-                </span>
+                <div className="fw-semibold">
+                  {formatLimit(coupon.applied_usages_count || 0, coupon.usage_limit)}
+                </div>
+                <div className="small text-muted">
+                  {coupon.per_phone_limit ? `${coupon.per_phone_limit} / phone` : "Unlimited / phone"}
+                </div>
               </td>
               <td>
                 <div className="d-flex gap-2">

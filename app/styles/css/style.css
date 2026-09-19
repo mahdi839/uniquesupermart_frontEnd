@@ -4,6 +4,8 @@
 
 :root {
 	--primary-color: #d68b11;
+	--primary-contrast: #ffffff;
+	--primary-on-light: #d68b11;
 	--font-primary: var(--font-inter);
 }
 
@@ -61,22 +63,30 @@
 .btn-primary {
 	--bs-btn-bg: var(--primary-color);
 	--bs-btn-border-color: var(--primary-color);
+	--bs-btn-color: var(--primary-contrast, #fff);
 	--bs-btn-hover-bg: color-mix(in srgb, var(--primary-color) 85%, black);
 	--bs-btn-hover-border-color: color-mix(in srgb, var(--primary-color) 80%, black);
+	--bs-btn-hover-color: var(--primary-contrast, #fff);
 	--bs-btn-active-bg: color-mix(in srgb, var(--primary-color) 75%, black);
 	--bs-btn-active-border-color: color-mix(in srgb, var(--primary-color) 70%, black);
+	--bs-btn-active-color: var(--primary-contrast, #fff);
 	--bs-btn-disabled-bg: var(--primary-color);
 	--bs-btn-disabled-border-color: var(--primary-color);
+	--bs-btn-disabled-color: var(--primary-contrast, #fff);
+	color: var(--primary-contrast, #fff);
 }
 
 .btn-outline-primary {
-	--bs-btn-color: var(--primary-color);
-	--bs-btn-border-color: var(--primary-color);
+	--bs-btn-color: var(--primary-on-light, var(--primary-color));
+	--bs-btn-border-color: var(--primary-on-light, var(--primary-color));
 	--bs-btn-hover-bg: var(--primary-color);
 	--bs-btn-hover-border-color: var(--primary-color);
+	--bs-btn-hover-color: var(--primary-contrast, #fff);
 	--bs-btn-active-bg: var(--primary-color);
 	--bs-btn-active-border-color: var(--primary-color);
-	--bs-btn-disabled-color: var(--primary-color);
+	--bs-btn-active-color: var(--primary-contrast, #fff);
+	--bs-btn-disabled-color: var(--primary-on-light, var(--primary-color));
+	color: var(--primary-on-light, var(--primary-color));
 }
 
 .form-check-input:checked,
