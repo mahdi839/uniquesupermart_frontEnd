@@ -251,6 +251,14 @@ export default function InvoicePage() {
                                             <td className="fw-semibold">Subtotal:</td>
                                             <td className="text-end">{order.subtotal || order.total - order.shipping_cost} TK</td>
                                         </tr>
+                                        {Number(order.discount_amount) > 0 && (
+                                            <tr>
+                                                <td className="fw-semibold">
+                                                    Coupon{order.coupon_code ? ` (${order.coupon_code})` : ""}:
+                                                </td>
+                                                <td className="text-end">-{order.discount_amount} TK</td>
+                                            </tr>
+                                        )}
                                         <tr>
                                             <td className="fw-semibold">Shipping Cost:</td>
                                             <td className="text-end">{order.shipping_cost} TK</td>

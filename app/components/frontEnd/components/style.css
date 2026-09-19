@@ -611,6 +611,35 @@
   margin-top: 0.5rem;
 }
 
+.total-discount {
+  color: #16a34a;
+  font-weight: 600;
+}
+
+.coupon-box {
+  margin: 1rem 1.25rem 0;
+  padding: 1rem;
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+}
+
+.coupon-input-row {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.coupon-applied {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-radius: 8px;
+  padding: 0.75rem;
+}
+
 .place-order-btn {
   width: 100%;
   padding: 1.125rem;

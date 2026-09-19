@@ -329,6 +329,9 @@ export default function OrderTable({
             {[
               ['Payment Method', order.payment_method],
               ['Shipping Cost', `৳${order.shipping_cost}`],
+              ...(order.discount_amount
+                ? [['Coupon', `${order.coupon_code || ''} (−৳${order.discount_amount})`.trim()]]
+                : []),
               ['Advance Payment', `৳${order?.advance_payment ?? 0}`],
               ['Total', `৳${order.total}`],
               ['Total Due', `৳${(order?.total - order?.advance_payment) ?? 0}`],

@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import "../../layouts/dashboard.css";
 import { BsLayoutTextSidebar, BsChevronDown, BsChevronRight } from "react-icons/bs";
-import { FaChartBar, FaInfoCircle, FaProductHunt, FaShippingFast, FaShoppingBag, FaUsers, FaShieldAlt, FaAddressBook, FaCreditCard, FaPalette } from "react-icons/fa";
+import { FaChartBar, FaInfoCircle, FaProductHunt, FaShippingFast, FaShoppingBag, FaUsers, FaShieldAlt, FaAddressBook, FaCreditCard, FaPalette, FaTicketAlt } from "react-icons/fa";
 import { RiKanbanView2 } from "react-icons/ri";
 import { IoIosSettings } from "react-icons/io";
 import { MdInventory } from "react-icons/md";
@@ -112,6 +112,13 @@ export default function SideBar({ isSidebarOpen, toggleSidebar, isMobile }) {
       Icon: FaShippingFast,
       label: 'Shipping Cost',
       permission: 'view settings' // ✅ Required permission
+    },
+    {
+      type: 'single',
+      href: "/dashboard/coupons",
+      Icon: FaTicketAlt,
+      label: 'Coupons',
+      permission: 'view coupons'
     },
     {
       type: 'single',

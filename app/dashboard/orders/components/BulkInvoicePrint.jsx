@@ -190,6 +190,9 @@ export default function BulkInvoicePrint({ orders, companyInfo, companyLogo }) {
           <tbody>
             {[
               ["Subtotal", `${order.subtotal ?? (order.total - order.shipping_cost)} TK`],
+              ...(Number(order.discount_amount) > 0
+                ? [[`Coupon${order.coupon_code ? ` (${order.coupon_code})` : ""}`, `-${order.discount_amount} TK`]]
+                : []),
               ["Shipping Cost", `${order.shipping_cost} TK`],
               ["Advance Payment", `${order.advance_payment ?? 0} TK`],
             ].map(([label, val]) => (

@@ -10,6 +10,7 @@ import useStoreData from "@/app/hooks/useStoreData";
 import { useRouter } from "next/navigation";
 import Swal from "sweetalert2";
 import axios from "axios";
+import CouponBox from "@/app/components/frontEnd/components/CouponBox";
 
 function CheckoutPage() {
   const cartItems = useSelector((state) => state.cart.items);
@@ -19,6 +20,9 @@ function CheckoutPage() {
   );
   const dispatch = useDispatch();
   const [shippingAmount, setShippingAmount] = useState(0);
+  const [appliedCoupon, setAppliedCoupon] = useState(null);
+  const discountAmount = appliedCoupon?.discount_amount || 0;
+  const payableTotal = Math.max(0, totalPrice - discountAmount) + shippingAmount;
   const route = useRouter();
   const [formData, setFormData] = useState({
     name: "",
@@ -201,7 +205,10 @@ function CheckoutPage() {
 
     const updatedFormData = {
       ...formData,
+      cart: cartItems,
       shipping_cost: shippingAmount,
+      total_amount: payableTotal,
+      coupon_code: appliedCoupon?.code || null,
       checkout_session_id: getSessionId(),
     };
 
@@ -401,11 +408,25 @@ function CheckoutPage() {
                   <span>Shipping</span>
                   <span className="text-success">{shippingAmount}</span>
                 </li>
+                {discountAmount > 0 && (
+                  <li className="list-group-item d-flex justify-content-between align-items-center px-0 border-bottom-0 text-success">
+                    <span>Coupon{appliedCoupon?.code ? ` (${appliedCoupon.code})` : ""}</span>
+                    <span>-{discountAmount} TK</span>
+                  </li>
+                )}
                 <li className="list-group-item d-flex justify-content-between align-items-center px-0 fw-bold fs-5">
                   <span>Total</span>
-                  <span>{totalPrice + shippingAmount} TK</span>
+                  <span>{payableTotal} TK</span>
                 </li>
               </ul>
+
+              <CouponBox
+                phone={formData.phone}
+                cartItems={cartItems}
+                appliedCoupon={appliedCoupon}
+                onApply={setAppliedCoupon}
+                onRemove={() => setAppliedCoupon(null)}
+              />
 
               <div className="alert alert-info small mb-4">
                 <div className="d-flex">

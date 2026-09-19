@@ -30,6 +30,8 @@ export default function EditOrderPage() {
         payment_method: "cash_on_delivery",
         advance_payment: 0,
         status: "pending",
+        coupon_code: "",
+        discount_amount: 0,
     });
 
     const [items, setItems] = useState([]);
@@ -81,6 +83,8 @@ export default function EditOrderPage() {
                     payment_method: order.payment_method,
                     advance_payment: order.advance_payment || 0,
                     status: order.status,
+                    coupon_code: order.coupon_code || "",
+                    discount_amount: order.discount_amount || 0,
                 });
 
                 // Set items
@@ -212,7 +216,8 @@ export default function EditOrderPage() {
 
     // Calculate totals
     const subtotal = items.reduce((sum, item) => sum + item.totalPrice, 0);
-    const total = subtotal + parseFloat(formData.shipping_cost || 0);
+    const discountAmount = parseFloat(formData.discount_amount || 0);
+    const total = Math.max(0, subtotal - discountAmount) + parseFloat(formData.shipping_cost || 0);
     
     // Submit form
     const handleSubmit = async (e) => {
@@ -644,6 +649,14 @@ export default function EditOrderPage() {
                                             <span>Subtotal:</span>
                                             <strong>৳{subtotal.toFixed(2)}</strong>
                                         </div>
+                                        {discountAmount > 0 && (
+                                            <div className="d-flex justify-content-between mb-2 text-success">
+                                                <span>
+                                                    Coupon{formData.coupon_code ? ` (${formData.coupon_code})` : ""}:
+                                                </span>
+                                                <strong>-৳{discountAmount.toFixed(2)}</strong>
+                                            </div>
+                                        )}
                                         <div className="d-flex justify-content-between mb-2">
                                             <span>Shipping:</span>
                                             <strong>৳{parseFloat(formData.shipping_cost).toFixed(2)}</strong>

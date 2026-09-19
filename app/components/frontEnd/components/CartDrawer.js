@@ -26,6 +26,7 @@ export default function CartDrawer({ isOpen, onClose, isDirectBuy }) {
   const [removingItem, setRemovingItem] = useState(null);
   const [orderCompleted, setOrderCompleted] = useState(false);
   const [isSubmittingOrder, setIsSubmittingOrder] = useState(false);
+  const [appliedCoupon, setAppliedCoupon] = useState(null);
 
   // Tracking refs
   const abandonedCheckoutSent = useRef(false);
@@ -37,7 +38,8 @@ export default function CartDrawer({ isOpen, onClose, isDirectBuy }) {
   const dispatch = useDispatch();
 
   const totalPrice = cartItems.reduce((total, item) => total + item.totalPrice, 0);
-  const finalTotal = totalPrice + shippingAmount;
+  const discountAmount = appliedCoupon?.discount_amount || 0;
+  const finalTotal = Math.max(0, totalPrice - discountAmount) + shippingAmount;
 
   // Generate or retrieve session ID
   const getSessionId = () => {
@@ -299,6 +301,7 @@ export default function CartDrawer({ isOpen, onClose, isDirectBuy }) {
       user_id,
       shipping_cost: shippingAmount,
       total_amount: finalTotal,
+      coupon_code: appliedCoupon?.code || null,
       checkout_session_id: getSessionId(),
       fbp: fbp,
       fbc: fbc,
@@ -344,6 +347,7 @@ export default function CartDrawer({ isOpen, onClose, isDirectBuy }) {
           payment_method: "cash",
           delivery_notes: "",
         });
+        setAppliedCoupon(null);
 
         // Reset tracking flags
         abandonedCheckoutSent.current = false;
@@ -361,6 +365,12 @@ export default function CartDrawer({ isOpen, onClose, isDirectBuy }) {
       setOrderCompleted(false);
       orderSubmittingRef.current = false;
       setIsSubmittingOrder(false);
+      const couponError = error.response?.data?.errors?.coupon_code?.[0];
+      if (couponError) {
+        setAppliedCoupon(null);
+        toast.error(couponError);
+        return;
+      }
       const errorMessage =
         error.response?.data?.error ||
         error.response?.data?.message ||
@@ -420,6 +430,9 @@ export default function CartDrawer({ isOpen, onClose, isDirectBuy }) {
                 onDistrictChange={handleDistrictChange}
                 onSubmit={handleCheckoutSubmit}
                 isSubmitting={isSubmittingOrder}
+                appliedCoupon={appliedCoupon}
+                onApplyCoupon={setAppliedCoupon}
+                onRemoveCoupon={() => setAppliedCoupon(null)}
               />
             )}
           </div>
