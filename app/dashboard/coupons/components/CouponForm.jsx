@@ -22,6 +22,7 @@ const emptyForm = {
   per_phone_limit: "1",
   applies_to: "all",
   product_ids: [],
+  category_ids: [],
 };
 
 function toDateTimeLocal(value) {
@@ -44,28 +45,40 @@ export default function CouponForm({ mode = "create", couponId }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [loading, setLoading] = useState(mode === "edit");
   const [productOptions, setProductOptions] = useState([]);
+  const [categoryOptions, setCategoryOptions] = useState([]);
 
   const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
   const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 
   useEffect(() => {
-    async function loadProducts() {
+    async function loadOptions() {
       try {
-        const res = await axios.get(`${baseUrl}api/coupons/product-options`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        const [productsRes, categoriesRes] = await Promise.all([
+          axios.get(`${baseUrl}api/coupons/product-options`, {
+            headers: { Authorization: `Bearer ${token}` },
+          }),
+          axios.get(`${baseUrl}api/coupons/category-options`, {
+            headers: { Authorization: `Bearer ${token}` },
+          }),
+        ]);
         setProductOptions(
-          (res.data.data || []).map((product) => ({
+          (productsRes.data.data || []).map((product) => ({
             value: product.id,
             label: product.sku ? `${product.title} (${product.sku})` : product.title,
           }))
         );
+        setCategoryOptions(
+          (categoriesRes.data.data || []).map((category) => ({
+            value: category.id,
+            label: category.name,
+          }))
+        );
       } catch (error) {
-        toast.error("Failed to load products");
+        toast.error("Failed to load coupon options");
       }
     }
 
-    if (token) loadProducts();
+    if (token) loadOptions();
   }, [baseUrl, token]);
 
   useEffect(() => {
@@ -93,6 +106,7 @@ export default function CouponForm({ mode = "create", couponId }) {
           per_phone_limit: coupon.per_phone_limit ?? "",
           applies_to: coupon.applies_to || "all",
           product_ids: (coupon.products || []).map((product) => product.id),
+          category_ids: (coupon.categories || []).map((category) => category.id),
         });
       } catch (error) {
         toast.error("Failed to load coupon");
@@ -111,6 +125,9 @@ export default function CouponForm({ mode = "create", couponId }) {
 
   const selectedProducts = productOptions.filter((option) =>
     form.product_ids.includes(option.value)
+  );
+  const selectedCategories = categoryOptions.filter((option) =>
+    form.category_ids.includes(option.value)
   );
 
   async function handleSubmit(e) {
@@ -133,6 +150,7 @@ export default function CouponForm({ mode = "create", couponId }) {
       per_phone_limit: emptyToNull(form.per_phone_limit),
       applies_to: form.applies_to,
       product_ids: form.applies_to === "products" ? form.product_ids : [],
+      category_ids: form.applies_to === "categories" ? form.category_ids : [],
     };
 
     try {
@@ -362,7 +380,7 @@ export default function CouponForm({ mode = "create", couponId }) {
             </h6>
             <div className="mb-3">
               <label className="form-label fw-bold">Applies To</label>
-              <div className="d-flex gap-4 mb-3">
+              <div className="d-flex flex-wrap gap-4 mb-3">
                 <div className="form-check">
                   <input
                     className="form-check-input"
@@ -389,6 +407,19 @@ export default function CouponForm({ mode = "create", couponId }) {
                     Specific products
                   </label>
                 </div>
+                <div className="form-check">
+                  <input
+                    className="form-check-input"
+                    type="radio"
+                    name="applies_to"
+                    id="appliesCategories"
+                    checked={form.applies_to === "categories"}
+                    onChange={() => handleChange("applies_to", "categories")}
+                  />
+                  <label className="form-check-label" htmlFor="appliesCategories">
+                    Specific categories
+                  </label>
+                </div>
               </div>
               {form.applies_to === "products" && (
                 <>
@@ -407,6 +438,29 @@ export default function CouponForm({ mode = "create", couponId }) {
                   />
                   {errors.product_ids && (
                     <div className="text-danger small mt-1">{errors.product_ids[0]}</div>
+                  )}
+                </>
+              )}
+              {form.applies_to === "categories" && (
+                <>
+                  <Select
+                    isMulti
+                    options={categoryOptions}
+                    value={selectedCategories}
+                    onChange={(options) =>
+                      handleChange(
+                        "category_ids",
+                        (options || []).map((option) => option.value)
+                      )
+                    }
+                    placeholder="Select categories..."
+                    classNamePrefix="react-select"
+                  />
+                  <small className="text-muted d-block mt-2">
+                    The coupon applies only to products in the selected categories.
+                  </small>
+                  {errors.category_ids && (
+                    <div className="text-danger small mt-1">{errors.category_ids[0]}</div>
                   )}
                 </>
               )}

@@ -107,6 +107,10 @@ export default function CouponTable({ coupons, onDeleted }) {
                     <span className="badge bg-info text-dark">
                       {(coupon.products || []).map((p) => p.title).join(", ") || "Selected products"}
                     </span>
+                  ) : coupon.applies_to === "categories" ? (
+                    <span className="badge bg-warning text-dark">
+                      {(coupon.categories || []).map((c) => c.name).join(", ") || "Selected categories"}
+                    </span>
                   ) : (
                     <span className="badge bg-secondary">All products</span>
                   )}
