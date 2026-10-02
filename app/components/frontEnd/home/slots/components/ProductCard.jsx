@@ -5,12 +5,27 @@ import "./productCard.css";
 
 const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 
+function cardStatusBadge(product) {
+  if (product?.status === "prebook") return "prebook";
+
+  const summary = product?.inventory_summary;
+  const inventory = product?.inventory;
+  const tracks = Boolean(summary?.track_inventory ?? inventory?.track_inventory);
+  const inStock = summary
+    ? Boolean(summary.in_stock)
+    : tracks && (inventory?.total_available ?? 0) > 0;
+
+  if ((tracks && inStock) || product?.status === "in-stock") return "in-stock";
+  return null;
+}
+
 export default function ProductCard({ slotProducts, slotLength, className }) {
   const firstImage = slotProducts?.images?.[0]?.image
     ? `${baseUrl}${slotProducts.images[0].image}`
     : slotProducts?.image
     ? `${baseUrl}${slotProducts.image}`
     : "";
+  const statusBadge = cardStatusBadge(slotProducts);
 
   return (
     <div
@@ -65,9 +80,14 @@ export default function ProductCard({ slotProducts, slotLength, className }) {
       </div>
 
       {/* Status badge — absolute, unaffected by flex order */}
-      {slotProducts?.status === "prebook" && (
+      {statusBadge === "prebook" && (
         <div className="position-absolute m-2 px-2 px-md-3 py-1 shadow-sm product_status_badge">
           PRE-BOOK
+        </div>
+      )}
+      {statusBadge === "in-stock" && (
+        <div className="position-absolute m-2 px-2 px-md-3 py-1 shadow-sm product_status_badge in-stock-badge">
+          IN-STOCK
         </div>
       )}
     </div>

@@ -19,16 +19,17 @@ function CartPage() {
     setMounted(true);
   }, []);
 
-  function handleIncreament(id) {
-    dispatch(increament({ id }))
+  // Keyed by lineId so two variants of the same product stay independent.
+  function handleIncreament(lineId) {
+    dispatch(increament({ lineId }))
   }
 
-  function handleDecreament(id) {
-    dispatch(decreament({ id }))
+  function handleDecreament(lineId) {
+    dispatch(decreament({ lineId }))
   }
 
-  function handleRemove(id) {
-    dispatch(removeCart({ id }))
+  function handleRemove(lineId) {
+    dispatch(removeCart({ lineId }))
   }
 
   // function handleCheckout (e){
@@ -108,7 +109,7 @@ function CartPage() {
                   </div>
                 ) :
                   cartItems?.map((item) => (
-                    <div className="row align-items-center border mb-2 py-3 mx-0 px-0" key={item.id}>
+                    <div className="row align-items-center border mb-2 py-3 mx-0 px-0" key={item.lineId ?? item.id}>
                       {/* Product Image - Circular */}
                       <div className="col-md-1 col-2 pe-0">
                         <div className="position-relative">
@@ -136,10 +137,20 @@ function CartPage() {
                           </h6>
                         </Link>
                         <div className="d-flex flex-column gap-2 small">
-                          {item.size && <span className="text-muted">Variant: <span className="text-dark fw-medium">{item.size}</span></span>}
+                          {(item.size_label || item.color_name) && (
+                            <span className="text-muted">
+                              {item.color_name && (
+                                <span className="text-dark fw-medium">{item.color_name}</span>
+                              )}
+                              {item.color_name && item.size_label && " / "}
+                              {item.size_label && (
+                                <span className="text-dark fw-medium">{item.size_label}</span>
+                              )}
+                            </span>
+                          )}
                           <span
                             className={`border-0 ${style.cursor}`}
-                            onClick={() => handleRemove(item.id)}
+                            onClick={() => handleRemove(item.lineId)}
                             title="Remove"
                           >
                             <FaTrash className="text-danger" />
@@ -153,7 +164,7 @@ function CartPage() {
                         <div className="d-flex align-items-center justify-content-center">
                           <button
                             className=" px-2 py-1 border-0"
-                            onClick={() => handleDecreament(item.id)}
+                            onClick={() => handleDecreament(item.lineId)}
                             disabled={item.qty <= 1}
                             style={{ opacity: item.qty <= 1 ? 0.5 : 1 }}
                           >
@@ -166,7 +177,7 @@ function CartPage() {
 
                           <button
                             className="px-2 py-1 border-0"
-                            onClick={() => handleIncreament(item.id)}
+                            onClick={() => handleIncreament(item.lineId)}
                           >
                             <FaPlus />
                           </button>

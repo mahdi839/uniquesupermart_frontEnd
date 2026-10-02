@@ -188,13 +188,14 @@ export default function CartDrawer({ isOpen, onClose, isDirectBuy }) {
   }, [isOpen]);
 
   // Cart functions
-  const handleIncreament = (id) => dispatch(increament({ id }));
-  const handleDecreament = (id) => dispatch(decreament({ id }));
+  // Keyed by lineId so two variants of the same product stay independent.
+  const handleIncreament = (lineId) => dispatch(increament({ lineId }));
+  const handleDecreament = (lineId) => dispatch(decreament({ lineId }));
 
-  const handleRemove = (id) => {
-    setRemovingItem(id);
+  const handleRemove = (lineId) => {
+    setRemovingItem(lineId);
     setTimeout(() => {
-      dispatch(removeCart({ id }));
+      dispatch(removeCart({ lineId }));
       setRemovingItem(null);
     }, 300);
   };
@@ -371,6 +372,35 @@ export default function CartDrawer({ isOpen, onClose, isDirectBuy }) {
         toast.error(couponError);
         return;
       }
+
+      // Stock ran out during checkout. Name the variants so the customer knows
+      // what to change — the cart is deliberately left intact.
+      const shortfalls = error.response?.data?.shortfalls;
+
+      if (Array.isArray(shortfalls) && shortfalls.length > 0) {
+        const lines = shortfalls
+          .map((item) => {
+            const label =
+              item.variant_label && item.variant_label !== "Default"
+                ? ` (${item.variant_label})`
+                : "";
+            return item.available > 0
+              ? `${item.title}${label} — only ${item.available} left`
+              : `${item.title}${label} — out of stock`;
+          })
+          .join("<br>");
+
+        Swal.fire({
+          icon: "warning",
+          title: "Stock just changed",
+          html: `${lines}<br><br>Please update your cart and try again.`,
+          confirmButtonColor: getPrimaryColor(),
+        });
+
+        setCurrentStep("cart");
+        return;
+      }
+
       const errorMessage =
         error.response?.data?.error ||
         error.response?.data?.message ||

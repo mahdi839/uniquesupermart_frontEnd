@@ -21,6 +21,26 @@ async function getCategory(slug) {
   }
 }
 
+/**
+ * Colour/size options for the filter bar. Availability changes constantly, so
+ * this is never cached. A failure here must not take the page down.
+ */
+async function getStockFilters(slug) {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}api/category-filters/${slug}`,
+      { cache: "no-store" }
+    );
+
+    if (!res.ok) return null;
+
+    const json = await res.json();
+    return json.data ?? null;
+  } catch {
+    return null;
+  }
+}
+
 export async function generateMetadata({ params }) {
   const slug = params?.category;
 
@@ -58,7 +78,11 @@ export default async function Page({ params }) {
     notFound();
   }
 
-  const categoryInfo = await getCategory(category);
+  const [categoryInfo, stockFilters] = await Promise.all([
+    getCategory(category),
+    getStockFilters(category),
+  ]);
+
   if (!categoryInfo) notFound();
 
   let products = [];
@@ -111,6 +135,7 @@ export default async function Page({ params }) {
         products={products}
         category={category}
         pagination={paginationData}
+        stockFilters={stockFilters}
       />
     </>
   );

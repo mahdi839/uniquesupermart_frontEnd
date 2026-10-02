@@ -21,7 +21,11 @@ import { siteConfig } from "@/config/siteConfig";
 export default function SideBar({ isSidebarOpen, toggleSidebar, isMobile }) {
   const [openMenu, setOpenMenu] = useState(null);
   const pathname = usePathname();
-  const { hasPermission, hasRole, hasAnyPermission } = useAuth();
+  const { hasPermission, hasRole, hasAnyPermission, refreshUserData, userPermissions } = useAuth();
+
+  useEffect(() => {
+    refreshUserData({ silent: true });
+  }, []);
 
   // ✅ Menu structure with permissions
   const allMenuItems = [
@@ -37,7 +41,7 @@ export default function SideBar({ isSidebarOpen, toggleSidebar, isMobile }) {
       label: 'Products Management',
       Icon: FaProductHunt,
       // ✅ Show menu if user has ANY of these permissions
-      requireAny: ['view categories', 'view products'],
+      requireAny: ['view categories', 'view products', 'manage inventory'],
       submenus: [
         {
           href: "/dashboard/category",
@@ -51,12 +55,12 @@ export default function SideBar({ isSidebarOpen, toggleSidebar, isMobile }) {
           Icon: FaProductHunt,
           permission: 'view products' // ✅ Required permission
         },
-        // { 
-        //   href: "/dashboard/inventory", 
-        //   label: 'Inventory Management', 
-        //   Icon: MdInventory,
-        //   permission: 'view products' // ✅ Reuse products permission
-        // },
+        {
+          href: "/dashboard/inventory",
+          label: 'Inventory',
+          Icon: MdInventory,
+          permission: 'manage inventory'
+        },
       ]
     },
     {
@@ -289,7 +293,7 @@ export default function SideBar({ isSidebarOpen, toggleSidebar, isMobile }) {
         }
       }
     }
-  }, [pathname]);
+  }, [pathname, userPermissions]);
 
 
   const toggleMenu = (menuLabel) => {

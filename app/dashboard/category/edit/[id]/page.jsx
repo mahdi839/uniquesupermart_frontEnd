@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 import Select from "react-select";
 import { useDispatch } from "react-redux";
 import { clearCategoryCache, fetchCategories } from "@/redux/slices/categorySlice";
+import StockTrackingToggle from "../../components/StockTrackingToggle";
 export default function Page({ params }) {
   const { id } = params;
   const router = useRouter();
@@ -15,6 +16,7 @@ export default function Page({ params }) {
   const [data, setData] = useState(null);
   const [categories, setCategories] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [applyTrackingToProducts, setApplyTrackingToProducts] = useState(false);
   const [errors, setErrors] = useState({});
   const dispatch = useDispatch();
   const token =
@@ -116,6 +118,8 @@ export default function Page({ params }) {
           home_category: data.home_category,
           priority: parseInt(data.priority) || 0,
           size_guide_type: data.size_guide_type || null,
+          track_inventory: Boolean(data.track_inventory),
+          apply_tracking_to_products: applyTrackingToProducts,
         },
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -235,6 +239,20 @@ export default function Page({ params }) {
                 name="priority"
                 value={data.priority ?? 0}
                 onChange={handleChange}
+              />
+            </div>
+
+            {/* INVENTORY */}
+            <div className="mb-4">
+              <label className="form-label fw-bold d-block">Inventory</label>
+              <StockTrackingToggle
+                value={data.track_inventory}
+                onChange={(next) =>
+                  setData((prev) => ({ ...prev, track_inventory: next }))
+                }
+                disabled={isSubmitting}
+                applyToProducts={applyTrackingToProducts}
+                onApplyToProductsChange={setApplyTrackingToProducts}
               />
             </div>
 

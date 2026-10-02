@@ -64,6 +64,11 @@
   position: relative;
 }
 
+.product_status_badge.in-stock-badge {
+  background: #0f6b52;
+  color: #fff;
+}
+
 /* Ensure pseudo-elements don't block clicks */
 .product-card::before,
 .product-card::after {

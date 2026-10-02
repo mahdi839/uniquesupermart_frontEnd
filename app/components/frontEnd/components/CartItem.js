@@ -12,9 +12,11 @@ export default function CartItem({
   getSizeName,
   onClose
 }) {
+  const lineId = item.lineId ?? item.id;
+
   return (
     <div
-      className={`cart-item ${removingItem === item.id ? 'removing' : ''}`}
+      className={`cart-item ${removingItem === lineId ? 'removing' : ''}`}
     >
       <div className="item-image">
         <Image
@@ -40,16 +42,18 @@ export default function CartItem({
         <div className="item-total">
           <span className="total-price"> <strong>৳</strong> {item.totalPrice}</span>
         </div>
-        {item.size && (
+        {(item.color_name || item.size) && (
           <p className="item-variant">
-            Variant: <span>{getSizeName(item.size)}</span>
+            {item.color_name && <span>{item.color_name}</span>}
+            {item.color_name && item.size && " / "}
+            {item.size && <span>{item.size_label || getSizeName(item.size)}</span>}
           </p>
         )}
 
         <div className="item-actions">
           <div className="quantity-controls">
             <button
-              onClick={() => onDecreament(item.id)}
+              onClick={() => onDecreament(lineId)}
               disabled={item.qty <= 1}
               className="qty-btn qty-minus"
               aria-label="Decrease quantity"
@@ -58,15 +62,21 @@ export default function CartItem({
             </button>
             <span className="qty-display">{item.qty}</span>
             <button
-              onClick={() => onIncreament(item.id)}
+              onClick={() => onIncreament(lineId)}
+              disabled={Boolean(item.max_qty) && item.qty >= item.max_qty}
               className="qty-btn qty-plus"
               aria-label="Increase quantity"
+              title={
+                item.max_qty && item.qty >= item.max_qty
+                  ? `Only ${item.max_qty} in stock`
+                  : undefined
+              }
             >
               <FaPlus size={10} />
             </button>
           </div>
           <button
-            onClick={() => onRemove(item.id)}
+            onClick={() => onRemove(lineId)}
             className="remove-btn"
             aria-label="Remove item"
           >

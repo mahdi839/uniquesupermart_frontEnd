@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { notFound } from "next/navigation";
 import Products from "../components/Products";
 import {
@@ -8,11 +9,12 @@ import {
   truncate,
 } from "@/lib/seo";
 
-async function getProduct(id) {
+// Size stock is live. Never serve an hour-old product payload here.
+const getProduct = cache(async (id) => {
   try {
     const backend = process.env.NEXT_PUBLIC_BACKEND_URL;
     const res = await fetch(`${backend}api/products/${id}`, {
-      next: { tags: ["products"], revalidate: 3600 },
+      cache: "no-store",
     });
 
     if (!res.ok) return null;
@@ -22,7 +24,7 @@ async function getProduct(id) {
   } catch {
     return null;
   }
-}
+});
 
 export async function generateMetadata({ params }) {
   const product = await getProduct(params.id);

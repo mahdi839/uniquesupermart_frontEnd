@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
 import { FaCartPlus, FaChevronLeft, FaChevronRight, FaFacebookMessenger, FaRuler, FaWhatsapp } from "react-icons/fa";
 import { IoIosArrowUp, IoIosArrowDown } from "react-icons/io";
@@ -13,6 +13,7 @@ import "react-medium-image-zoom/dist/styles.css";
 import "./productPage.css";
 import "./specification.css";
 import useProductLogics from "@/app/hooks/useProductLogics";
+import useProductInventory from "@/app/hooks/useProductInventory";
 import { useDispatch, useSelector } from "react-redux";
 import VirtualizedRelatedProducts from "./VirtualizedRelatedProducts";
 import Slider from "react-slick";
@@ -31,7 +32,8 @@ const CartDrawer = dynamic(
   }
 );
 
-export default function Products({ product, socialLinksData, initialRelatedProducts, productId }) {
+export default function Products({ product: initialProduct, socialLinksData, initialRelatedProducts, productId }) {
+  const [product, setProduct] = useState(initialProduct);
   const [activeTab, setActiveTab] = useState("specs");
   const [openFaqId, setOpenFaqId] = useState(0);
   const [modalSelectedSize, setModalSelectedSize] = useState(null);
@@ -39,6 +41,7 @@ export default function Products({ product, socialLinksData, initialRelatedProdu
   const [showSizeGuide, setShowSizeGuide] = useState(false);
   const [localImgUrl, setLocalImgUrl] = useState(null);
   const [selectedColorName, setSelectedColorName] = useState(null)
+  const [selectedColorId, setSelectedColorId] = useState(null)
   // smart image loader
   const [showImgLoader, setShowImgLoader] = useState(false);
   const loaderDelayRef = useRef(null);
@@ -74,8 +77,56 @@ export default function Products({ product, socialLinksData, initialRelatedProdu
   const messengerUrl = `https://m.me/${pageId}`;
 
   const images = product?.images || [];
-  const cartItem = cartItems.find((item) => product.id == item.id);
   const hasSpecifications = product?.specifications && product.specifications.length > 0;
+
+  const stock = useProductInventory(product);
+
+  const availableColors = useMemo(() => {
+    const colors = product?.colors ?? [];
+    if (!stock.tracks) return colors;
+    return colors.filter((color) => stock.colorAvailability(color.id).sellable);
+  }, [product?.colors, stock]);
+
+  // A product with only one colour or only one size is effectively pre-selected,
+  // so availability can be shown before the customer touches anything.
+  const effectiveColorId =
+    selectedColorId ??
+    (availableColors.length === 1 ? availableColors[0].id : null);
+
+  const availableSizes = useMemo(() => {
+    const sizes = product?.sizes ?? [];
+    if (!stock.tracks) return sizes;
+    return sizes.filter((size) =>
+      stock.sizeAvailability(size.id, effectiveColorId).sellable
+    );
+  }, [product?.sizes, stock, effectiveColorId]);
+
+  const effectiveSizeId =
+    selectedSize ?? (availableSizes.length === 1 ? availableSizes[0].id : null);
+
+  const selection = stock.selection(effectiveColorId, effectiveSizeId);
+
+  // Pre-order copy comes from the product's own settings, falling back to the
+  // wording the site used before inventory existed.
+  const preorderLabel =
+    stock.preorderNote ||
+    (stock.preorderEtaDays
+      ? `Pre Order, Delivery Time ${stock.preorderEtaDays} Days`
+      : "Pre Order, Delivery Time 20 to 25 Days");
+
+  const needsColor = availableColors.length > 1 && !selectedColor;
+  const needsSize = availableSizes.length > 1 && !selectedSize;
+  const selectionComplete = !needsColor && !needsSize;
+  const showInStockBadge =
+    stock.tracks &&
+    (stock.totalAvailable ?? 0) > 0 &&
+    product?.status !== "prebook";
+
+  const cartItem = cartItems.find((item) =>
+    selection.variantId
+      ? item.variant_id === selection.variantId
+      : product.id == item.id
+  );
 
   const displayImgUrl =
     localImgUrl ||
@@ -87,8 +138,50 @@ export default function Products({ product, socialLinksData, initialRelatedProdu
   };
 
   useEffect(() => {
+    setProduct(initialProduct);
+  }, [initialProduct]);
+
+  // Re-read inventory after confirm so size counts are not an hour-old SSR copy.
+  useEffect(() => {
+    if (!initialProduct?.id || !baseUrl) return undefined;
+
+    let cancelled = false;
+
+    fetch(`${baseUrl}api/products/${initialProduct.id}`, { cache: "no-store" })
+      .then((res) => (res.ok ? res.json() : null))
+      .then((json) => {
+        if (!cancelled && json?.data) setProduct(json.data);
+      })
+      .catch(() => {});
+
+    return () => {
+      cancelled = true;
+    };
+  }, [initialProduct?.id, baseUrl]);
+
+  useEffect(() => {
+    if (product) setIsLoading(false);
     if (product?.error) toast.error(product.error);
   }, [product]);
+
+  useEffect(() => {
+    if (!stock.tracks) return;
+
+    if (
+      selectedColorId != null &&
+      !availableColors.some((color) => String(color.id) === String(selectedColorId))
+    ) {
+      setSelectedColorId(null);
+      setSelectedColorName(null);
+    }
+
+    if (
+      selectedSize != null &&
+      !availableSizes.some((size) => String(size.id) === String(selectedSize))
+    ) {
+      handleSelectedSize(null);
+    }
+  }, [stock.tracks, selectedColorId, selectedSize, availableColors, availableSizes]);
 
   useEffect(() => {
     return () => {
@@ -147,12 +240,21 @@ export default function Products({ product, socialLinksData, initialRelatedProdu
     await stopDelayedLoader();
   }
 
-  async function handleColorClick(colorImage, colorName) {
+  async function handleColorClick(colorImage, colorName, colorId) {
     const newUrl = `${baseUrl}${colorImage}`;
     await switchMainImage(newUrl, () => {
       handleSelectedColor(colorImage);
     });
     setSelectedColorName(colorName)
+    setSelectedColorId(colorId ?? null)
+
+    if (
+      selectedSize != null &&
+      stock.tracks &&
+      !stock.sizeAvailability(selectedSize, colorId).sellable
+    ) {
+      handleSelectedSize(null);
+    }
   }
 
   async function handleThumbClickLocal(imgId) {
@@ -178,7 +280,44 @@ export default function Products({ product, socialLinksData, initialRelatedProdu
 
   function handleAddToCart(type) {
     if (!product) return;
-    const existing = cartItems.find((item) => item.id === product.id);
+
+    if (needsSize) {
+      Swal.fire({
+        title: `Please Select A Size`,
+        icon: "warning",
+        confirmButtonText: "Ok",
+        confirmButtonColor: getPrimaryColor(),
+      });
+      return;
+    }
+
+    if (needsColor) {
+      Swal.fire({
+        title: `Please Select A Color`,
+        icon: "warning",
+        confirmButtonText: "Ok",
+        confirmButtonColor: getPrimaryColor(),
+      });
+      return;
+    }
+
+    // The exact colour + size is known by now, so stock can be checked properly.
+    if (stock.tracks && !selection.sellable) {
+      Swal.fire({
+        title: "Out of stock",
+        text: "This colour and size combination is sold out. Please pick another one.",
+        icon: "warning",
+        confirmButtonText: "Ok",
+        confirmButtonColor: getPrimaryColor(),
+      });
+      return;
+    }
+
+    const existing = cartItems.find((item) =>
+      selection.variantId
+        ? item.variant_id === selection.variantId
+        : item.id === product.id
+    );
 
     if (existing) {
       Swal.fire({
@@ -191,39 +330,38 @@ export default function Products({ product, socialLinksData, initialRelatedProdu
       return;
     }
 
-    if (product.sizes.length > 1 && !selectedSize) {
-      Swal.fire({
-        title: `Please Select A Size`,
-        icon: "warning",
-        confirmButtonText: "Ok",
-        confirmButtonColor: getPrimaryColor(),
-      });
-      return;
-    }
-
-    if (product?.colors?.length > 1 && !selectedColor) {
-      Swal.fire({
-        title: `Please Select A Color`,
-        icon: "warning",
-        confirmButtonText: "Ok",
-        confirmButtonColor: getPrimaryColor(),
-      });
-      return;
-    }
-
-    const selectedVariant = product.sizes.find((s) => s.id == selectedSize) || product.sizes[0];
+    const selectedVariant =
+      availableSizes.find((s) => s.id == selectedSize) ||
+      availableSizes[0] ||
+      product.sizes?.[0];
     const imageUrl = product.images?.[0]?.image ? baseUrl + product.images[0].image : "";
+    const requestedQty = preQty ?? 1;
+    const cappedQty =
+      stock.tracks && !selection.preorder && selection.available > 0
+        ? Math.min(requestedQty, selection.available)
+        : requestedQty;
+
+    if (cappedQty < requestedQty) {
+      toast.info(`Only ${selection.available} left, quantity adjusted.`);
+    }
 
     dispatch(
       addToCart({
         id: product.id,
         title: product.title,
         size: selectedSize ? selectedVariant.id : "",
+        size_label: selectedSize ? selectedVariant.size : null,
         price: selectedVariant?.pivot?.price ?? product.discount ?? 0,
         image: imageUrl,
         colorImage: selectedColor ? baseUrl + selectedColor : null,
         color_name: selectedColorName,
-        preQty: preQty ?? 1,
+        // Inventory hints so the API resolves the exact stock row.
+        variant_id: selection.variantId,
+        product_color_id: selection.productColorId,
+        color_id: effectiveColorId,
+        max_qty: stock.tracks && !selection.preorder ? selection.available : null,
+        is_preorder: selection.preorder,
+        preQty: cappedQty,
       })
     );
 
@@ -289,18 +427,36 @@ export default function Products({ product, socialLinksData, initialRelatedProdu
     }
 
     const baseProduct = product || selectedProduct;
+
+    // Related-product cards only carry a product-level total; the API re-checks
+    // the exact colour and size when the order is placed.
+    const summary = baseProduct?.inventory_summary;
+    if (summary?.track_inventory && !summary.in_stock && !summary.allow_preorder) {
+      Swal.fire({
+        title: "Out of stock",
+        text: "This product is sold out right now.",
+        icon: "warning",
+        confirmButtonColor: getPrimaryColor(),
+      });
+      return;
+    }
+
     const selectedVariant =
       baseProduct?.sizes?.find((s) => s.id == modalSelectedSize) || baseProduct?.sizes?.[0];
     const imageUrl = baseProduct?.image ? baseUrl + baseProduct?.image : "";
+    const modalColor = baseProduct?.colors?.find((c) => c.image === modalSelectedColor);
 
     dispatch(
       addToCart({
         id: baseProduct.id,
         title: baseProduct.title,
         size: modalSelectedSize ?? "",
+        size_label: selectedVariant?.size ?? null,
         price: selectedVariant?.pivot?.price ?? baseProduct.discount ?? 0,
         image: imageUrl,
         colorImage: modalSelectedColor ? baseUrl + modalSelectedColor : null,
+        color_name: modalColor?.name ?? null,
+        color_id: modalColor?.id ?? null,
         preQty: preQty ?? 1,
       })
     );
@@ -364,7 +520,10 @@ export default function Products({ product, socialLinksData, initialRelatedProdu
               </div>
             )}
             {product?.status === "prebook" && (
-              <div className="preorder-badge">⚡ Pre Order, Delivery Time 20 to 25 Days</div>
+              <div className="preorder-badge">⚡ {preorderLabel}</div>
+            )}
+            {showInStockBadge && (
+              <div className="stock-status-badge in-stock">In stock</div>
             )}
              {product?.status === "in-stock" && (
               <div className="preorder-badge">⚡Delivery Time 2 to 4 Days</div>
@@ -379,6 +538,13 @@ export default function Products({ product, socialLinksData, initialRelatedProdu
                 <div className="main-image-loader">
                   <div className="img-spinner" />
                 </div>
+              )}
+
+              {showInStockBadge && (
+                <div className="product-gallery-stock-badge">IN-STOCK</div>
+              )}
+              {product?.status === "prebook" && (
+                <div className="product-gallery-stock-badge prebook">PRE-BOOK</div>
               )}
 
               <Zoom>
@@ -492,7 +658,10 @@ export default function Products({ product, socialLinksData, initialRelatedProdu
                 </div>
               )}
               {product?.status === "prebook" && (
-                <div className="preorder-badge">⚡ Pre Order, Delivery Time 20 to 25 Days</div>
+                <div className="preorder-badge">⚡ {preorderLabel}</div>
+              )}
+              {showInStockBadge && (
+                <div className="stock-status-badge in-stock">In stock</div>
               )}
             </div>
 
@@ -503,62 +672,117 @@ export default function Products({ product, socialLinksData, initialRelatedProdu
               )}
             </div>
 
-            {product.colors?.length > 0 && (
+            {availableColors.length > 0 && (
               <div className="variant-section">
                 <div className="color-section-title">
                   <span className="required-asterisk">*</span>
                   Colors:
                 </div>
                 <div className="color-selector-grid">
-                  {product?.colors?.map((color) => (
-                    <div
-                      key={color.id}
-                      className={`color-option-card ${selectedColor === color.image ? "selected" : ""}`}
-                      onClick={() => handleColorClick(color?.image, color?.name)}
-                      data-tooltip-id="color-tooltip"
-                      data-tooltip-content={color.name}
-                    >
-                      <Image
-                        src={
-                          color?.image
-                            ? process.env.NEXT_PUBLIC_BACKEND_URL + color.image
-                            : "/images/placeholder.jpg"
+                  {availableColors.map((color) => {
+                    const colorStock = stock.colorAvailability(color.id);
+
+                    return (
+                      <div
+                        key={color.id}
+                        className={`color-option-card ${selectedColor === color.image ? "selected" : ""}`}
+                        onClick={() =>
+                          handleColorClick(color?.image, color?.name, color?.id)
                         }
-                        alt={color.name || "Color option"}
-                        width={50}
-                        height={50}
-                        style={{ objectFit: "cover" }}
-                      />
-                    </div>
-                  ))}
+                        data-tooltip-id="color-tooltip"
+                        data-tooltip-content={
+                          stock.tracks
+                            ? `${color.name ?? "Colour"} — ${colorStock.available} available`
+                            : color.name
+                        }
+                      >
+                        <Image
+                          src={
+                            color?.image
+                              ? process.env.NEXT_PUBLIC_BACKEND_URL + color.image
+                              : "/images/placeholder.jpg"
+                          }
+                          alt={color.name || "Color option"}
+                          width={50}
+                          height={50}
+                          style={{ objectFit: "cover" }}
+                        />
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
             )}
 
             <Tooltip id="color-tooltip" place="top" className="custom-color-tooltip" />
 
-            {product.sizes?.length > 0 && (
+            {availableSizes.length > 0 && (
               <div className="variant-section">
                 <div className="variant-section-title">
                   <span className="required-asterisk">*</span>
                   Sizes:
                 </div>
                 <div className="size-selector-grid">
-                  {product?.sizes?.map((size) => {
+                  {availableSizes.map((size) => {
                     const sizePrice = size?.pivot?.price;
                     const isSelected = selectedSize == size.id;
+                    const sizeStock = stock.sizeAvailability(size.id, effectiveColorId);
+
                     return (
                       <button
                         key={size?.id}
                         className={`size-option-btn ${isSelected ? "selected" : ""}`}
                         onClick={() => handleSelectedSize(size.id)}
+                        title={
+                          stock.tracks
+                            ? `${sizeStock.available} available`
+                            : undefined
+                        }
                       >
                         {size?.size}
                         {sizePrice && <span className="size-price">৳{sizePrice}</span>}
+                        {stock.tracks && (
+                          <span className="size-stock">{sizeStock.available} available</span>
+                        )}
                       </button>
                     );
                   })}
                 </div>
+              </div>
+            )}
+
+            {/* Live availability for the exact colour + size chosen */}
+            {stock.tracks && (
+              <div className="stock-line">
+                {!selectionComplete ? (
+                  <span className="stock-chip stock-chip-neutral">
+                    Choose {needsColor && needsSize
+                      ? "a colour and size"
+                      : needsColor
+                      ? "a colour"
+                      : "a size"}{" "}
+                    to see availability
+                  </span>
+                ) : selection.preorder ? (
+                  <span className="stock-chip stock-chip-pre">
+                    Pre-order
+                    {stock.preorderEtaDays
+                      ? ` · ships in about ${stock.preorderEtaDays} days`
+                      : ""}
+                  </span>
+                ) : !selection.sellable ? (
+                  <span className="stock-chip stock-chip-out">
+                    Sold out in this combination
+                  </span>
+                ) : selection.lowStock ? (
+                  <span className="stock-chip stock-chip-low">
+                    Only {selection.available} available
+                  </span>
+                ) : (
+                  <span className="stock-chip stock-chip-in">
+                    In stock · {selection.available} available
+                  </span>
+                )}
               </div>
             )}
 
@@ -580,6 +804,13 @@ export default function Products({ product, socialLinksData, initialRelatedProdu
                 <button
                   className="quantity-btn"
                   onClick={() => handleQuantityIncrease(product?.id)}
+                  // Cannot order more than is actually on the shelf.
+                  disabled={
+                    stock.tracks &&
+                    selectionComplete &&
+                    !selection.preorder &&
+                    (cartItem?.qty ?? preQty) >= selection.available
+                  }
                   aria-label="Increase quantity"
                 >
                   +
@@ -588,13 +819,21 @@ export default function Products({ product, socialLinksData, initialRelatedProdu
             </div>
 
             <div className="action-buttons-container">
-              <button className="single-prod-action-btn btn-grad" onClick={() => handleAddToCart("add")}>
+              <button
+                className="single-prod-action-btn btn-grad"
+                onClick={() => handleAddToCart("add")}
+                disabled={stock.tracks && selectionComplete && !selection.sellable}
+              >
                 <FaCartPlus size={16} />
                 Add to Cart
               </button>
-              <button className="single-prod-action-btn btn-grad" onClick={() => handleAddToCart("buy")}>
+              <button
+                className="single-prod-action-btn btn-grad"
+                onClick={() => handleAddToCart("buy")}
+                disabled={stock.tracks && selectionComplete && !selection.sellable}
+              >
                 <FaCartPlus size={16} />
-                Buy Now
+                {selection.preorder ? "Pre-order Now" : "Buy Now"}
               </button>
             </div>
 
@@ -729,6 +968,84 @@ export default function Products({ product, socialLinksData, initialRelatedProdu
       <CartDrawer isOpen={isCartDrawerOpen} isDirectBuy={isDirectBuy} onClose={handleCloseDrawer} />
 
       <style jsx>{`
+  /* ── Availability states ── */
+  .color-option-card.sold-out {
+    position: relative;
+    cursor: not-allowed;
+    opacity: 0.42;
+    filter: grayscale(0.85);
+  }
+  .variant-strike {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(
+      to top left,
+      transparent calc(50% - 1px),
+      rgba(180, 35, 24, 0.85) calc(50% - 1px),
+      rgba(180, 35, 24, 0.85) calc(50% + 1px),
+      transparent calc(50% + 1px)
+    );
+  }
+  .size-option-btn.sold-out {
+    cursor: not-allowed;
+    opacity: 0.45;
+    text-decoration: line-through;
+    text-decoration-color: rgba(180, 35, 24, 0.75);
+  }
+  .size-stock {
+    display: block;
+    margin-top: 2px;
+    font-size: 9.5px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: #667085;
+  }
+  .size-option-btn.selected .size-stock {
+    color: inherit;
+    opacity: 0.85;
+  }
+
+  .stock-line {
+    margin: 10px 0 2px;
+  }
+  .stock-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 12px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+  }
+  .stock-chip-in {
+    background: #e2f6ec;
+    color: #0f6b52;
+  }
+  .stock-chip-low {
+    background: #fef3c7;
+    color: #92400e;
+  }
+  .stock-chip-out {
+    background: #fee4e2;
+    color: #b42318;
+  }
+  .stock-chip-pre {
+    background: #e8e6fd;
+    color: #4a3aa8;
+  }
+  .stock-chip-neutral {
+    background: #f2f4f7;
+    color: #667085;
+  }
+
+  .single-prod-action-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    filter: grayscale(0.4);
+  }
+
   .specifications-table-wrapper {
     overflow-x: auto;
   }

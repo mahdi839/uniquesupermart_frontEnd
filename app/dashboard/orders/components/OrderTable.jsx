@@ -38,21 +38,26 @@ const STATUS_COLORS = {
   order_confirmed: { bg: '#d1e7dd', color: '#0a3622', border: '#198754' },
 };
 
+<<<<<<< HEAD
 const STATUS_LABELS = {
   completed: 'Delivery Completed',
   shipped_to_you: 'Shipped to Courier',
 };
 
 function StatusBadge({ status }) {
+=======
+function StatusBadge({ status, compact = false }) {
+>>>>>>> 46d263a750e1ff14511c2a431ca939beb0d31a87
   const style = STATUS_COLORS[status] || { bg: '#e2e3e5', color: '#41464b', border: '#adb5bd' };
   const label = STATUS_LABELS[status] || status?.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase()) || 'N/A';
   return (
     <span style={{
       display: 'inline-block',
-      padding: '3px 10px',
+      padding: compact ? '2px 7px' : '3px 10px',
       borderRadius: '20px',
-      fontSize: '11px',
+      fontSize: compact ? '9px' : '11px',
       fontWeight: 600,
+      lineHeight: compact ? 1.25 : 1.4,
       letterSpacing: '0.3px',
       background: style.bg,
       color: style.color,
@@ -64,6 +69,26 @@ function StatusBadge({ status }) {
     }}>
       {label}
     </span>
+  );
+}
+
+// Date above, time below. On mobile the single-line variant used to run past the
+// edge of the card.
+function OrderDate({ createdAt, compact = false }) {
+  const { formatDateParts } = useFormatDate();
+  const { date, time } = formatDateParts(createdAt);
+
+  return (
+    <div className="order-date-stack">
+      <span style={{ fontSize: compact ? '10px' : '12px', fontWeight: 600, color: '#495057' }}>
+        {date}
+      </span>
+      {time && (
+        <span style={{ fontSize: compact ? '9px' : '11px', color: '#8a9099' }}>
+          {time}
+        </span>
+      )}
+    </div>
   );
 }
 
@@ -82,8 +107,6 @@ export default function OrderTable({
   const [expandedRows, setExpandedRows] = useState({});
   const [badgeOrder, setBadgeOrder] = useState(null);
   const [fraudOrder, setFraudOrder] = useState(null);
-  const { formatDate } = useFormatDate();
-
   React.useEffect(() => {
     setDraftFilters(filters);
   }, [filters]);
@@ -541,7 +564,7 @@ export default function OrderTable({
                     title={allSelected ? 'Deselect all on this page' : 'Select all on this page'}
                   />
                 </span>
-                <span>#</span>
+                <span className="order-id-column">Order ID</span>
                 <span>Customer</span>
                 <span className="order-status-column text-center">Status</span>
                 <span className="order-date-column text-center">Date</span>
@@ -550,7 +573,7 @@ export default function OrderTable({
               </div>
 
               {/* ── Order rows ── */}
-              {orders.map((order, index) => {
+              {orders.map((order) => {
                 const isExpanded = !!expandedRows[order.id];
                 const isSelected = selectedOrderIds.includes(order.id);
                 return (
@@ -577,10 +600,13 @@ export default function OrderTable({
                         />
                       </span>
 
-                      {/* # */}
-                      <span style={{ fontSize: '13px', color: '#adb5bd', fontWeight: 600 }}>
-                        {index + 1}
-                      </span>
+                      {/* Order ID */}
+                      <div className="order-id-column order-id-cell">
+                        <span className="order-id-number">
+                          {order.order_number || `#${order.id}`}
+                        </span>
+                        <span className="order-id-sub">#{order.id}</span>
+                      </div>
 
                       {/* Customer info */}
                       <div className="order-customer-cell order-wrap">
@@ -612,13 +638,13 @@ export default function OrderTable({
                           <span className="d-none d-md-inline order-wrap" style={{ marginLeft: '8px', color: '#adb5bd' }}>
                             {order.district || ''}
                           </span>
-                          {/* Date - hidden on mobile */}
-                          <div className="d-block d-md-none mt-2" style={{ fontSize: '10px', color: '#6c757d', whiteSpace: 'nowrap' }}>
-                            {formatDate(order.created_at || '')}
+                          {/* Date — mobile only, stacked so it never overflows */}
+                          <div className="d-block d-md-none mt-2">
+                            <OrderDate createdAt={order.created_at} compact />
                           </div>
                           {/* Status badge on mobile */}
                           <div className="d-block d-md-none mt-2">
-                            <StatusBadge status={order.status} />
+                            <StatusBadge status={order.status} compact />
                           </div>
                         </div>
                       </div>
@@ -629,8 +655,8 @@ export default function OrderTable({
                       </div>
 
                       {/* Date — desktop */}
-                      <div className="order-date-column text-center order-wrap" style={{ fontSize: '12px', color: '#6c757d' }}>
-                        {formatDate(order.created_at || '')}
+                      <div className="order-date-column text-center order-wrap">
+                        <OrderDate createdAt={order.created_at} />
                       </div>
 
                       {/* Badge and courier history actions */}

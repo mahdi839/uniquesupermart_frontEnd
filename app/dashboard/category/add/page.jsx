@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import Select from "react-select";
 import { useDispatch } from "react-redux";
 import { clearCategoryCache, fetchCategories } from "@/redux/slices/categorySlice";
+import StockTrackingToggle from "../components/StockTrackingToggle";
 
 export default function CreateCategoryPage() {
   const router = useRouter();
@@ -21,6 +22,7 @@ export default function CreateCategoryPage() {
     home_category: "0",
     priority: 0,
     size_guide_type: "",
+    track_inventory: false,
   });
 
   useEffect(() => {
@@ -122,6 +124,7 @@ export default function CreateCategoryPage() {
           home_category: form.home_category,
           priority: Number(form.priority),
           size_guide_type: form.size_guide_type || null,
+          track_inventory: form.track_inventory,
         },
         {
           headers: {
@@ -394,6 +397,21 @@ export default function CreateCategoryPage() {
                     <small className="form-text text-muted">
                       Higher number = higher display priority (0-999)
                     </small>
+                  </div>
+                </div>
+
+                {/* Inventory */}
+                <div className="row mb-4">
+                  <div className="col-md-12">
+                    <label className="form-label fw-bold d-block">
+                      <i className="fas fa-warehouse me-2"></i>
+                      Inventory
+                    </label>
+                    <StockTrackingToggle
+                      value={form.track_inventory}
+                      onChange={(next) => handleInputChange("track_inventory", next)}
+                      disabled={isSubmitting}
+                    />
                   </div>
                 </div>
 

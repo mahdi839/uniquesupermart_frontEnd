@@ -26,7 +26,34 @@ export default function useStoreData() {
         showConfirmButton: false,
         timer: 1500
       })
+
+      return true;
     } catch (err) {
+      // Stock ran out between adding to cart and submitting. Name the exact
+      // variants rather than showing a generic validation message.
+      const shortfalls = err.response?.data?.shortfalls;
+
+      if (Array.isArray(shortfalls) && shortfalls.length > 0) {
+        const lines = shortfalls
+          .map((item) => {
+            const label = item.variant_label && item.variant_label !== 'Default'
+              ? ` (${item.variant_label})`
+              : '';
+            return item.available > 0
+              ? `${item.title}${label} — only ${item.available} left`
+              : `${item.title}${label} — out of stock`;
+          })
+          .join('<br>');
+
+        Swal.fire({
+          title: 'Stock just changed',
+          html: `${lines}<br><br>Please update your cart and try again.`,
+          icon: 'warning',
+        })
+
+        return false;
+      }
+
       if (err.response?.status === 422) {
         // Laravel validation errors
         setErrors(err.response.data.errors);
@@ -50,6 +77,8 @@ export default function useStoreData() {
           'icon': 'error'
         })
       }
+
+      return false;
     }
     finally {
       setLoading(false);

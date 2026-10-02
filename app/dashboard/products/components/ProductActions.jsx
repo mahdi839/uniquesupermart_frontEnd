@@ -1,12 +1,12 @@
 "use client";
 import Link from "next/link";
-import { FaEdit, FaTrash } from "react-icons/fa";
+import { FaBoxes, FaEdit, FaTrash } from "react-icons/fa";
 import { useState } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { toast } from "react-toastify";
 
-export default function ProductActions({ productId, onDelete, variant = "desktop" }) {
+export default function ProductActions({ productId, onDelete, onManageStock, variant = "desktop" }) {
   const [isDeleting, setIsDeleting] = useState(false);
 
   const handleDelete = async () => {
@@ -50,6 +50,16 @@ export default function ProductActions({ productId, onDelete, variant = "desktop
   if (variant === "mobile") {
     return (
       <div className="d-flex gap-1">
+        {onManageStock && (
+          <button
+            className="btn btn-sm btn-outline-success"
+            onClick={onManageStock}
+            title="Colour & size stock"
+            disabled={isDeleting}
+          >
+            <FaBoxes />
+          </button>
+        )}
         <Link href={`/dashboard/products/edit/${productId}`}>
           <button className="btn btn-sm btn-outline-primary" disabled={isDeleting}>
             <FaEdit />
@@ -72,6 +82,16 @@ export default function ProductActions({ productId, onDelete, variant = "desktop
 
   return (
     <div className="d-flex gap-1">
+      {onManageStock && (
+        <button
+          className="btn btn-sm btn-outline-success"
+          onClick={onManageStock}
+          title="Colour & size stock"
+          disabled={isDeleting}
+        >
+          <FaBoxes size={14} />
+        </button>
+      )}
       <Link href={`/dashboard/products/edit/${productId}`}>
         <button className="btn btn-sm btn-outline-primary" title="Edit" disabled={isDeleting}>
           <FaEdit size={14} />

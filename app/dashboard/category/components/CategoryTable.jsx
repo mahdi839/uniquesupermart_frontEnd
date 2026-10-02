@@ -48,6 +48,7 @@ export default function CategoryTable({ categories }) {
             <th>Slug</th>
             <th>Parent</th>
             <th>Size Guide Type</th>
+            <th>Stock</th>
             <th>Home</th>
             <th>Priority</th>
             <th>Actions</th>
@@ -57,7 +58,7 @@ export default function CategoryTable({ categories }) {
         <tbody>
           {categories.length === 0 && (
             <tr>
-              <td colSpan="8" className="text-center text-danger">
+              <td colSpan="9" className="text-center text-danger">
                 No Categories Found
               </td>
             </tr>
@@ -78,6 +79,13 @@ export default function CategoryTable({ categories }) {
                 )}
               </td>
               <td>{cat.size_guide_type ?? "N/A"}</td>
+              <td>
+                {cat.track_inventory ? (
+                  <span className="badge bg-success">Tracked</span>
+                ) : (
+                  <span className="badge bg-light text-secondary border">Off</span>
+                )}
+              </td>
               <td>
                 <span
                   className={`badge ${

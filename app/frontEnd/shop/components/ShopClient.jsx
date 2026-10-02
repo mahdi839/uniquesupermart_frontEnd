@@ -177,16 +177,34 @@ function ShopClient({ filterOptions: initialFilterOptions, initialProducts, init
       });
       return;
     }
+
+    // Product-level guard only; the API re-checks the exact variant at checkout.
+    const summary = target.inventory_summary;
+    if (summary?.track_inventory && !summary.in_stock && !summary.allow_preorder) {
+      Swal.fire({
+        title: "Out of stock",
+        text: "This product is sold out right now.",
+        icon: "warning",
+        confirmButtonColor: "#111",
+      });
+      return;
+    }
+
     const variant =
       target.sizes.find((v) => v.id == selectedSizes) || target.sizes[0];
+    const color = target.colors?.find((c) => c.image === selectedColor);
+
     dispatch(
       addToCart({
         id: target.id,
         title: target.title,
         size: selectedSizes ? variant.id : "",
+        size_label: selectedSizes ? variant.size : null,
         price: variant?.pivot.price ?? target.price,
         image: baseUrl + (target.images?.[0]?.image || ""),
         colorImage: baseUrl + (selectedColor || ""),
+        color_name: color?.name ?? null,
+        color_id: color?.id ?? null,
         preQty: preQty ?? 1,
       })
     );

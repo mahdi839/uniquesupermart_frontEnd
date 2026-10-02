@@ -8,7 +8,7 @@ import Zoom from "react-medium-image-zoom";
 import "react-medium-image-zoom/dist/styles.css";
 import { asProductArray } from "./productData";
 
-export default function MobileCardView({ products, onShowVariants, onDelete, onShowSpecifications }) {
+export default function MobileCardView({ products, onShowVariants, onDelete, onShowSpecifications, onManageStock }) {
   const formatCreatedAt = (dateString) => {
     const date = new Date(dateString);
     const day = date.getDate();
@@ -184,6 +184,7 @@ export default function MobileCardView({ products, onShowVariants, onDelete, onS
                 <ProductActions
                   productId={product.id}
                   onDelete={() => onDelete(product.id)}
+                  onManageStock={() => onManageStock(product.id)}
                   variant="mobile"
                 />
               </div>

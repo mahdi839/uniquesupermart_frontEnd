@@ -39,7 +39,7 @@ export default function CartItemsList({
       <div className="cart-items">
         {cartItems.map((item) => (
           <CartItem
-            key={item.id}
+            key={item.lineId ?? item.id}
             item={item}
             onIncreament={onIncreament}
             onDecreament={onDecreament}
