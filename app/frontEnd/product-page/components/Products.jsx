@@ -160,7 +160,6 @@ export default function Products({ product: initialProduct, socialLinksData, ini
   }, [initialProduct?.id, baseUrl]);
 
   useEffect(() => {
-    if (product) setIsLoading(false);
     if (product?.error) toast.error(product.error);
   }, [product]);
 
