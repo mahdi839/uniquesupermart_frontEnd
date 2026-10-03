@@ -205,17 +205,10 @@ function CheckoutPage() {
 
     const updatedFormData = {
       ...formData,
-<<<<<<< HEAD
       cart: cartItems,
       shipping_cost: shippingAmount,
       total_amount: payableTotal,
       coupon_code: appliedCoupon?.code || null,
-=======
-      // Read the cart at submit time; formData.cart is only a mount-time snapshot.
-      cart: cartItems,
-      shipping_cost: shippingAmount,
-      total_amount: totalPrice + shippingAmount,
->>>>>>> 46d263a750e1ff14511c2a431ca939beb0d31a87
       checkout_session_id: getSessionId(),
     };
 

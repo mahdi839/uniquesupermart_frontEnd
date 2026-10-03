@@ -38,16 +38,12 @@ const STATUS_COLORS = {
   order_confirmed: { bg: '#d1e7dd', color: '#0a3622', border: '#198754' },
 };
 
-<<<<<<< HEAD
 const STATUS_LABELS = {
   completed: 'Delivery Completed',
   shipped_to_you: 'Shipped to Courier',
 };
 
 function StatusBadge({ status }) {
-=======
-function StatusBadge({ status, compact = false }) {
->>>>>>> 46d263a750e1ff14511c2a431ca939beb0d31a87
   const style = STATUS_COLORS[status] || { bg: '#e2e3e5', color: '#41464b', border: '#adb5bd' };
   const label = STATUS_LABELS[status] || status?.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase()) || 'N/A';
   return (
