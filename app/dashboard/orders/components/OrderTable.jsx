@@ -43,7 +43,7 @@ const STATUS_LABELS = {
   shipped_to_you: 'Shipped to Courier',
 };
 
-function StatusBadge({ status }) {
+function StatusBadge({ status, compact = false }) {
   const style = STATUS_COLORS[status] || { bg: '#e2e3e5', color: '#41464b', border: '#adb5bd' };
   const label = STATUS_LABELS[status] || status?.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase()) || 'N/A';
   return (
